@@ -40,10 +40,15 @@
 
 Para el desarrollo de la actividad, nuestro grupo represento una LAN dentro de la distribucion de roles por equipo. Dentro del equipo, los role e informacion pertinente fue la siguiente:
 
-| Nombre  | Tipo de Dispositivo    | Prefijo de red | Ip          | Ip destino | MAC |
-| ------- | ---------------------- | -------------- | ----------- | ---------- | --- |
-| Julian  | Gateway Predeterminado | 10.14          |             |            |     |
-| Nicolas | Host                   | 10.14          | 10.14.0.104 |            |     |
+| Nombre   | Tipo de Dispositivo    | Prefijo de red | Ip          | Ip destino  | MAC      | Payload |
+| -------- | ---------------------- | -------------- | ----------- | ----------- | -------- | ------- |
+| Julian   | Gateway Predeterminado | 10.14          | 10.14.0.1   |             |          |         |
+| Nicolas  | Host                   | 10.14          | 10.14.0.104 | 10.13.0.101 | AD:44:54 | 355b    |
+| Franco   | Host                   | 10.14          |             |             |          |         |
+| Federico | Host                   |                |             |             |          |         |
+
+- Los host son los aparatos que intentan comunicarse con otro host o end device a traves de la red
+- El Gateway Predeterminado es el encargado de redireccionar los paquetes que quieren enviar los host que pertenecen a su red, a los Router intermedios de la WAN
 
 ## Resultado Segunda Parte: Inyeccion y deteccion de errores
 
