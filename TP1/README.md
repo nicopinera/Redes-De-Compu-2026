@@ -25,6 +25,7 @@
 - **Información de contacto**:
   - [nicolas.pinera@mi.unc.edu.ar](mailto:nicolas.pinera@mi.unc.edu.ar)
   - [julian.krede@mi.unc.edu.ar](mailto:julian.krede@mi.unc.edu.ar)
+  - [federico.arnaudo@mi.unc.edu.ar](mailto:federico.arnaudo@mi.unc.edu.ar)
 
 ---
 
@@ -45,7 +46,7 @@ Para el desarrollo de la actividad, nuestro grupo represento una LAN dentro de l
 | Julian   | Gateway Predeterminado | 10.14          | 10.14.0.1   |             |          |         |
 | Nicolas  | Host                   | 10.14          | 10.14.0.104 | 10.13.0.101 | AD:44:54 | 355b    |
 | Franco   | Host                   | 10.14          |             |             |          |         |
-| Federico | Host                   |                |             |             |          |         |
+| Federico | Host                   | 10.14          | 10.14.0.102 | 10.7.0.102  | AC:40:87 | 91C2    |
 
 - Los host son los aparatos que intentan comunicarse con otro host o end device a traves de la red
 - El Gateway Predeterminado es el encargado de redireccionar los paquetes que quieren enviar los host que pertenecen a su red, a los Router intermedios de la WAN
