@@ -1,4 +1,4 @@
-cadena_binaria_rx = ""
+cadena_binaria_rx = "1111010100000001"
 resultado = 0
 
 # Recorremos de 4 en 4
