@@ -89,6 +89,10 @@ El modelo de ruteo hop-by-hop (salto a salto) es el pilar que permite la escalab
 - **Aislamiento de la Topología:** Un host emisor no necesita conocer la infraestructura interna de redes remotas. Solo debe identificar, mediante su máscara de subred, si el destino es externo para entregar el paquete a su Gateway por defecto.
 - **Desacoplamiento de Capas**: Este modelo permite que el direccionamiento lógico (IP) permanezca constante de extremo a extremo, mientras que el direccionamiento físico (MAC) se adapta dinámicamente en cada enlace mediante el proceso de re-encapsulación.
 
+El campo TTL (Time to Live) funciona como un mecanismo de seguridad vital que previene la persistencia indefinida de paquetes en la red, evitando principalmente los bucles de ruteo (routing loops). Si por un error en las tablas de ruteo dos routers se reenviaran un paquete entre sí de forma cíclica, el TTL garantiza que el paquete sea descartado una vez que el contador llegue a cero, liberando así los recursos de la red.
+
+Sin la existencia del TTL, un paquete atrapado en un bucle circularía infinitamente a través de los enlaces, consumiendo ancho de banda y capacidad de procesamiento de manera acumulativa. En una red de gran escala como Internet, esto provocaría rápidamente una congestión masiva o una tormenta de difusión, saturando los nodos y provocando la caída de los servicios al no haber una "fecha de caducidad" física para la información que no logra encontrar su destino.
+
 ## Resultado Segunda Parte: Inyeccion y deteccion de errores
 
 EDAC: Deteccion de errores y correccion
