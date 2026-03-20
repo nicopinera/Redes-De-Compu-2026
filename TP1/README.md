@@ -25,6 +25,7 @@
 - **Información de contacto**:
   - [nicolas.pinera@mi.unc.edu.ar](mailto:nicolas.pinera@mi.unc.edu.ar)
   - [julian.krede@mi.unc.edu.ar](mailto:julian.krede@mi.unc.edu.ar)
+  - [federico.arnaudo@mi.unc.edu.ar](mailto:federico.arnaudo@mi.unc.edu.ar)
 
 ---
 
@@ -72,7 +73,42 @@ El mismo consta de una consulta realizada por el dispositivo que intenta enviar 
 > [!NOTE]
 > A nuestro grupo no nos llego ningun paquete en esta actividad
 
+Una vez establecidos los roles de los equipos y de cada integrantes del grupo. Se lleno un la tarjeta identificadora, que representa nuestra NIC.
+
+Para que el router descubra la direccion MAC del Router intermedio vecino, se la debe preguntar.
+
 ## Resultado Segunda Parte: Inyeccion y deteccion de errores
+
+EDAC: Deteccion de errores y correccion
+
+- CRC: Bit de paridad y XOR
+- Checksum
+
+A nuestro grupo nos toco enviar paquetes con el algoritmo de Paridar y recibir paquetes con codigo generado con el algoritmo XOR
+
+Son algoritmos que agregan metadata al paquete, para corroborar si hay errores al momento de recibir los datos
+
+Enviamos paquetes con una carga y un codigo de EDAC. Al recibir un frame, debemos verificar el codigo de EDAC para detectar errores.
+
+Las tramas tienen la siguiente informacion:
+
+- IP de origen: _10.14.0.1_
+- IP de destino:
+- Payload: D23Ch *1101-0010-0011-1100*b
+- EDAC: Por paridad el codigo de EDAC es _0_
+
+En el reporte de recepcion, registramos lo siguiente:
+
+- Ip de origen: 10.1.11
+- Payload recibida: _F501_
+- EDAC para la payload recibida: _1011_ o _B_
+- EDAC: _F_ o _1111_
+- Algoritmo utilizado para calcular el codigo de EDAC fue el CRC calculado por _XOR_
+- La payload esta integra: La payload _no_ esta integra
+- Potenciales payload:
+  - Modificando un bit: B501 - F101 - F541 - F505
+  - Modificando dos bits: B541 - F105 - B505
+  - Modificando tres bits: F145 - B545
 
 ---
 
