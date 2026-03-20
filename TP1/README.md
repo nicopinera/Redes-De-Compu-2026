@@ -39,6 +39,8 @@ Este documento detalla la simulación de una infraestructura de red WAN y el est
 
 ## Introduccion
 
+El presente informe documenta las actividades realizadas durante el laboratorio de la cátedra de Redes de Computadoras. La práctica se dividió en dos fases fundamentales para comprender el funcionamiento de las redes de datos: el ruteo a través de una infraestructura WAN simulada y el estudio de mecanismos de detección de errores en la capa de enlace. A través de una metodología práctica donde los estudiantes asumieron roles de hosts, gateways y routers, se analizaron conceptos críticos como el direccionamiento lógico (IP), el direccionamiento físico (MAC), el protocolo de resolución de direcciones (ARP) y el impacto del tiempo de vida (TTL) en la estabilidad de la red. Finalmente, se exploraron algoritmos de redundancia como paridad y XOR para verificar la integridad de la información transmitida frente a posibles interferencias.
+
 ---
 
 ## Resultado Primera Parte: Repaso general didactico. Simulacion de envio de paquetes, ARP y ruteo entre redes
@@ -95,34 +97,40 @@ Sin la existencia del TTL, un paquete atrapado en un bucle circularía infinitam
 
 ## Resultado Segunda Parte: Inyeccion y deteccion de errores
 
-En la segunda parte del laboratorio se trabajo sobre la integridad de los datos. la red puede sufrir de ruido e interferencia, los cuales pueden probocar un error en los datos que se envian. Para esto se aplican tecnicas de **EDAC (Deteccion de errores y correcion)**. Las cuales son un conjunto de técnicas y algoritmos aplicados en la transmisión de datos para garantizar que la información recibida sea idéntica a la enviada. Dentro de las tecnicas de EDAC, hay dos grandes grupos: **Checksum, CRC y Paridad**.
+En la segunda parte del laboratorio, se trabajó sobre la integridad de los datos. La red puede sufrir de ruido e interferencia, los cuales pueden provocar un error en los datos que se envían. Para esto, se aplican técnicas de **EDAC (Error Detection and Correction)**, las cuales son un conjunto de algoritmos aplicados en la transmisión de datos para garantizar que la información recibida sea idéntica a la enviada. Dentro de las técnicas de EDAC consultadas, se encuentran: **Checksum, CRC y Paridad**.
 
-Dentro de CRC (Codigo de redundancia ciclica), se nos presento la tecnica del **XOR** la cual consta de agarrar los dos primeros nibbles mas significativos, realizar la operacion XOR bit a bit, y con el resultado, repetir la operacion con el siguiente nibble, hasta terminar con todos los datos de nuestra carga. Por ultimo se dispone de 1 nibble para establecer el codigo de EDAC obtenido por esta tecnica.
+Dentro de CRC (Código de Redundancia Cíclica), se nos presentó la técnica del **XOR**, la cual consiste en tomar los dos nibbles más significativos, realizar la operación XOR bit a bit y, con el resultado, repetir la operación con el siguiente nibble hasta procesar todos los datos de nuestra carga. Por último, se dispone de un nibble para establecer el código de EDAC obtenido.
 
-En el caso de la tecnica de **Paridad** se cuentan todos los **1** presentes en nuestra carga. Si hay una cantidad _par_ de 1, se agrega un _0_ al final de la carga. Caso contrario, se agrega un _1_.
+En el caso de la técnica de **Paridad**, se cuentan todos los **1** presentes en nuestra carga. Si hay una cantidad _par_ de unos, se agrega un _0_ al final; de lo contrario, se agrega un _1_.
 
-A nuestro grupo nos toco enviar paquetes con el algoritmo de **Paridar** y recibir paquetes con codigo generado con el algoritmo **XOR**. Como se dijo anteriormente, estos algoritmos agregan metadata al paquete para corroborar si hay errores al momento de recibir los datos. Enviamos paquetes con una **carga** y un codigo de **EDAC**. Al recibir un frame, debemos verificar el codigo de EDAC para detectar errores.
+A nuestro grupo le tocó enviar paquetes con el algoritmo de **Paridad** y recibir paquetes con código generado con el algoritmo **XOR**. Como se mencionó anteriormente, estos algoritmos agregan metadatos al paquete para corroborar si hay errores al momento de la recepción. Enviamos paquetes con una **carga** (payload) y un código de **EDAC**. Al recibir una trama (frame), debemos verificar dicho código para detectar errores.
 
-Las tramas tienen la siguiente informacion:
+Las tramas tienen la siguiente información:
 
 - **IP de origen**: _10.14.0.1_
 - **IP de destino**: _x_
-- **Payload**: _D23Ch_ _1101001000111100b_
-- **EDAC**: Por paridad el codigo de EDAC es _0_
+- **Payload**: _D23Ch (1101001000111100b)_
+- **EDAC**: Por paridad, el código de EDAC es _0_.
 
-En el reporte de **recepcion**, registramos lo siguiente:
+En el reporte de **recepción**, registramos lo siguiente:
 
 - **Ip de origen**: 10.1.11
 - **Payload recibida**: _F501_
 - **EDAC para la payload recibida**: _1011_ o _B_
 - **EDAC**: _F_ o _1111_
-- Algoritmo utilizado para calcular el codigo de EDAC fue el CRC calculado por _XOR_
-- **La payload esta integra**: La payload _no_ esta integra ya que hay una diferencia entre el valor de EDAC calculado (1011) y el valor establecido en la trama (1111).
-- **Potenciales payload**:
+- **Algoritmo utilizado**: El código de EDAC fue el CRC calculado por _XOR_.
+- **La payload está íntegra**: La payload _no_ está íntegra, ya que existe una diferencia entre el valor de EDAC calculado (1011) y el valor establecido en la trama (1111).
+- **Potenciales payloads**:
   - **Modificando un bit**: B501 - F101 - F541 - F505
   - **Modificando dos bits**: B541 - F105 - B505
   - **Modificando tres bits**: F145 - B545
 
 ---
 
-## Conculsiones
+## Conclusiones
+
+La realización de esta práctica permitió consolidar la distinción entre el direccionamiento de extremo a extremo y el de salto a salto. Se comprendió que la persistencia de la dirección IP es lo que permite que un paquete mantenga su destino global, mientras que la variabilidad de la dirección MAC es la que posibilita su desplazamiento físico a través de diferentes redes locales. Asimismo, la implementación del rol de Gateway puso de manifiesto la importancia de los puntos de salida predeterminados para la interconexión de redes heterogéneas, donde el protocolo ARP actúa como el puente necesario entre las capas de red y de enlace.
+
+Por otro lado, la sección dedicada a EDAC demostró que la transmisión de datos es inherentemente susceptible a errores. La comparación entre métodos simples como la paridad y algoritmos más robustos como el CRC (XOR) evidenció que, aunque la redundancia añade carga extra al envío (metadata), es un sacrificio necesario para garantizar una comunicación confiable. En conclusión, la práctica integró exitosamente los conceptos teóricos del modelo OSI con una experiencia práctica de simulación, proporcionando una visión integral de cómo se estructuran y protegen los datos en un entorno de red real.
+
+---
