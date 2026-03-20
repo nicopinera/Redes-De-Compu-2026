@@ -95,41 +95,34 @@ Sin la existencia del TTL, un paquete atrapado en un bucle circularía infinitam
 
 ## Resultado Segunda Parte: Inyeccion y deteccion de errores
 
-EDAC: Deteccion de errores y correccion
+En la segunda parte del laboratorio se trabajo sobre la integridad de los datos. la red puede sufrir de ruido e interferencia, los cuales pueden probocar un error en los datos que se envian. Para esto se aplican tecnicas de **EDAC (Deteccion de errores y correcion)**. Las cuales son un conjunto de técnicas y algoritmos aplicados en la transmisión de datos para garantizar que la información recibida sea idéntica a la enviada. Dentro de las tecnicas de EDAC, hay dos grandes grupos: **Checksum, CRC y Paridad**.
 
-- CRC: Bit de paridad y XOR
-- Checksum
+Dentro de CRC (Codigo de redundancia ciclica), se nos presento la tecnica del **XOR** la cual consta de agarrar los dos primeros nibbles mas significativos, realizar la operacion XOR bit a bit, y con el resultado, repetir la operacion con el siguiente nibble, hasta terminar con todos los datos de nuestra carga. Por ultimo se dispone de 1 nibble para establecer el codigo de EDAC obtenido por esta tecnica.
 
-A nuestro grupo nos toco enviar paquetes con el algoritmo de Paridar y recibir paquetes con codigo generado con el algoritmo XOR
+En el caso de la tecnica de **Paridad** se cuentan todos los **1** presentes en nuestra carga. Si hay una cantidad _par_ de 1, se agrega un _0_ al final de la carga. Caso contrario, se agrega un _1_.
 
-Son algoritmos que agregan metadata al paquete, para corroborar si hay errores al momento de recibir los datos
-
-Enviamos paquetes con una carga y un codigo de EDAC. Al recibir un frame, debemos verificar el codigo de EDAC para detectar errores.
+A nuestro grupo nos toco enviar paquetes con el algoritmo de **Paridar** y recibir paquetes con codigo generado con el algoritmo **XOR**. Como se dijo anteriormente, estos algoritmos agregan metadata al paquete para corroborar si hay errores al momento de recibir los datos. Enviamos paquetes con una **carga** y un codigo de **EDAC**. Al recibir un frame, debemos verificar el codigo de EDAC para detectar errores.
 
 Las tramas tienen la siguiente informacion:
 
-- IP de origen: _10.14.0.1_
-- IP de destino:
-- Payload: D23Ch *1101-0010-0011-1100*b
-- EDAC: Por paridad el codigo de EDAC es _0_
+- **IP de origen**: _10.14.0.1_
+- **IP de destino**: _x_
+- **Payload**: _D23Ch_ _1101001000111100b_
+- **EDAC**: Por paridad el codigo de EDAC es _0_
 
-En el reporte de recepcion, registramos lo siguiente:
+En el reporte de **recepcion**, registramos lo siguiente:
 
-- Ip de origen: 10.1.11
-- Payload recibida: _F501_
-- EDAC para la payload recibida: _1011_ o _B_
-- EDAC: _F_ o _1111_
+- **Ip de origen**: 10.1.11
+- **Payload recibida**: _F501_
+- **EDAC para la payload recibida**: _1011_ o _B_
+- **EDAC**: _F_ o _1111_
 - Algoritmo utilizado para calcular el codigo de EDAC fue el CRC calculado por _XOR_
-- La payload esta integra: La payload _no_ esta integra
-- Potenciales payload:
-  - Modificando un bit: B501 - F101 - F541 - F505
-  - Modificando dos bits: B541 - F105 - B505
-  - Modificando tres bits: F145 - B545
+- **La payload esta integra**: La payload _no_ esta integra ya que hay una diferencia entre el valor de EDAC calculado (1011) y el valor establecido en la trama (1111).
+- **Potenciales payload**:
+  - **Modificando un bit**: B501 - F101 - F541 - F505
+  - **Modificando dos bits**: B541 - F105 - B505
+  - **Modificando tres bits**: F145 - B545
 
 ---
 
 ## Conculsiones
-
----
-
-## Referencias
