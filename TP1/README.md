@@ -70,12 +70,18 @@ El proceso en el cual un dispositivo consulta a otro su direccion MAC se llama *
 
 El mismo consta de una consulta realizada por el dispositivo que intenta enviar el paquete a todos los dispositivos que tiene acceso, realizando una **ARP Request** por **broadcast (difucion)** a todos los dispositivos de la Red. Al dispositivo que le corresponda la direccion IP o tenga acceso a esa red, contestara con su direccion MAC.
 
+La IP es **extremo a extremo (end-to-end)** y por eso no cambian nunca durante todo el viaje, en cambio la MAC es **salto a salto (hop-by-hop)**, lo que quiere decir que va a ir cambiando a medida que el paquete se traslada por la red, porque el router se encarga de "encaminarlo" por diferentes nodos.
+
 > [!NOTE]
 > A nuestro grupo no nos llego ningun paquete en esta actividad
 
-Una vez establecidos los roles de los equipos y de cada integrantes del grupo. Se lleno un la tarjeta identificadora, que representa nuestra NIC.
+Cuando un host quiere enviar un paquete a un dispositivo en otra red, no intenta descubrir directamente la MAC del host destino, sino la del gateway predeterminado ya que un host solo tiene visibilidad directa de los dispositivos en su propia red local (LAN). Esto es importante por las siguientes razones:
 
-Para que el router descubra la direccion MAC del Router intermedio vecino, se la debe preguntar.
+- Limitacion del alcance del Broadcast (ARP)
+- Desconocimiento de la topologia Externa
+- Diferencia entre direccionamiento fisico y logico
+
+El gateway actúa como un intermediario. El host solo necesita saber si la IP de destino no está en mi red, se la entrego al Gateway.Sin el gateway, cada host del mundo tendría que mantener una tabla de rutas de toda la Internet para saber exactamente a qué siguiente nodo físico enviarle el paquete.
 
 ## Resultado Segunda Parte: Inyeccion y deteccion de errores
 
