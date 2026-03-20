@@ -4,6 +4,7 @@
 
 - Nicolas Piñera
 - Julian Krede
+- Federico Arnaudo
 
 **Nombre del Grupo**: Puerto1337
 
@@ -58,7 +59,7 @@ Una vez entendida la distribucion de roles por grupo, nos toco definir dentro de
 | Julian   | Gateway Predeterminado | 10.14          | 10.14.0.1   |             |          |         | x   |
 | Nicolas  | Host                   | 10.14          | 10.14.0.104 | 10.13.0.101 | AD:44:54 | 355b    | 6   |
 | Franco   | Host                   | 10.14          |             |             |          |         | 6   |
-| Federico | Host                   |                |             |             |          |         | 6   |
+| Federico | Host                   | 10.14          | 10.14.0.102 | 10.7.0.102  | AC:40:87 | 91C2    | 6   |
 
 Para realizar el envio de un paquete desde un host a otro ubicado en diferentes LAN se debia seguir los siguientes pasos:
 
@@ -90,6 +91,10 @@ El modelo de ruteo hop-by-hop (salto a salto) es el pilar que permite la escalab
 - **Escalabilidad y Eficiencia de Memoria**: Los dispositivos no necesitan almacenar rutas hacia cada host individual del mundo; solo requieren conocer el "siguiente salto" (next hop) para alcanzar una red de destino.
 - **Aislamiento de la Topología:** Un host emisor no necesita conocer la infraestructura interna de redes remotas. Solo debe identificar, mediante su máscara de subred, si el destino es externo para entregar el paquete a su Gateway por defecto.
 - **Desacoplamiento de Capas**: Este modelo permite que el direccionamiento lógico (IP) permanezca constante de extremo a extremo, mientras que el direccionamiento físico (MAC) se adapta dinámicamente en cada enlace mediante el proceso de re-encapsulación.
+
+Es necesario reconstruir el frame Ethernet en cada salto ya que los frames son propios de cada enlace, es decir, un router debe tomar el frame recibido y adaptarlo para el siguiente tramo de la red. Esto es así, debido a que las direcciones MAC cambian en cada salto, hacia el dispositivo que va dirigido.
+Si el router intenta reenviar el mismo frame, éste tendrá direcciones MAC erroneas/incorrectas que no coinciden con ningun nodo. El siguiente salto descartaría el frame y el dato nunca llegará a destino.
+Si bien el paquete no sufriría cambios, pero al no contar con un frame adecuado, quedará sin ser entregado.
 
 El campo TTL (Time to Live) funciona como un mecanismo de seguridad vital que previene la persistencia indefinida de paquetes en la red, evitando principalmente los bucles de ruteo (routing loops). Si por un error en las tablas de ruteo dos routers se reenviaran un paquete entre sí de forma cíclica, el TTL garantiza que el paquete sea descartado una vez que el contador llegue a cero, liberando así los recursos de la red.
 
