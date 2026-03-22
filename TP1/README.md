@@ -48,7 +48,7 @@ El presente informe documenta las actividades realizadas durante el laboratorio 
 
 ## Resultado Primera Parte: Repaso general didáctico. Simulación de envío de paquetes, ARP y ruteo entre redes
 
-Para empezar esta actividad el aula se convirtió en una red heterogénea. Para ello, los diferentes grupos fueron adoptando roles: Algunos representaron una LAN (Red de área local) y otros tomaron el rol de Routers Intermedios.
+Para empezar esta actividad, el aula se convirtió en una red heterogénea. Para ello, los diferentes grupos fueron adoptando roles: Algunos representaron una LAN (Red de área local) y otros tomaron el rol de Routers Intermedios.
 
 Dentro de las LAN uno de los integrantes del grupo toma el rol de Gateway predeterminado de los otros 3 host que forman la LAN. El Gateway predeterminado se encarga de ser la puerta de salida de los paquetes que desean enviar los host fuera de la LAN. Por otro lado los Routers intermedios se encargan de reenviar los paquetes a los gateway predeterminados correspondiente a la LAN de destino. A continuación se presenta un diagrama de la distribución, se puede ver claramente que cada LAN representa una **topología estrella** donde todos los host se conectan a su gateway predeterminado.
 
@@ -84,7 +84,7 @@ El proceso en el cual un dispositivo consulta a otro su dirección MAC se llama 
 
 El mismo consiste en que el dispositivo que quiere enviar un paquete realiza una **ARP Request** por **broadcast (difusión)** a todos los dispositivos de la red local. El dispositivo cuya dirección IP coincide con la solicitada responde con su dirección MAC.
 
-La IP es **extremo a extremo (end-to-end)** y por eso no cambia nunca durante todo el viaje, en cambio la MAC es **salto a salto (hop-by-hop)**, lo que quiere decir que va a ir cambiando a medida que el paquete se traslada por la red, porque el router se encarga de "encaminarlo" por diferentes nodos.
+La IP es **extremo a extremo (end-to-end)** y por eso no cambia nunca durante todo el viaje, En cambio, la MAC es **salto a salto (hop-by-hop)**, lo que quiere decir que va a ir cambiando a medida que el paquete se traslada por la red, porque el router se encarga de "encaminarlo" por diferentes nodos.
 
 ```mermaid
 sequenceDiagram
@@ -116,11 +116,11 @@ sequenceDiagram
 > [!NOTE]
 > A nuestro grupo no nos llegó ningún paquete en esta actividad
 
-Cuando un host quiere enviar un paquete a un dispositivo en otra red, no intenta descubrir directamente la MAC del host destino, sino la del gateway predeterminado ya que un host solo tiene visibilidad directa de los dispositivos en su propia red local (LAN). Esto es importante por las siguientes razones:
+Cuando un host quiere enviar un paquete a un dispositivo en otra red, no intenta descubrir directamente la MAC del host destino, sino la del gateway predeterminado, ya que un host solo tiene visibilidad directa de los dispositivos en su propia red local (LAN). Esto es importante por las siguientes razones:
 
-- Limitación del alcance del Broadcast (ARP)
-- Desconocimiento de la topología Externa
-- Diferencia entre direccionamiento físico y lógico
+- Limitación del alcance del Broadcast (ARP).
+- Desconocimiento de la topología externa.
+- Diferencia entre direccionamiento físico y lógico.
 
 El gateway actúa como un intermediario. El host solo necesita saber si la IP de destino no está en su red, se la entrega al Gateway. Sin el gateway, cada host del mundo tendría que mantener una tabla de rutas de toda la Internet para saber exactamente a qué siguiente nodo físico enviarle el paquete.
 
