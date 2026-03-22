@@ -86,6 +86,33 @@ El mismo consiste en que el dispositivo que quiere enviar un paquete realiza una
 
 La IP es **extremo a extremo (end-to-end)** y por eso no cambia nunca durante todo el viaje, en cambio la MAC es **salto a salto (hop-by-hop)**, lo que quiere decir que va a ir cambiando a medida que el paquete se traslada por la red, porque el router se encarga de "encaminarlo" por diferentes nodos.
 
+```mermaid
+sequenceDiagram
+    participant H as Host
+    participant GW as Gateway Predeterminado
+    participant R as Router Intermedio
+    participant D as Host Destino
+
+    Note over H: Origen conoce IP destino,<br/>pero no su MAC
+
+    H->>GW: ARP Request (broadcast)<br/>¿Cuál es tu MAC?
+    GW-->>H: ARP Reply<br/>Mi MAC es XX:XX:XX
+    Note over GW: Registra IP-MAC del Host<br/>en tabla local
+
+    H->>GW: Paquete<br/>[MAC origen: Host]<br/>[MAC destino: Gateway]<br/>[IP origen: Host]<br/>[IP destino: Destino]
+
+    GW->>R: ARP Request (broadcast)<br/>¿Cuál es tu MAC?
+    R-->>GW: ARP Reply<br/>Mi MAC es YY:YY:YY
+
+    Note over GW: El Gateway re-encapsula:<br/>elimina MAC del Host,<br/>coloca su MAC como origen<br/>y MAC del Router como destino<br/><br/>IP origen y destino<br/>NO se modifican
+
+    GW->>R: Paquete re-encapsulado<br/>[MAC origen: Gateway]<br/>[MAC destino: Router]<br/>[IP origen: Host]<br/>[IP destino: Destino]
+
+    Note over R: Repite el proceso<br/>hop-by-hop hasta<br/>llegar a destino
+
+    R->>D: Paquete<br/>[MAC origen: ...]<br/>[MAC destino: Destino]<br/>[IP origen: Host]<br/>[IP destino: Destino]
+```
+
 > [!NOTE]
 > A nuestro grupo no nos llegó ningún paquete en esta actividad
 
