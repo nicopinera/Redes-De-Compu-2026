@@ -54,16 +54,25 @@ Dentro de las LAN uno de los integrantes del grupo toma el rol de Gateway predet
 
 ![Diagrama de Red](https://github.com/user-attachments/assets/5a4898bb-138c-47f1-b6aa-8adc413afd83)
 
-Una vez entendida la distribución de roles por grupo, nos tocó definir dentro de la red LAN, los roles de cada integrante. Los host tienen un **prefijo de red**, una **IP de host**, **IP de host de destino**, dirección física o **MAC** y una carga o **Payload** que deberían enviar en binario. Ademas se estableció un TTL (Time to Live) de 6, para los paquetes. Este valor se decrementa cada vez que el paquete realiza un salto entre dispositivos, si el parámetro llega a _0_ el paquete se _descarta_. Con estos datos se completaron la **NIC** de cada integrante. A continuación se presenta una tabla con los datos y roles asignados a cada integrante.
+Una vez entendida la distribución de roles por grupo, nos tocó definir los roles de cada integrante dentro de la red LAN. Los host tienen un **prefijo de red**, una **IP de host**, **IP de host de destino**, dirección física o **MAC** y una carga o **Payload** que deberían enviar en binario. Además, para los paquetes se estableció un TTL (Time to Live) de 6. Este valor se decrementa cada vez que el paquete realiza un salto entre dispositivos, si el parámetro llega a _0_ el paquete se _descarta_. Con estos datos se completaron la **NIC** de cada integrante. A continuación se presenta una tabla con los datos y roles asignados a cada uno.
 
-| Nombre   | Tipo de Dispositivo    | Prefijo de red | IP          | IP destino  | MAC      | Payload | TTL |
-| -------- | ---------------------- | -------------- | ----------- | ----------- | -------- | ------- | --- |
-| Julian   | Gateway Predeterminado | 10.14          | 10.14.0.1   |             |          |         | x   |
-| Nicolas  | Host                   | 10.14          | 10.14.0.104 | 10.13.0.101 | AD:44:54 | 355b    | 6   |
-| Franco   | Host                   | 10.14          |             |             |          |         | 6   |
-| Federico | Host                   | 10.14          | 10.14.0.102 | 10.7.0.102  | AC:40:87 | 91C2    | 6   |
+> [!NOTE]
+> TODO: MAC del Gateway Predeterminado
 
-Para realizar el envío de un paquete desde un host a otro ubicado en diferentes LAN se debía seguir los siguientes pasos:
+| Nombre   | Tipo de Dispositivo    | Prefijo de red   | IP            | IP destino     | MAC        | Payload             | TTL   |
+| -------- | ---------------------- | ---------------- | ------------- | -------------- | ---------- | ------------------- | ----- |
+| Julian   | Gateway Predeterminado | `10.14`          | `10.14.0.1`   | `<ip_paquete>` |            | `<payload_paquete>` | `N/A` |
+| Nicolas  | Host                   | `10.14`          | `10.14.0.104` | `10.13.0.101`  | `AD:44:54` | `355b`              | `6`   |
+| Franco   | Host                   | `10.14`          | `10.14.0.103` | `10.3.0.102`   | `AC:42:76` | `436e`              | `6`   |
+| Federico | Host                   | `10.14`          | `10.14.0.102` | `10.7.0.102`   | `AC:40:87` | `91C2`              | `6`   |
+
+> [!NOTE]
+> La IP de destino del Gateway Predeterminado se establece como `<ip_paquete>` ya que el mismo se encarga de reenviar los paquetes de los host a su destino. Por lo tanto, el Gateway no tiene una IP de destino fija, sino que varía según el paquete que reciba.
+
+> [!NOTE]
+> El Payload del Gateway Predeterminado se establece como `<payload_paquete>` ya que el mismo no genera su propia carga, sino que reenvía la carga de los host a su destino. Por lo tanto, el Payload del Gateway también varía según el paquete que reciba.
+
+Para realizar el envío de un paquete desde un host a otro ubicado en diferentes LAN se tienen que seguir los siguientes pasos:
 
 - El host debe consultar al Gateway Predeterminado su dirección MAC. Una vez entregada, el host agrega esta dirección a la cabecera del paquete a enviar.
 - El Gateway predeterminado debe armar una tabla en la cual registra las direcciones IP de la red local junto con su dirección MAC.
