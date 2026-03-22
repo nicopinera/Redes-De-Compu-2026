@@ -36,7 +36,7 @@
 
 Este documento detalla la simulación de una infraestructura de red WAN y el estudio de los sistemas de detección de errores en la **capa de enlace**. En la fase inicial, se modeló el intercambio de datos entre redes de área local (LAN), verificando el funcionamiento del protocolo **ARP** y el direccionamiento **hop-by-hop**. Asimismo, se examinó el encapsulamiento de datos, contrastando la naturaleza volátil de las tramas Ethernet respecto a la persistencia de los paquetes IP. Posteriormente, se implementaron métodos de **detección de errores (EDAC)**, tales como **CRC y paridad**, para garantizar la integridad de la información transmitida.
 
-**Palabras clave**: _Ruteo Hop-by-Hop, IP, MAC, Encapsulamiento, EDAC, Checksum, Paridad, LAN._
+**Palabras clave**: _Ruteo Hop-by-Hop, IP, MAC, Encapsulamiento, EDAC, CRC, Paridad, LAN._
 
 ---
 
@@ -48,29 +48,26 @@ El presente informe documenta las actividades realizadas durante el laboratorio 
 
 ## Resultado Primera Parte: Repaso general didáctico. Simulación de envío de paquetes, ARP y ruteo entre redes
 
-Para empezar esta actividad, el aula se convirtió en una red heterogénea. Para ello, los diferentes grupos fueron adoptando roles: Algunos representaron una LAN (Red de área local) y otros tomaron el rol de Routers Intermedios.
+Para empezar esta actividad, el aula se convirtió en una red heterogénea. Para ello, los diferentes grupos fueron adoptando roles: algunos representaron una LAN (Red de área local) y otros tomaron el rol de Routers Intermedios.
 
-Dentro de las LAN uno de los integrantes del grupo toma el rol de Gateway predeterminado de los otros 3 host que forman la LAN. El Gateway predeterminado se encarga de ser la puerta de salida de los paquetes que desean enviar los host fuera de la LAN. Por otro lado los Routers intermedios se encargan de reenviar los paquetes a los gateway predeterminados correspondiente a la LAN de destino. A continuación se presenta un diagrama de la distribución, se puede ver claramente que cada LAN representa una **topología estrella** donde todos los host se conectan a su gateway predeterminado.
+Dentro de las LAN, uno de los integrantes del grupo toma el rol de Gateway predeterminado de los otros 3 hosts que forman la LAN. El Gateway predeterminado se encarga de ser la puerta de salida de los paquetes que se desean enviar a hosts fuera de la LAN. Por otro lado, los Routers intermedios se encargan de reenviar los paquetes a los gateways predeterminados correspondientes a las LAN de destino. A continuación se presenta un diagrama de la distribución utilizada donde se puede ver claramente que cada LAN representa una **topología estrella** en la que todos los hosts se conectan a su gateway predeterminado.
 
 ![Diagrama de Red](https://github.com/user-attachments/assets/5a4898bb-138c-47f1-b6aa-8adc413afd83)
 
-Una vez entendida la distribución de roles por grupo, nos tocó definir los roles de cada integrante dentro de la red LAN. Los host tienen un **prefijo de red**, una **IP de host**, **IP de host de destino**, dirección física o **MAC** y una carga o **Payload** que deberían enviar en binario. Además, para los paquetes se estableció un TTL (Time to Live) de 6. Este valor se decrementa cada vez que el paquete realiza un salto entre dispositivos, si el parámetro llega a _0_ el paquete se _descarta_. Con estos datos se completaron la **NIC** de cada integrante. A continuación se presenta una tabla con los datos y roles asignados a cada uno.
+Una vez entendida la distribución de roles por grupo, nos tocó definir los roles de cada integrante dentro de la red LAN. Los hosts tienen un **prefijo de red**, una **IP de host**, **IP de host de destino**, dirección física o **MAC** y una carga o **Payload** que deberían enviar en binario. Además, para los paquetes se estableció un TTL (Time to Live) de 6. Este valor se decrementa cada vez que el paquete realiza un salto entre dispositivos. Si el parámetro de TTL llega a _0_, el paquete se _descarta_. Con estos datos se completaron las **NIC** de cada integrante. A continuación se presenta una tabla con los datos y roles asignados a cada uno.
 
 > [!NOTE]
 > TODO: MAC del Gateway Predeterminado
 
-| Nombre   | Tipo de Dispositivo    | Prefijo de red   | IP            | IP destino     | MAC        | Payload             | TTL   |
-| -------- | ---------------------- | ---------------- | ------------- | -------------- | ---------- | ------------------- | ----- |
-| Julian   | Gateway Predeterminado | `10.14`          | `10.14.0.1`   | `<ip_paquete>` |            | `<payload_paquete>` | `N/A` |
-| Nicolas  | Host                   | `10.14`          | `10.14.0.104` | `10.13.0.101`  | `AD:44:54` | `355b`              | `6`   |
-| Franco   | Host                   | `10.14`          | `10.14.0.103` | `10.3.0.102`   | `AC:42:76` | `436e`              | `6`   |
-| Federico | Host                   | `10.14`          | `10.14.0.102` | `10.7.0.102`   | `AC:40:87` | `91C2`              | `6`   |
+| Nombre   | Tipo de Dispositivo    | Prefijo de red   | IP            | IP destino    | MAC        | Payload    | TTL   |
+| -------- | ---------------------- | ---------------- | ------------- | ------------- | ---------- | ---------- | ----- |
+| Julian   | Gateway Predeterminado | `10.14.0.0/24`   | `10.14.0.1`   | `variable`    |            | `variable` | `N/A` |
+| Nicolas  | Host                   | `10.14.0.0/24`   | `10.14.0.104` | `10.13.0.101` | `AD:44:54` | `355b`     | `6`   |
+| Franco   | Host                   | `10.14.0.0/24`   | `10.14.0.103` | `10.3.0.102`  | `AC:42:76` | `436e`     | `6`   |
+| Federico | Host                   | `10.14.0.0/24`   | `10.14.0.102` | `10.7.0.102`  | `AC:40:87` | `91C2`     | `6`   |
 
 > [!NOTE]
-> La IP de destino del Gateway Predeterminado se establece como `<ip_paquete>` ya que el mismo se encarga de reenviar los paquetes de los host a su destino. Por lo tanto, el Gateway no tiene una IP de destino fija, sino que varía según el paquete que reciba.
-
-> [!NOTE]
-> El Payload del Gateway Predeterminado se establece como `<payload_paquete>` ya que el mismo no genera su propia carga, sino que reenvía la carga de los host a su destino. Por lo tanto, el Payload del Gateway también varía según el paquete que reciba.
+> En el caso del Gateway Predeterminado, la IP de destino y el payload no son fijos, ya que dependen del paquete que se esté reenviando.
 
 Para realizar el envío de un paquete desde un host a otro ubicado en diferentes LAN se tienen que seguir los siguientes pasos:
 
@@ -80,11 +77,13 @@ Para realizar el envío de un paquete desde un host a otro ubicado en diferentes
 - El router intermedio forma una tabla con información de cada router intermedio y las redes que están a su alcance, para saber a quién reenviar ese paquete.
 - Por otro lado, el proceso de preguntar la dirección MAC al próximo dispositivo y completar esta información en el paquete sigue hasta que el mismo llegue a destino.
 
-El proceso en el cual un dispositivo consulta a otro su dirección MAC se llama **Protocolo de Resolución de direcciones (ARP)**, el mismo es un protocolo de la capa de enlace de datos, que se encarga de vincular una dirección de red (IP) con una dirección física (MAC).
+El proceso en el cual un dispositivo consulta a otro su dirección MAC se llama **Protocolo de Resolución de direcciones (ARP)**. Este es un protocolo de la capa de enlace de datos, que se encarga de vincular una dirección de red (IP) con una dirección física (MAC).
 
 El mismo consiste en que el dispositivo que quiere enviar un paquete realiza una **ARP Request** por **broadcast (difusión)** a todos los dispositivos de la red local. El dispositivo cuya dirección IP coincide con la solicitada responde con su dirección MAC.
 
-La IP es **extremo a extremo (end-to-end)** y por eso no cambia nunca durante todo el viaje, En cambio, la MAC es **salto a salto (hop-by-hop)**, lo que quiere decir que va a ir cambiando a medida que el paquete se traslada por la red, porque el router se encarga de "encaminarlo" por diferentes nodos.
+La IP es **extremo a extremo (end-to-end)** y por eso no cambia nunca durante todo el viaje. En cambio, la MAC es **salto a salto (hop-by-hop)**, lo que quiere decir que va a ir cambiando a medida que el paquete se traslada por la red, porque el router se encarga de "encaminarlo" por diferentes nodos.
+
+A continuación se presenta un diagrama de secuencia que ilustra el proceso de envío de un paquete desde un host a otro ubicado en diferentes LAN, pasando por un Gateway predeterminado y un Router intermedio:
 
 ```mermaid
 sequenceDiagram
@@ -114,7 +113,7 @@ sequenceDiagram
 ```
 
 > [!NOTE]
-> A nuestro grupo no nos llegó ningún paquete en esta actividad
+> A nuestro grupo no le llegó ningún paquete en esta actividad
 
 Cuando un host quiere enviar un paquete a un dispositivo en otra red, no intenta descubrir directamente la MAC del host destino, sino la del gateway predeterminado, ya que un host solo tiene visibilidad directa de los dispositivos en su propia red local (LAN). Esto es importante por las siguientes razones:
 
@@ -122,17 +121,17 @@ Cuando un host quiere enviar un paquete a un dispositivo en otra red, no intenta
 - Desconocimiento de la topología externa.
 - Diferencia entre direccionamiento físico y lógico.
 
-El gateway actúa como un intermediario. El host solo necesita saber si la IP de destino no está en su red, se la entrega al Gateway. Sin el gateway, cada host del mundo tendría que mantener una tabla de rutas de toda la Internet para saber exactamente a qué siguiente nodo físico enviarle el paquete.
+El gateway actúa como un intermediario. El host solo necesita saber si la IP de destino no está en su red, en ese caso se la entrega al Gateway predeterminado. Sin el gateway, cada host del mundo tendría que mantener una tabla de rutas de toda la Internet para saber exactamente a qué siguiente nodo físico enviarle el paquete.
 
 El modelo de ruteo hop-by-hop (salto a salto) es el pilar que permite la escalabilidad de redes globales como Internet. En este esquema, cada router toma decisiones de envío de manera local, basándose exclusivamente en su propia tabla de ruteo y no en el conocimiento del camino completo hacia el destino. Esto presenta las siguientes ventajas:
 
 - **Escalabilidad y Eficiencia de Memoria**: Los dispositivos no necesitan almacenar rutas hacia cada host individual del mundo; solo requieren conocer el "siguiente salto" (next hop) para alcanzar una red de destino.
 - **Aislamiento de la Topología:** Un host emisor no necesita conocer la infraestructura interna de redes remotas. Solo debe identificar, mediante su máscara de subred, si el destino es externo para entregar el paquete a su Gateway por defecto.
-- **Desacoplamiento de Capas**: Este modelo permite que el direccionamiento lógico (IP) permanezca constante de extremo a extremo, mientras que el direccionamiento físico (MAC) se adapta dinámicamente en cada enlace mediante el proceso de re-encapsulación.
+- **Desacoplamiento de Capas**: Este modelo permite que el direccionamiento lógico (IP) permanezca constante de extremo a extremo, mientras que el direccionamiento físico (MAC) se adapta dinámicamente en cada enlace mediante el proceso de re-encapsulamiento.
 
-Es necesario reconstruir el frame Ethernet en cada salto ya que los frames son propios de cada enlace, es decir, un router debe tomar el frame recibido y adaptarlo para el siguiente tramo de la red. Esto es así, debido a que las direcciones MAC cambian en cada salto, hacia el dispositivo que va dirigido.
-Si el router intenta reenviar el mismo frame, éste tendrá direcciones MAC erróneas/incorrectas que no coinciden con ningún nodo. El siguiente salto descartaría el frame y el dato nunca llegará a destino.
-Si bien el paquete no sufriría cambios, al no contar con un frame adecuado, quedará sin ser entregado.
+Es necesario reconstruir el frame Ethernet en cada salto ya que los frames son propios de cada enlace, es decir, un router debe tomar el frame recibido y adaptarlo para el siguiente tramo de la red. Esto es así, debido a que las direcciones MAC cambian en cada salto, hacia el dispositivo al que va dirigido.
+Si el router intenta reenviar el mismo frame, éste tendrá direcciones MAC erróneas/incorrectas que no coinciden con ningún nodo. En ese caso, el siguiente salto descartaría el frame y el dato nunca llegaría a destino.
+Si bien el paquete no sufriría cambios, al no contar con un frame adecuado, este quedaría sin ser entregado.
 
 El campo TTL (Time to Live) funciona como un mecanismo de seguridad vital que previene la persistencia indefinida de paquetes en la red, evitando principalmente los bucles de ruteo (routing loops). Si por un error en las tablas de ruteo dos routers se reenviaran un paquete entre sí de forma cíclica, el TTL garantiza que el paquete sea descartado una vez que el contador llegue a cero, liberando así los recursos de la red.
 
@@ -142,7 +141,7 @@ Sin la existencia del TTL, un paquete atrapado en un bucle circularía infinitam
 
 En la segunda parte del laboratorio, se trabajó sobre la integridad de los datos. La red puede sufrir de ruido e interferencia, los cuales pueden provocar un error en los datos que se envían. Para esto, se aplican técnicas de **EDAC (Error Detection and Correction)**, las cuales son un conjunto de algoritmos aplicados en la transmisión de datos para garantizar que la información recibida sea idéntica a la enviada. Dentro de las técnicas de EDAC consultadas, se encuentran: **Checksum, CRC y Paridad**.
 
-Dentro de CRC (Código de Redundancia Cíclica), se nos presentó la técnica del **XOR**, la cual consiste en tomar los dos nibbles más significativos, realizar la operación XOR bit a bit y, con el resultado, repetir la operación con el siguiente nibble hasta procesar todos los datos de nuestra carga. Por último, se dispone de un nibble para establecer el código de EDAC obtenido.
+En el caso de CRC (Código de Redundancia Cíclica), se nos presentó la técnica del **XOR**, la cual consiste en tomar los dos nibbles más significativos, realizar la operación XOR bit a bit y, con el resultado, repetir la operación con el siguiente nibble hasta procesar todos los datos de nuestra carga. Por último, se dispone de un nibble para establecer el código de EDAC obtenido.
 
 En el caso de la técnica de **Paridad**, se cuentan todos los **1** presentes en nuestra carga. Si hay una cantidad _par_ de unos, se agrega un _0_ al final; de lo contrario, se agrega un _1_.
 
