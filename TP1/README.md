@@ -67,13 +67,13 @@ Para realizar el envío de un paquete desde un host a otro ubicado en diferentes
 
 - El host debe consultar al Gateway Predeterminado su dirección MAC. Una vez entregada, el host agrega esta dirección a la cabecera del paquete a enviar.
 - El Gateway predeterminado debe armar una tabla en la cual registra las direcciones IP de la red local junto con su dirección MAC.
-- Una vez que el gateway recibió el paquete, le consulta al router intermedio su dirección MAC. Una vez conocida, en el paquete original, elimina la dirección MAC del primer host, como dirección MAC de origen coloca la propia (Gateway) y como dirección de origen coloca la del router intermedio. En todo este proceso, el gateway nunca modifica las direcciones IP de origen o destino.
+- Una vez que el Gateway predeterminado recibió el paquete, le consulta al router intermedio su dirección MAC. Una vez conocida, modifica el paquete original: elimina la dirección MAC del primer host, coloca su propia dirección MAC como origen y la del router intermedio como destino. En todo este proceso, el gateway nunca modifica las direcciones IP de origen o destino.
 - El router intermedio forma una tabla con información de cada router intermedio y las redes que están a su alcance, para saber a quién reenviar ese paquete.
 - Por otro lado, el proceso de preguntar la dirección MAC al próximo dispositivo y completar esta información en el paquete sigue hasta que el mismo llegue a destino.
 
 El proceso en el cual un dispositivo consulta a otro su dirección MAC se llama **Protocolo de Resolución de direcciones (ARP)**, el mismo es un protocolo de la capa de enlace de datos, que se encarga de vincular una dirección de red (IP) con una dirección física (MAC).
 
-El mismo consta de una consulta realizada por el dispositivo que intenta enviar el paquete a todos los dispositivos que tiene acceso, realizando una **ARP Request** por **broadcast (difusión)** a todos los dispositivos de la Red. Al dispositivo que le corresponda la dirección IP o tenga acceso a esa red, contestará con su dirección MAC.
+El mismo consiste en que el dispositivo que quiere enviar un paquete realiza una **ARP Request** por **broadcast (difusión)** a todos los dispositivos de la red local. El dispositivo cuya dirección IP coincide con la solicitada responde con su dirección MAC.
 
 La IP es **extremo a extremo (end-to-end)** y por eso no cambia nunca durante todo el viaje, en cambio la MAC es **salto a salto (hop-by-hop)**, lo que quiere decir que va a ir cambiando a medida que el paquete se traslada por la red, porque el router se encarga de "encaminarlo" por diferentes nodos.
 
