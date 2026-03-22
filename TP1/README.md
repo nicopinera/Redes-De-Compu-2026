@@ -92,7 +92,7 @@ sequenceDiagram
     participant R as Router Intermedio
     participant D as Host Destino
 
-    Note over H: Origen conoce IP destino,<br/>pero no su MAC
+    Note over H: Destino no está en la red local.<br/>Origen necesita enviar al Gateway<br/>pero no conoce su MAC
 
     H->>GW: ARP Request (broadcast)<br/>¿Cuál es tu MAC?
     GW-->>H: ARP Reply<br/>Mi MAC es XX:XX:XX
