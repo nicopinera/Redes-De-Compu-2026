@@ -44,6 +44,8 @@
 
 ## Resultado
 
+Switch: TP-Link generico de 8 interfaces
+
 ---
 
 ## Conclusiones
