@@ -48,7 +48,7 @@ En esta seccion del trabajo practico se investigo el proceso de armado de un cab
 
 1. **Pelar el cable** quitando de funda una longitud equivalente a una ficha y media.
 2. **Desenredar y estirar** los cables trenzados y dejarlos lo mas recto posible. Si las puntas son irregulares, emparejar cortando para dejar las puntas lo mas rectas posibles
-3. **Ordenar los cables segun la norma** para esto, se utilizo la imagen que se muestra al finalizar los pasos.
+3. **Ordenar los cables segun la norma** para esto, se utilizo la imagen que se muestra al finalizar los pasos. Se utilizo **T568B**
 4. **Insertar el conector**, viendo que los cables se mantengan en orden.
 5. **Crimpar** con la herramienta suministrada por el docente.
 
@@ -65,11 +65,18 @@ La norma T568 es el estándar internacional que regula el diseño e instalación
 
 La única diferencia física es que se intercambian las posiciones de los pares Naranja y Verde. El rendimiento de transmisión es idéntico en ambas
 
-Nuestro grupo construyo un total de 3 cables de diferentes largos. Una vez que los verificamos visualmente y con el tester de cable ethernet, intercambiamos cables con el grupo **Nombre de grupo**, realizamos una inspeccion visual y lo testeamos con el tester. A continuacion se muestra el cable recibido por el grupo:
+La forma en que se combinan estas normas en cada extremo determina su funcion:
+
+- **Cable derecho**: se contruye utilizando la misma norma en ambos extremos (A-A o B-B). Su funcion es conectar dispositivos diferentes como un Switch a una PC o desde un Router a un Switch.
+- **Cable cruzado**: Se construye utilizando normas distintas en cada extremo (una punta T568A y la otra T568B). Esto cruza físicamente los pines de transmisión (Tx) con los de recepción (Rx). Se utiliza para conectar dispositivos identicos. Por ejemplo PC a PC
+
+En la actualidad, la mayoría de los equipos modernos cuentan con una función llamada **Auto MDI-X**. Esta tecnología detecta automáticamente el tipo de cable y cruza las señales electrónicamente si es necesario, lo que ha hecho que el uso de cables derechos sea suficiente para casi cualquier conexión.
+
+Nuestro grupo construyo un total de 3 cables de diferentes largos. Una vez que los verificamos visualmente y con el tester de cable ethernet, intercambiamos cables con el grupo **subnet surfers**, realizamos una inspeccion visual y lo testeamos con el tester. A continuacion se muestra el cable recibido del grupo:
 
 ## Resultado Parte 2 - Equipamiento fiscio, verificacion y utilizacion de equipos de red y analisis de trafico
 
-Switch: TP-Link TL-SF1008d de 8 puertos
+Para esta seccion utilizamos un Switch **TP-Link TL-SF1008d de 8 puertos**, el cual posee las siguientes caracteristicas
 
 ![Switch](https://github.com/user-attachments/assets/4abb5ff0-cbc4-4a5e-b1f6-86bd35ddcb2d)
 
