@@ -58,6 +58,13 @@ En esta seccion del trabajo practico se investigo el proceso de armado de un cab
 
 ![Testeo cable](https://github.com/user-attachments/assets/d2bd41ee-87fe-411c-9ba9-fe4f29435f75)
 
+La norma T568 es el estándar internacional que regula el diseño e instalación de sistemas de cableado de telecomunicaciones en edificios comerciales. Su objetivo es asegurar la interoperabilidad entre diferentes fabricantes y equipos. Dentro de esta norma, existen dos esquemas de terminación para conectores RJ45 que definen el orden de los 8 hilos de cobre: T568A y T568B.
+
+- **T568A**: Se utiliza frecuentemente en instalaciones gubernamentales y residenciales antiguas.
+- **T568B**: Es el estándar más utilizado en redes comerciales y empresariales modernas, ya que coincide con la mayoría de los equipos de red de los fabricantes.
+
+La única diferencia física es que se intercambian las posiciones de los pares Naranja y Verde. El rendimiento de transmisión es idéntico en ambas
+
 Nuestro grupo construyo un total de 3 cables de diferentes largos. Una vez que los verificamos visualmente y con el tester de cable ethernet, intercambiamos cables con el grupo **Nombre de grupo**, realizamos una inspeccion visual y lo testeamos con el tester. A continuacion se muestra el cable recibido por el grupo:
 
 ## Resultado Parte 2 - Equipamiento fiscio, verificacion y utilizacion de equipos de red y analisis de trafico
