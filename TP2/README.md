@@ -76,10 +76,26 @@ Nuestro grupo construyo un total de 3 cables de diferentes largos. Una vez que l
 
 ## Resultado Parte 2 - Equipamiento fiscio, verificacion y utilizacion de equipos de red y analisis de trafico
 
-Para esta seccion utilizamos un Switch **TP-Link TL-SF1008d de 8 puertos**, el cual posee las siguientes caracteristicas
+Para esta seccion utilizamos un Switch **TP-Link TL-SF1008d de 8 puertos**, el cual posee las siguientes caracteristicas:
+
+- Interface: 8 Puertos 10/100Mbps, negociación automática, Auto-MDI/MDIX
+- Tasas de transferencia de datos: 10/100Mbps en Half Duplex, 20/200Mbps en Full Duplex
+- Estándares y Protocolos: IEEE 802.3, IEEE 802.3u, IEEE 802.3x, CSMA/CD
+- La tecnología Green Ethernet ahora energía hasta del 60%
+- El control de flujo de IEEE 802.3x proporciona una transferencia de datos confiable
+- Plug and play (conecte y use), no se requiere configuración
 
 ![Switch](https://github.com/user-attachments/assets/4abb5ff0-cbc4-4a5e-b1f6-86bd35ddcb2d)
+
+> [!NOTE]
+> Como para varios grupos fue complicado entrar a la configuracion del switch, se utilizo este Plug and Play. Las configuraciones que se detallan a continuacion fueron las necesarias para poder realizar ping entre 2 computadoras conectadas
 
 ---
 
 ## Conclusiones
+
+---
+
+## Referencias
+
+- [Switch](https://www.tp-link.com/ar/home-networking/soho-switch/tl-sf1008d/#overview)
