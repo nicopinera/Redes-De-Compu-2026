@@ -52,11 +52,15 @@ En esta sección del trabajo práctico se investigó el proceso de armado de un 
 4. **Insertar el conector**, verificando que los cables se mantengan en orden.
 5. **Crimpar** con la herramienta suministrada por el docente.
 
+<div align="center">
+
 ![Orden de los cables](https://github.com/user-attachments/assets/e7a0d162-1815-443a-9ab5-19ee07664235)
 
-**Imagen cable grupo**:
+![Cables propios](https://github.com/user-attachments/assets/47cb674e-e213-423a-a1a3-8cef2ff385e3)
 
 ![Testeo cable](https://github.com/user-attachments/assets/d2bd41ee-87fe-411c-9ba9-fe4f29435f75)
+
+</div>
 
 La norma T568 es el estándar internacional que regula el diseño e instalación de sistemas de cableado de telecomunicaciones en edificios comerciales. Su objetivo es asegurar la interoperabilidad entre diferentes fabricantes y equipos. Dentro de esta norma, existen dos esquemas de terminación para conectores RJ45 que definen el orden de los 8 hilos de cobre: T568A y T568B.
 
@@ -74,6 +78,12 @@ En la actualidad, la mayoría de los equipos modernos cuentan con una función l
 
 Nuestro grupo construyó un total de 3 cables de diferentes largos. Una vez que los verificamos visualmente y con el tester de cable Ethernet, intercambiamos cables con el grupo **Subnet Surfers**, realizamos una inspección visual y lo probamos con el tester. A continuación, se muestra el cable recibido del grupo:
 
+<div align="center">
+
+![Cable grupo Subnet Surfers](https://github.com/user-attachments/assets/bde0a404-8e6f-4dec-b829-f89dba961172)
+
+</div>
+
 ## Resultado Parte 2 - Equipamiento físico, verificación y utilización de equipos de red y análisis de tráfico
 
 Para esta sección utilizamos un Switch **TP-Link TL-SF1008D de 8 puertos**, el cual posee las siguientes características:
@@ -85,10 +95,27 @@ Para esta sección utilizamos un Switch **TP-Link TL-SF1008D de 8 puertos**, el 
 - **Control de flujo IEEE 802.3x**: proporciona una transferencia de datos confiable.
 - **Plug and Play** (conectar y usar): no se requiere configuración.
 
+<div align="center">
+
 ![Switch](https://github.com/user-attachments/assets/4abb5ff0-cbc4-4a5e-b1f6-86bd35ddcb2d)
+
+</div>
 
 > [!NOTE]
 > Como para varios grupos fue complicado acceder a la configuración del switch, se utilizó este modelo Plug and Play. Las configuraciones que se detallan a continuación fueron las necesarias para poder realizar un ping entre dos computadoras conectadas.
+
+Para poder realizar ping entre dos computadoras conectadas a diferentes interfaces del switch, debemos asignarnos una ip manualmente ya que no tenemos un servidor de DHCP que nos asigne una, para ello, tuvimos que realizar lo siguiente:
+
+1. Utilizar el comando `ip addr` (linux) o `ipconfig` (windows) para verificar las interfaces de red disponibles en cada computadora
+2. Identificar la interfaz de red etherner, por lo general empieza con la letra `e`.
+3. En linux (ubuntu) dirigirse a la parte superior derecha, donde se encuentra el icono de wifi o red cableada, en el apartado de red dirigirse a **configuracion de red cableada**. En windows, ir a la parte inferior, al icono de wifi o conexion por cable, click derecho **Configuracion de red e internet**.
+4. Para linux, vamos a la red cableada, hacemos click en el engranaje de opciones, vamos a la seccion de **IPv4**, deshabilitamos la opcion **Automatico (DHCP)** y seleccionamos la opcion **Manual**. En windows, una vez en la seccion de configuracion de red, vamos a **Asignacion de IP**, y lo cambiamos a **Manual**
+5. Una vez colocada la configuracion de IPv4 en manual, debemos asignarnos una **IP Privada**, como por ejemplo **192.168.1.1** para la PC 1 y **192.168.1.2** para la PC 2. Con una mascara de subred **255.255.255.0**. Podemos verificar, utilizando los comandos el paso 1, que se asigno correctamente
+6. Con la IP configurada, realizar dos pruebas:
+   1. `ping <ip_propia>`
+   2. `ping <ip_compañero>`
+
+![Ping](https://github.com/user-attachments/assets/9b8d8f1b-d3d7-4d37-8918-76712719915d)
 
 ---
 
