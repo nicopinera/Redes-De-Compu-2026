@@ -104,13 +104,13 @@ Para esta sección utilizamos un Switch **TP-Link TL-SF1008D de 8 puertos**, el 
 > [!NOTE]
 > Como para varios grupos fue complicado acceder a la configuración del switch, se utilizó este modelo Plug and Play. Las configuraciones que se detallan a continuación fueron las necesarias para poder realizar un ping entre dos computadoras conectadas.
 
-Para poder realizar ping entre dos computadoras conectadas a diferentes interfaces del switch, debemos asignarnos una ip manualmente ya que no tenemos un servidor de DHCP que nos asigne una, para ello, tuvimos que realizar lo siguiente:
+Para poder realizar un ping entre dos computadoras conectadas a diferentes interfaces del switch, debemos asignar una IP manualmente ya que no tenemos un servidor de DHCP que nos asigne una. Para ello, realizamos los siguientes pasos:
 
-1. Utilizar el comando `ip addr` (linux) o `ipconfig` (windows) para verificar las interfaces de red disponibles en cada computadora
-2. Identificar la interfaz de red etherner, por lo general empieza con la letra `e`.
-3. En linux (ubuntu) dirigirse a la parte superior derecha, donde se encuentra el icono de wifi o red cableada, en el apartado de red dirigirse a **configuracion de red cableada**. En windows, ir a la parte inferior, al icono de wifi o conexion por cable, click derecho **Configuracion de red e internet**.
-4. Para linux, vamos a la red cableada, hacemos click en el engranaje de opciones, vamos a la seccion de **IPv4**, deshabilitamos la opcion **Automatico (DHCP)** y seleccionamos la opcion **Manual**. En windows, una vez en la seccion de configuracion de red, vamos a **Asignacion de IP**, y lo cambiamos a **Manual**
-5. Una vez colocada la configuracion de IPv4 en manual, debemos asignarnos una **IP Privada**, como por ejemplo **192.168.1.1** para la PC 1 y **192.168.1.2** para la PC 2. Con una mascara de subred **255.255.255.0**. Podemos verificar, utilizando los comandos el paso 1, que se asigno correctamente
+1. Utilizar el comando `ip addr` (Linux) o `ipconfig` (Windows) para verificar las interfaces de red disponibles en cada computadora.
+2. Identificar la interfaz de red Ethernet, que generalmente empieza con la letra `e`.
+3. En Linux (Ubuntu), dirigirse a la parte superior derecha, donde se encuentra el ícono de Wi-Fi o red cableada. En el apartado de red, seleccionar **Configuración de red cableada**. En Windows, ir a la parte inferior derecha, al ícono de Wi-Fi o conexión por cable, hacer clic derecho y seleccionar **Configuración de red e Internet**.
+4. Para Linux, seleccionar la red cableada, hacer clic en el engranaje de opciones, ir a la sección de **IPv4**, deshabilitar la opción **Automático (DHCP)** y seleccionar la opción **Manual**. En Windows, una vez en la sección de configuración de red, ir a **Asignación de IP** y cambiarla a **Manual**.
+5. Una vez configurada la opción de IPv4 en manual, asignar una **IP privada**, como por ejemplo **192.168.1.1** para la PC 1 y **192.168.1.2** para la PC 2, con una máscara de subred **255.255.255.0**. Verificar, utilizando los comandos del paso 1, que la configuración se haya aplicado correctamente.
 6. Con la IP configurada, realizar dos pruebas:
    1. `ping <ip_propia>`
    2. `ping <ip_compañero>`
