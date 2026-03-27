@@ -34,7 +34,9 @@
 
 ## Resumen
 
-**Palabras clave**:
+En este trabajo práctico se abordaron dos temas principales relacionados con las redes de computadoras. En la primera parte, se realizó el armado y verificación de cables Ethernet bajo el estándar T568A/B, destacando las diferencias entre cables directos y cruzados, así como la importancia de la norma T568. En la segunda parte, se trabajó con un switch TP-Link TL-SF1008D para establecer conexiones entre computadoras, configurando manualmente las direcciones IP y verificando la conectividad mediante pruebas de ping. Este trabajo permitió comprender los fundamentos del cableado estructurado y la configuración básica de redes locales.
+
+**Palabras clave**: Redes de computadoras, cableado estructurado, T568A/B, Ethernet, configuración de IP, switch, ping.
 
 ---
 
