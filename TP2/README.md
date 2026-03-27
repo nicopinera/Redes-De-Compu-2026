@@ -42,6 +42,8 @@ En este trabajo práctico se abordaron dos temas principales relacionados con la
 
 ## Introducción
 
+El presente informe tiene como objetivo documentar las actividades realizadas en el marco del Trabajo Práctico Nº 2 de la cátedra Redes de Computadoras. Este trabajo se centró en dos aspectos fundamentales de las redes locales: el armado y verificación de cables Ethernet bajo estándares internacionales, y la configuración básica de dispositivos de red para establecer comunicación entre computadoras. A través de estas actividades, se buscó reforzar los conocimientos teóricos adquiridos en clase mediante la aplicación práctica de conceptos clave como el cableado estructurado, los estándares T568A/B y la configuración de direcciones IP.
+
 ---
 
 ## Resultado Parte 1 - Armado y verificación de cables Cat5/Cat5e bajo estándar T568A/B
@@ -122,6 +124,8 @@ Para poder realizar un ping entre dos computadoras conectadas a diferentes inter
 ---
 
 ## Conclusiones
+
+En conclusión, este trabajo práctico permitió adquirir habilidades prácticas esenciales para el diseño y configuración de redes locales. A través del armado de cables Ethernet y la configuración manual de direcciones IP, se reforzaron conceptos teóricos fundamentales y se comprendió la importancia de seguir estándares internacionales para garantizar la interoperabilidad y el correcto funcionamiento de los dispositivos de red. Además, se destacó la utilidad de herramientas como los testers de cables y los switches Plug and Play para simplificar la implementación de redes pequeñas. Estas experiencias prácticas son fundamentales para el desarrollo de competencias en el ámbito de las redes de computadoras.
 
 ---
 
