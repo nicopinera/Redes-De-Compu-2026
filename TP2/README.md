@@ -34,15 +34,17 @@
 
 ## Resumen
 
-En este trabajo práctico se abordaron dos temas principales relacionados con las redes de computadoras. En la primera parte, se realizó el armado y verificación de cables Ethernet bajo el estándar T568A/B, destacando las diferencias entre cables directos y cruzados, así como la importancia de la norma T568. En la segunda parte, se trabajó con un switch TP-Link TL-SF1008D para establecer conexiones entre computadoras, configurando manualmente las direcciones IP y verificando la conectividad mediante pruebas de ping. Este trabajo permitió comprender los fundamentos del cableado estructurado y la configuración básica de redes locales.
+En este trabajo práctico se abordaron conceptos fundamentales relacionados con las redes de computadoras, mediante actividades de laboratorio. En la primera parte, se realizó el armado y verificación de cables Ethernet bajo el estándar T568A/B, destacando las diferencias entre cables directos y cruzados, así como la importancia de la norma T568. En la segunda parte, se trabajó con un switch TP-Link TL-SF1008D para establecer una red local entre computadoras, configurando manualmente las direcciones IP y verificando la conectividad mediante pruebas de ping. Como resultado, este trabajo permitió comprender los fundamentos del cableado estructurado y la configuración básica de redes locales.
 
-**Palabras clave**: Redes de computadoras, cableado estructurado, T568A/B, Ethernet, configuración de IP, switch, ping.
+**Palabras clave**: Redes de computadoras, cableado estructurado, T568A/B, Ethernet, configuración de direcciones IP, switch, ping.
 
 ---
 
 ## Introducción
 
-El presente informe tiene como objetivo documentar las actividades realizadas en el marco del Trabajo Práctico Nº 2 de la cátedra Redes de Computadoras. Este trabajo se centró en dos aspectos fundamentales de las redes locales: el armado y verificación de cables Ethernet bajo estándares internacionales, y la configuración básica de dispositivos de red para establecer comunicación entre computadoras. A través de estas actividades, se buscó reforzar los conocimientos teóricos adquiridos en clase mediante la aplicación práctica de conceptos clave como el cableado estructurado, los estándares T568A/B y la configuración de direcciones IP.
+El presente informe documenta las actividades realizadas en el marco del Trabajo Práctico Nº 2 de la cátedra Redes de Computadoras. Este trabajo se centró en dos aspectos fundamentales de las redes locales: el armado y verificación de cables Ethernet bajo estándares internacionales, y la configuración básica de dispositivos de red para establecer comunicación entre computadoras.
+
+El objetivo principal de esta práctica es aplicar los conocimientos teóricos adquiridos, principalmente en relación con el cableado estructurado, los estándares T568A/B y la configuración de direcciones IP, con el fin de comprender el funcionamiento básico de la comunicación entre dispositivos dentro de una red local.
 
 ---
 
