@@ -1,8 +1,10 @@
-# Trabajos Practicos de Redes de Computadoras 2026
+# Trabajos Prácticos de Redes de Computadoras 2026
 
-Facultad de Ciencias Exactas Fisica y Naturales
+Facultad de Ciencias Exactas Física y Naturales
 
 Integrantes:
 
-- Krede Julian
-- Piñera Nicolas
+- Krede, Julián
+- Piñera, Nicolás
+- Arnaudo, Federico
+- Perotti, Franco
