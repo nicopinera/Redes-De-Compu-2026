@@ -34,7 +34,7 @@
 
 ## Resumen
 
-**Palabras clave**: Redes de computadoras, cableado estructurado, T568A/B, Ethernet, configuración de direcciones IP, switch, ping.
+**Palabras clave**: SSH, Cifrado, autenticacion.
 
 ---
 
@@ -43,6 +43,22 @@
 ---
 
 ## Resultado
+
+### SSH
+
+**SSH** (Secure Shell) es un protocolo de red que permite acceder y administrar de forma segura sistemas remotos a través de una conexión cifrada.
+
+Antes de SSH, se usaban protocolos como **Telnet** o **FTP** que transmitían información (incluyendo contraseñas) en texto plano. Esto generaba riesgos graves de seguridad, ya que los datos podían ser interceptados fácilmente.SSH soluciona este problema mediante:
+
+- **Cifrado de la comunicación**: protege los datos durante la transmisión.
+- **Autenticación segura**: mediante contraseñas o claves criptográficas.
+- **Integridad de datos**: evita que la información sea modificada en el camino.
+
+### Autenticacion vs Cifrado
+
+En la **autenticacion** el objetivo es verificar la identidad de un usuario o de una máquina. Es el proceso de demostrar que eres realmente quien dices ser antes de que se te permita entrar a un sistema. Funciona mediante algo que _sabes_ (una contraseña), algo que _tienes_ (una llave física o token) o algo que _eres_ (huella digital o rostro).
+
+En cambio, el cifrado tiene como objetivo proteger la **confidencialidad** de los datos. Consiste en transformar un mensaje legible en un código ininteligible para que, si alguien lo intercepta en el camino, no pueda entender nada. Utiliza algoritmos matemáticos y una "llave" para desordenar la información al enviarla y reordenarla al recibirla.
 
 ---
 
