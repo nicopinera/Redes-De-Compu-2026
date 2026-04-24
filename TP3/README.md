@@ -18,7 +18,7 @@
 - Henn, Santiago Martín
 - Oliva Cúneo, Facundo
 
-**Fecha**: 12/03/2026
+**Fecha**: 24/04/2026
 
 ---
 
@@ -71,6 +71,16 @@ La **Clave Privada** es la llave que debes guardar en secreto y nunca compartir 
 La clave privada no debe compartirse porque es el elemento que garantiza la seguridad y la identidad en un sistema criptográfico. Si alguien obtiene tu clave privada, puede leer todos los datos que fueron cifrados para vos. Pueden autenticarse como si fuera vos (por ejemplo, acceder a servidores vía SSH). Pueden generar firmas digitales válidas, haciendo pasar mensajes falsos como legítimos. Compartir la clave privada equivale a entregar acceso total: se pierde la confidencialidad, la autenticidad y la integridad del sistema.
 
 Las claves SSH presentan varias ventajas frente al uso de contraseñas, principalmente en términos de seguridad y practicidad. A diferencia de las contraseñas, se basan en criptografía asimétrica, lo que las hace mucho más difíciles de vulnerar mediante ataques de fuerza bruta o adivinación. Además, la clave privada nunca se transmite por la red, reduciendo significativamente el riesgo de interceptación. También permiten una autenticación automática sin necesidad de ingresar credenciales manualmente, lo que resulta especialmente útil en procesos automatizados. En conjunto, ofrecen un mecanismo más robusto y confiable para el acceso seguro a sistemas remotos.
+
+### Acceso SSH a maquinas de laboratorio
+
+Para poder acceder a la PC3 que se nos brindo para realizar el laboratorio, tuvimos que descargar la clave privada, cambiarle los permisos y pudimos acceder
+
+![Imagen Acceso](https://github.com/user-attachments/assets/40c88eb4-5762-4fbe-b35a-67b0e9bc2866)
+
+Se crea la carpeta con el nombre de equipo
+
+![Creacion de Carpeta](https://github.com/user-attachments/assets/32b3be62-daa4-415d-9cb6-b6037ec52c09)
 
 ---
 
