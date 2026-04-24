@@ -34,7 +34,7 @@
 
 ## Resumen
 
-En este trabajo práctico se estudió el funcionamiento de SSH y su aporte a la seguridad en comunicaciones remotas. Se diferenciaron los conceptos de autenticación y cifrado, y se analizó el uso de claves públicas y privadas para el acceso seguro a equipos del laboratorio. Además, se realizaron pruebas de transferencia y captura de tráfico con herramientas como Ncat y Wireshark para comparar escenarios cifrados y no cifrados. Finalmente, se verificó cómo el uso de protocolos sin cifrado permite observar el contenido de los mensajes en tránsito.
+En este trabajo práctico se estudió el funcionamiento de SSH y su aporte a la seguridad en comunicaciones remotas. Se diferenciaron los conceptos de autenticación y cifrado, y se analizó el uso de claves públicas y privadas para el acceso seguro a equipos del laboratorio. Además, se realizaron pruebas de transferencia y captura de tráfico con herramientas como Ncat y Wireshark para comparar escenarios cifrados y no cifrados. Se verificó cómo el uso de protocolos sin cifrado permite observar el contenido de los mensajes en tránsito. Finalmente se realizo un reflexión sobre confidencialidad en redes de computadoras a partir de un video que muestra la explotación de una vulnerabilidad relacionada a este aspecto.
 
 **Palabras clave**: SSH, cifrado, autenticación, claves públicas y privadas, Wireshark, Ncat.
 
@@ -124,6 +124,33 @@ En la última actividad, se envió desde la PC local hacia la máquina virtual e
 
 ![Wireshark](https://github.com/user-attachments/assets/9f0b31fc-9a0e-4456-8056-ade06be4980d)
 
+### Relación entre el video y los trabajos practicos realizados
+
+#### Relación con el TP1:
+
+En el TP1 se analizaron los sistemas de detección de errores (EDAC) como Paridad y CRC (mediante XOR) para garantizar que la información (payload) llegue íntegra y detectar si algún bit fue modificado por ruido o interferencia. 
+
+En el video, los atacantes logran alterar bits específicos del mensaje binario (cambiando un '0' por un '1' para simular que el lector está offline, o cambiando el flag de transacción de "alto valor" a "bajo valor"). El ataque es exitoso porque, en este caso particular (Apple en modo tránsito + Visa), el sistema omite la verificación de la firma criptográfica asimétrica que funcionaría como un control de integridad avanzado (similar a lo que buscaría evitar un mecanismo EDAC robusto), permitiendo que el paquete alterado sea aceptado como válido.
+
+#### Relación con el TP2:
+El TP2 se centra en el equipamiento físico, el cableado y el establecimiento de conexiones locales mediante direcciones IP manuales. En el hackeo, el medio físico de transmisión no es un cable Ethernet, sino un campo magnético compartido (NFC).
+
+Al igual que en una red cableada se requiere conexión física, este ataque depende de interceptar el medio físico colocando un dispositivo intermediario (Proxmark) muy cerca del celular de la víctima para capturar las señales emitidas mediante el campo magnético de la capa física.
+
+#### Relación con el TP3:
+En el TP3 se utiliza Wireshark para capturar e inspeccionar tráfico de red, demostrando cómo protocolos en texto plano (como HTTP y conexiones TCP/UDP vía Netcat) permiten que cualquiera intercepte y lea el contenido, a diferencia del protocolo SSH que viaja cifrado. 
+
+Esto se aplica directamente al video: los expertos explican que la información intercambiada entre el celular y el lector viaja sin cifrar osea en texto plano por cuestiones de compatibilidad con miles de dispositivos antiguos. Esto es exactamente lo que permite a los atacantes leer la trama de datos con su script de Python (de manera análoga a usar Wireshark) y reescribir los mensajes al vuelo.
+
+### Consideraciones sobre el principio de confidencialidad y los resultados del laboratorio
+El principio de confidencialidad establece que la información solo debe ser accesible y legible para las partes autorizadas. Dado lo observado en este laboratorio y en el video, debemos tener en cuenta lo siguiente:
+
+- El peligro de las comunicaciones sin cifrar: Como se demostró al capturar tráfico HTTP con Wireshark en el TP3, cualquier dato enviado sin encriptación es vulnerable a ser interceptado y leído por un tercero en la red. En el video, la falta de cifrado en la comunicación NFC inicial entre el celular y el lector viola la confidencialidad, dándole al atacante la estructura exacta del mensaje para poder manipularlo.
+
+- El laboratorio demuestra que herramientas como SSH resuelven el problema de la confidencialidad mediante el cifrado de los paquetes. Para evitar ataques financieros o robo de datos (como el del video), las arquitecturas de red deben asegurar tanto la autenticación mutua como el cifrado fuerte (criptografía asimétrica) en cada tramo de la comunicación, asegurando que un nodo intermediario ("Hombre en el medio") no pueda descifrar ni alterar el contenido de los paquetes impunemente.
+
+- El tradeoff entre conveniencia y seguridad: Apple introdujo el modo tránsito para que la gente no tenga que desbloquear su teléfono al pagar el metro. Al omitir el desbloqueo (autenticación del usuario) y las comprobaciones de firma en terminales offline por motivos de velocidad de procesamiento, se creó una vulnerabilidad crítica. En el diseño de redes, flexibilizar las capas de seguridad para ganar comodidad suele abrir puertas a vectores de ataque graves.
+
 ---
 
 ## Conclusiones
@@ -137,3 +164,11 @@ Asimismo, se reforzó el rol de la autenticación por claves pública y privada 
 ---
 
 ## Referencias
+
+- [Wikipedia: SSH](https://es.wikipedia.org/wiki/Secure_Shell)
+
+[Wikipedia: Criptografía asimétrica](https://es.wikipedia.org/wiki/Criptograf%C3%ADa_asim%C3%A9trica)
+
+- [Pagina de referencia NCat](https://nmap.org/ncat/)
+
+- [Verasitum: Explotación de vulnerabilidad](https://www.youtube.com/watch?v=PPJ6NJkmDAo)
