@@ -1,2 +1,6 @@
 *.pem
 pc4_key
+*.log
+*.gz
+*.toc
+*.aux
