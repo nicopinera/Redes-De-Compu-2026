@@ -126,23 +126,26 @@ En la última actividad, se envió desde la PC local hacia la máquina virtual e
 
 ### Relación entre el video y los trabajos practicos realizados
 
-#### Relación con el TP1:
+#### Relación con el TP1
 
-En el TP1 se analizaron los sistemas de detección de errores (EDAC) como Paridad y CRC (mediante XOR) para garantizar que la información (payload) llegue íntegra y detectar si algún bit fue modificado por ruido o interferencia. 
+En el TP1 se analizaron los sistemas de detección de errores (EDAC) como Paridad y CRC (mediante XOR) para garantizar que la información (payload) llegue íntegra y detectar si algún bit fue modificado por ruido o interferencia.
 
 En el video, los atacantes logran alterar bits específicos del mensaje binario (cambiando un '0' por un '1' para simular que el lector está offline, o cambiando el flag de transacción de "alto valor" a "bajo valor"). El ataque es exitoso porque, en este caso particular (Apple en modo tránsito + Visa), el sistema omite la verificación de la firma criptográfica asimétrica que funcionaría como un control de integridad avanzado (similar a lo que buscaría evitar un mecanismo EDAC robusto), permitiendo que el paquete alterado sea aceptado como válido.
 
-#### Relación con el TP2:
+#### Relación con el TP2
+
 El TP2 se centra en el equipamiento físico, el cableado y el establecimiento de conexiones locales mediante direcciones IP manuales. En el hackeo, el medio físico de transmisión no es un cable Ethernet, sino un campo magnético compartido (NFC).
 
 Al igual que en una red cableada se requiere conexión física, este ataque depende de interceptar el medio físico colocando un dispositivo intermediario (Proxmark) muy cerca del celular de la víctima para capturar las señales emitidas mediante el campo magnético de la capa física.
 
-#### Relación con el TP3:
-En el TP3 se utiliza Wireshark para capturar e inspeccionar tráfico de red, demostrando cómo protocolos en texto plano (como HTTP y conexiones TCP/UDP vía Netcat) permiten que cualquiera intercepte y lea el contenido, a diferencia del protocolo SSH que viaja cifrado. 
+#### Relación con el TP3
+
+En el TP3 se utiliza Wireshark para capturar e inspeccionar tráfico de red, demostrando cómo protocolos en texto plano (como HTTP y conexiones TCP/UDP vía Netcat) permiten que cualquiera intercepte y lea el contenido, a diferencia del protocolo SSH que viaja cifrado.
 
 Esto se aplica directamente al video: los expertos explican que la información intercambiada entre el celular y el lector viaja sin cifrar osea en texto plano por cuestiones de compatibilidad con miles de dispositivos antiguos. Esto es exactamente lo que permite a los atacantes leer la trama de datos con su script de Python (de manera análoga a usar Wireshark) y reescribir los mensajes al vuelo.
 
 ### Consideraciones sobre el principio de confidencialidad y los resultados del laboratorio
+
 El principio de confidencialidad establece que la información solo debe ser accesible y legible para las partes autorizadas. Dado lo observado en este laboratorio y en el video, debemos tener en cuenta lo siguiente:
 
 - El peligro de las comunicaciones sin cifrar: Como se demostró al capturar tráfico HTTP con Wireshark en el TP3, cualquier dato enviado sin encriptación es vulnerable a ser interceptado y leído por un tercero en la red. En el video, la falta de cifrado en la comunicación NFC inicial entre el celular y el lector viola la confidencialidad, dándole al atacante la estructura exacta del mensaje para poder manipularlo.
