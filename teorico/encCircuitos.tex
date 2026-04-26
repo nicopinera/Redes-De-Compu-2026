@@ -1,1 +1,21 @@
-Encaminamiento en redes de conmutacion de circuitos
+En una red grande de conmutación de circuitos, muchas de las conexiones de circuitos necesitan una ruta que atraviese mas de un conmutador.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/Circutios.pdf}
+	\caption{Red de conmutación de circuito}
+	\label{fig:grafico1}
+\end{figure}
+
+Existen \textbf{dos} requisitos fundamentales para la arquitectura de red que tienen efecto sobre la estrategia de encaminamiento. En primer lugar, esta la \textbf{eficiencia}, es deseable \textbf{minimizar la cantidad de equipos} (conmutadores y enlaces) en la red, teniendo en cuenta que debemos ser capaces de gestionar toda la carga esperada. Las necesidades de carga se expresan usualmente en términos de \textbf{trafico} lo cual se refiere a la carga promedio esperada durante los periodos de más actividad a lo largo del día. Es necesario ser capaz de gestionar esta cantidad de tráfico, gestionar esta carga con el menor equipamiento posible. Otro requisito es la \textbf{flexibilidad}, es deseable que la red proporcione un nivel razonable de servicio incluso bajo diversas circunstancias adversas.
+
+El aspecto clave de diseño que determina la naturaleza del compromiso entre eficiencia y flexibilidad es la \textbf{estrategia de encaminamiento}. La función de encaminamiento en redes de telecomunicaciones ha sido simple. Los conmutadores de una red se organizaban en una estructura en árbol o jerarquía, estableciéndose una ruta, comenzando en el emisor, hasta el primer nodo común, y después hasta el receptor. Para proporcionar cierta flexibilidad se incluían en el árbol enlaces de alta capacidad adicionales para conectar entre sí. La incorporación de enlaces de alta capacidad proporciona redundancia y capacidad extra, pero persisten las limitaciones de eficiencia y flexibilidad. Dado que este esquema no es capaz de adaptarse a condiciones cambiantes, la red debe diseñarse para dar servicio en condiciones de alta carga. En términos de flexibilidad, la estructura jerárquica fija con enlaces adicionales puede responder pobremente ante fallos.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/arbol.jpg}
+	\caption{Topologia de árbol o jerárquica}
+	\label{fig:grafico2}
+\end{figure}
+
+En un \textbf{esquema de encaminamiento dinámico} las decisiones de encaminamiento están influenciadas por las condiciones de tráfico actuales. Los nodos de conmutación de circuitos mantienen una relación de igual a igual entre sí, en lugar de una jerárquica como la presente en el esquema estático. \textbf{Todos los nodos están capacitados para realizar las mismas funciones}. Esta arquitectura de encaminamiento es más compleja y a la vez más flexible. Porque la arquitectura no proporciona una ruta o conjunto de rutas «natural» basándose en la estructura jerárquica, pero al mismo tiempo es más flexible debido a que hay más rutas alternativas.
