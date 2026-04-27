@@ -1,1 +1,32 @@
-Encaminamiento en redes de conmutación de paquetes
+El \textbf{encaminamiento en redes de conmutación de paquetes} es la función encargada de encontrar una ruta a través de la red entre pares de nodos finales para que la comunicación sea eficiente. A diferencia de la conmutación de circuitos, los datos se dividen en pequeñas unidades llamadas \textbf{paquetes}
+
+Se denominan \textbf{paquetes} porque la información no fluye como un torrente continuo, sino que \textbf{se segmenta en bloques de longitud limitada} que contienen tanto datos de usuario como información de control (cabecera). El hecho de que sean paquetes implica una \textbf{arquitectura de almacenamiento y retransmisión (store-and-forward)}: cada paquete se recibe completamente en un nodo, se almacena brevemente y luego se transmite al siguiente.
+
+\subsection{Requisitos de función de encaminamiento}
+
+La función principal de una red de conmutación de paquetes es \textbf{aceptar paquetes procedentes de una estación emisora y enviarlos hacia una estación destino}. Para ello se debe determinar una ruta a través de la red, siendo posible la existencia de más de una. Se debe realizar una \textbf{función de encaminamiento}. Para ser efectivo, debe cumplir con varios criterios: \textbf{exactitud, simplicidad, robustez, estabilidad, imparcialidad, optimización y eficiencia}.
+
+La \textbf{robustez} está relacionada con la habilidad de la red para enviar paquetes de alguna forma ante la aparición de sobre cargas y fallos localizados. La red puede reaccionar sin sufrir pérdidas de paquetes o caída de circuitos virtuales. La robustez puede implicar cierta inestabilidad. Las técnicas que reaccionan ante condiciones cambiantes presentan una tendencia no deseable a reaccionar lentamente ante determinados eventos o experimentar oscilaciones inestables de una situación extrema a otra. Es vital que el sistema reaccione ante fallos o congestión (robustez), pero sin generar oscilaciones inestables donde el tráfico rebote entre nodos (estabilidad).
+
+Una técnica de encaminamiento implica cierto coste de procesamiento en cada nodo y, en ocasiones, también un coste en la transmisión, impidiéndose en ambos casos el funcionamiento eficiente de la red. 
+
+\subsection{Elementos de diseño}
+
+Con estos requisitos en mente vamos a evaluar los distintos elementos de diseño involucrados en un esquema de encaminamiento.
+
+\subsubsection{Criterios de rendimiento}
+
+La elección de una ruta se fundamenta generalmente en algún criterio de rendimiento. El más simple consiste en elegir el camino con menor número de saltos (aquel que atraviesa el menor número de nodos) a través de la red. Una generalización del criterio de menor número de saltos lo constituye el encaminamiento de mínimo coste. En este caso se asocia un coste a cada enlace y, para cualesquiera dos estaciones conectadas, se elige aquella ruta a través de la red que implique el coste total mínimo. La asignación de los costes a los enlaces se hace en función de los objetivos de diseño; por ejemplo, el coste podría estar inversamente relacionado con la velocidad (es decir, a mayor velocidad menor coste) o con el retardo actual de la cola asociada al enlace.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/conPaqueteEj1.png}
+	\caption{Ejemplo de red de conmutación de paquetes}
+	\label{fig:grafico3}
+\end{figure}
+
+\subsubsection{Instante y lugar de decisión}
+
+\subsubsection{Fuente de información de la red y tiempo de actualización}
+
+\subsection{Estrategias de encaminamiento}
