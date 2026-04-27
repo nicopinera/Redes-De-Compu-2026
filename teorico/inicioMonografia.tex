@@ -1,11 +1,10 @@
-\documentclass[12pts]{article}
+\documentclass[12pts]{report}
 
 %--- Preambulo ---
 \usepackage[utf8]{inputenc} % para tildes y ñ
 \usepackage[spanish]{babel} % idioma español
-\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry} % margenes
+\usepackage[left=1.5cm,right=1.5cm,top=2cm,bottom=2cm]{geometry} % margenes
 \usepackage{graphicx}
-\usepackage{tabularx}
 \usepackage{float}
 
 % Portada
@@ -21,18 +20,31 @@
 	\tableofcontents
 	\newpage
 	
-	\section{Introducción}
-	\input{introduccion}
-	\newpage
-	
-	\section{Encaminamiento en redes de conmutación de circuitos}
-	\input{encCircuitos}
-	\newpage
-	
-	\section{Encaminamiento en redes de conmutación de paquetes}
-	\input{encPaquetes}
-	\newpage
-	
-	\section{Algoritmos de mínimo coste}
-	\input{algoritmosMinimoCoste}
+	\chapter{Fundamentos del Encaminamiento}	
+		\section{Introducción}
+		\input{introduccion}
+		\newpage
+		
+		\section{Encaminamiento en redes de conmutación de circuitos}
+		\input{encCircuitos}
+		\newpage
+		
+		\section{Encaminamiento en redes de conmutación de paquetes}
+		\input{encPaquetes}
+		\newpage
+		
+		\section{Algoritmos de mínimo coste}
+		\input{algoritmosMinimoCoste}
+		\newpage
+		
+	\chapter{Enrutamiento entre Sistemas Autónomos - BGP}
+		\section{Arquitectura de Enrutamiento en Internet}
+		\section{El Concepto de Sistema Autónomo (AS)}
+		\section{Protocolo de Pasarela Fronteriza (BGP)}
+		\section{Extensiones y Aspectos Económicos}
+	\chapter{Enrutamiento dentro de un Sistema Autónomo - IGPs}
+		\section{Rutas Interiores}
+		\section{Protocolo de Información de Enrutamiento (RIP)}
+		\section{Protocolo del Primer Camino más Corto (OSPF)}
+		\section{Otros Protocolos y Consideraciones}
 \end{document}
