@@ -4,4 +4,17 @@ pc4_key
 *.gz
 *.toc
 *.aux
-inicioMonografia.pdf
+
+# Archivos de salida y binarios de latex
+*.pdf
+*.aux 
+*.log 
+*.synctex.gz 
+*.out 
+*.toc 
+*.lof 
+*.lot 
+*.blg 
+*.bbl 
+*.fls 
+*.fdb_latexmk 
