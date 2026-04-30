@@ -1,5 +1,9 @@
 Un aspecto clave de diseño de las redes conmutadas es el relativo al encaminamiento. Esta función trata de encontrar rutas a través de la red entre pares de nodos finales comunicantes, de modo que la red se use de forma eficiente. Antes de comenzar con la monografia, revisemos los siguientes conceptos: Conmutación, Redes conmutadas y Encaminamiento.
 
+\subsection{Datagrama}
+
+Un datagrama es un tipo específico de paquete de datos que se trata de forma independiente dentro de una red de conmutación de paquetes, sin que exista una conexión previa establecida entre emisor y receptor. Cada datagrama lleva información de control suficiente en su cabecera para que la red pueda encaminarlo desde el origen hasta el destino por sí solo. Este término se asocia generalmente con servicios no orientados a conexión y de "mejor esfuerzo" (best-effort), como es el caso del protocolo IP o UDP
+
 \subsection{Conmutación}
 
 Es el proceso de establecer una conexión física o lógica entre dos puntos de una red para que puedan intercambiar datos. Es como el trabajo que hace un operador de trenes al mover las vías para que el vagón tome el camino correcto hacia su destino. Sin la conmutación, necesitaríamos un cable directo entre cada dispositivo del mundo, lo cual sería imposible.
@@ -23,3 +27,7 @@ La función del encaminamiento es encortar rutas a través de la red entre pares
 	\item \textbf{Eficiencia}: usar el mínimo de equipamiento posible
 	\item \textbf{Flexibilidad}: debe proporcionar trafico razonable aun en condiciones adversas.
 \end{itemize}
+
+\subsection{Circuito Virtual}
+
+Un circuito virtual es una técnica de conmutación de paquetes en la que se establece una conexión lógica y una ruta predefinida a través de la red antes de que comience la transferencia real de datos. Aunque los datos siguen dividiéndose en paquetes, esta técnica emula el comportamiento de un circuito físico dedicado.
