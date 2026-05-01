@@ -1,0 +1,37 @@
+En este capítulo se analizan los fundamentos de cómo los enrutadores dentro de un mismo Sistema Autónomo (AS) adquieren y mantienen el conocimiento sobre la topología interna. Estos dispositivos, denominados \textbf{enrutadores interiores}, operan bajo una única autoridad administrativa y técnica, lo que permite una gestión coordinada y coherente de las rutas.
+
+\subsection{Enrutamiento Estático vs. Dinámico}
+
+Existen dos enfoques fundamentales para gestionar la información de enrutamiento:
+
+\begin{itemize}
+    \item \textbf{Enrutamiento Estático:} Un administrador configura manualmente las tablas de reenvío. Es adecuado para redes pequeñas con topologías simples y sin rutas alternativas. Su principal desventaja es la falta de resiliencia; ante un fallo de enlace o un cambio topológico, se requiere intervención humana inmediata.
+    \item \textbf{Enrutamiento Dinámico:} Los enrutadores ejecutan software especializado para intercambiar información de red de forma automática. Esto permite una rápida convergencia ante fallos, mayor escalabilidad y una reducción significativa de errores humanos.
+\end{itemize}
+
+\subsection{Protocolo de Pasarela Interior (IGP)}
+
+Se utiliza el término genérico \textbf{Protocolo de Puerta de Enlace Interior (IGP)} para designar a cualquier protocolo empleado para el intercambio de rutas dentro de un AS. Dado que cada AS es autónomo, su administrador tiene la libertad de elegir el IGP que mejor se adapte a sus necesidades técnicas (como RIP, OSPF o IS-IS).
+
+Es importante destacar que el enrutamiento interior no es una isla aislada. Los enrutadores de borde, que utilizan protocolos exteriores (BGP) para comunicarse con el resto de Internet, dependen de la información proporcionada por los IGP para conocer los destinos internos de su propio sistema.
+
+\subsection{Métricas de Enrutamiento: Saltos y Retardo}
+
+La selección de la mejor ruta depende de la métrica utilizada para cuantificar la "distancia".
+
+\subsubsection{Recuento de Saltos (\textit{Hop Count})}
+
+Es la métrica más simple y consiste en contar el número de redes (o enrutadores) que un paquete debe atravesar. Aunque es fácil de implementar, tiene limitaciones críticas:
+\begin{itemize}
+    \item No considera la capacidad de los enlaces (ancho de banda).
+    \item No reacciona a la congestión de la red.
+    \item Puede elegir una ruta físicamente más corta pero técnicamente más lenta (por ejemplo, una conexión satelital de 2 saltos frente a una fibra óptica de 3 saltos).
+\end{itemize}
+
+\subsubsection{Métricas de Retardo y el Problema de la Oscilación}
+
+Históricamente, se intentó utilizar el retardo (\textit{delay}) como métrica dinámica (como en el protocolo \textbf{HELLO} de la red NSFNET). Sin embargo, el retardo es una métrica voluble que depende directamente de la carga de tráfico. Su uso suele provocar \textbf{oscilaciones o aleteo de ruta (\textit{route flapping})}: el protocolo detecta una ruta con poco retardo y redirige todo el tráfico hacia ella; esto satura la ruta, aumentando su retardo y obligando al protocolo a mover el tráfico a una ruta alternativa, repitiendo el ciclo indefinidamente. Debido a esta inestabilidad, los protocolos modernos prefieren métricas más estables o configuradas manualmente por políticas administrativas.
+
+\subsection{Métricas Artificiales y Gestión Administrativa}
+
+En la práctica profesional, los administradores suelen anular los costes técnicos reales mediante \textbf{métricas artificiales}. Al asignar pesos arbitrarios a los enlaces, se puede forzar al tráfico a seguir rutas que cumplan con objetivos de seguridad, acuerdos comerciales o balanceo de carga, manteniendo la fiabilidad del enrutamiento dinámico pero bajo un control administrativo estricto.
