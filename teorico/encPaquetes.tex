@@ -1,124 +1,116 @@
-El encaminamiento en redes de conmutación de paquetes es la función encargada de encontrar una ruta a través de la red entre pares de nodos finales para que la comunicación sea eficiente. A diferencia de la conmutación de circuitos, los datos se dividen en pequeñas unidades llamadas paquetes.
+El encaminamiento en redes de conmutación de paquetes es la función crítica encargada de determinar la ruta óptima a través de la red entre nodos de origen y destino. A diferencia de la conmutación de circuitos, donde se establece un camino físico o lógico dedicado, en la conmutación de paquetes la información se segmenta en unidades independientes denominadas paquetes.
 
-Se denominan paquetes porque la información se segmenta en bloques de longitud limitada que contienen tanto datos de usuario como información de control (cabecera). El hecho de que sean paquetes implica una arquitectura de almacenamiento y retransmisión (\textit{store-and-forward}): cada paquete se recibe íntegramente en un nodo, se almacena brevemente y luego se transmite al siguiente.
+Cada paquete incluye una cabecera con información de control (como direcciones de origen y destino) y una carga útil con los datos del usuario. Esta arquitectura se basa en el principio de almacenamiento y retransmisión (\textit{store-and-forward}): cada nodo intermedio recibe el paquete íntegramente, lo almacena temporalmente para verificar su integridad y determinar el siguiente salto, y finalmente lo transmite hacia el siguiente nodo en la ruta.
 
 \subsection{Requisitos de la función de encaminamiento}
 
-Para ser efectivo, el encaminamiento debe cumplir con varios criterios fundamentales: exactitud, simplicidad, robustez, estabilidad, imparcialidad, optimización y eficiencia.
+Para que un protocolo de encaminamiento sea efectivo en un entorno de producción, debe satisfacer varios criterios fundamentales:
 
-La \textbf{robustez} es la habilidad de la red para entregar paquetes incluso ante sobrecargas o fallos localizados, reaccionando sin pérdida de datos. No obstante, la robustez no debe comprometer la \textbf{estabilidad}: el sistema debe reaccionar ante cambios sin generar oscilaciones inestables donde el tráfico rebote indefinidamente entre nodos. Finalmente, un esquema eficiente debe minimizar el coste de procesamiento en los nodos y el ancho de banda consumido por los mensajes de control.
+\begin{itemize}
+    \item \textbf{Exactitud:} Los paquetes deben ser entregados a su destino correcto.
+    \item \textbf{Simplicidad:} El algoritmo debe ser lo suficientemente sencillo para ser implementado eficientemente sin consumir recursos excesivos de CPU o memoria en los nodos.
+    \item \textbf{Robustez:} Capacidad de la red para mantener la conectividad y entregar paquetes ante fallos de enlaces, nodos o condiciones de sobrecarga.
+    \item \textbf{Estabilidad:} El sistema debe converger rápidamente a rutas estables sin generar oscilaciones, donde el tráfico rebote indefinidamente entre nodos (bucles de encaminamiento).
+    \item \textbf{Imparcialidad y Optimización:} Debe equilibrar la carga de la red de manera equitativa, evitando que ciertos flujos monopolicen los recursos, mientras busca minimizar el coste global o maximizar el rendimiento.
+\end{itemize}
 
 \subsection{Elementos de diseño}
 
-Con estos requisitos en mente vamos a evaluar los distintos elementos de diseño involucrados en un esquema de encaminamiento.
+El diseño de un esquema de encaminamiento implica tomar decisiones sobre diversos parámetros técnicos que determinan el comportamiento de la red.
 
 \subsubsection{Criterios de rendimiento}
 
-La elección de una ruta se basa en un criterio de rendimiento. El más simple es el número de saltos (menor cantidad de nodos atravesados). Una versión más sofisticada es el encaminamiento de mínimo coste, donde se asigna un peso a cada enlace basado en:
+La selección de la mejor ruta depende de la métrica o criterio de rendimiento utilizado. Los más comunes incluyen:
+
 \begin{itemize}
-    \item Velocidad de transmisión (a mayor velocidad, menor coste).
-    \item Retardo acumulado en las colas.
-    \item Costos administrativos o económicos.
+    \item \textbf{Número de saltos (\textit{hop count}):} El camino con menor cantidad de nodos intermedios. Es el más simple pero ignora la capacidad de los enlaces.
+    \item \textbf{Mínimo coste:} Se asigna un peso o coste a cada enlace. Este coste puede ser estático o basarse en variables como:
+    \begin{itemize}
+        \item Ancho de banda disponible (menor coste para mayor velocidad).
+        \item Retardo de propagación y encolamiento.
+        \item Costes administrativos, de seguridad o económicos.
+    \end{itemize}
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/conPaqueteEj1.png}
-	\caption{Ejemplo de red de conmutación de paquetes}
+	\caption{Esquema de una red de conmutación de paquetes con múltiples rutas posibles.}
 	\label{fig:grafico3}
 \end{figure}
 
-
 \subsubsection{Instante y lugar de decisión}
 
-Dos cuestiones clave son el momento y el responsable de la decisión:
-
 \begin{itemize}
-    \item \textbf{Instante de decisión}: En redes de datagramas, la decisión se toma de forma individual para cada paquete. En redes de circuitos virtuales, se decide una única vez al establecer la sesión y todos los paquetes siguen esa ruta.
+    \item \textbf{Instante de decisión}: 
+    \begin{itemize}
+        \item \textbf{Datagramas}: La decisión se toma de forma independiente para cada paquete, lo que permite reaccionar dinámicamente a cambios, aunque los paquetes de un mismo flujo pueden llegar desordenados.
+        \item \textbf{Circuitos virtuales}: Se establece una ruta fija durante la fase de configuración de la sesión; todos los paquetes siguen el mismo camino, garantizando el orden.
+    \end{itemize}
     \item \textbf{Lugar de decisión}:
     \begin{itemize}
-        \item \textbf{Distribuido}: Cada nodo selecciona el enlace de salida (más común y resiliente).
-        \item \textbf{Centralizado}: Un nodo central toma las decisiones.
-        \item \textbf{Desde el origen}: La estación emisora define la ruta completa.
+        \item \textbf{Distribuido}: Cada nodo de la red participa en la decisión de encaminamiento. Es el enfoque más robusto y utilizado en Internet.
+        \item \textbf{Centralizado}: Un nodo central con visión global dicta las rutas. Simplifica los nodos, pero crea un punto único de fallo.
+        \item \textbf{Desde el origen}: El nodo emisor especifica la ruta completa en la cabecera del paquete.
     \end{itemize}
 \end{itemize}
 
 \subsubsection{Información de la red y tiempo de actualización}
 
-La mayoría de los esquemas dependen del conocimiento de la topología y carga:
+La eficacia del encaminamiento depende de la frescura y el alcance de la información disponible:
 \begin{itemize}
-    \item \textbf{Fuente de información}: Puede ser local (solo vecinos), de nodos en la ruta o global (toda la red).
-    \item \textbf{Tiempo de actualización}: En el encaminamiento estático, la información es fija. En técnicas adaptables, la actualización es periódica para responder a cambios en el tráfico, aunque esto consume recursos de red.
+    \item \textbf{Fuente de información}: Puede ser local (conocimiento de vecinos inmediatos), de nodos adyacentes o global (conocimiento de la topología completa).
+    \item \textbf{Tiempo de actualización}: El encaminamiento \textbf{estático} utiliza tablas preconfiguradas manualmente. El encaminamiento \textbf{adaptable} (dinámico) actualiza la información periódicamente o ante cambios topológicos, permitiendo una mayor resiliencia.
 \end{itemize}
 
 \subsection{Estrategias de encaminamiento}
 
-Existen numerosas estrategias de encaminamiento para abordar las necesidades de encaminamiento en redes de conmutación de paquetes.
-
 \subsubsection{Encaminamiento Estático}
 
-Se configura una única ruta permanente para cada par de nodos \textbf{origen-destino} en la red, pudiéndose utilizar para ello cualquiera de los algoritmos de mínimo coste. Las rutas son fijas de modo que los costes de enlace usados para el diseño de las rutas no pueden estar basados en variables dinámicas como el tráfico.
+En esta estrategia, las rutas son predefinidas y configuradas manualmente por un administrador. Una vez establecidas, no cambian a menos que se modifique la configuración.
 
-Se crea una matriz de encaminamiento central, almacenada en un centro de control de red. Esta matriz especifica que para cada par de nodos origen-destino, la identidad del siguiente nodo en la ruta. Es suficiente conocer, para cada par, cuál es el primer nodo en la ruta. En cada punto a lo largo del camino sólo es necesario conocer la identidad del nodo siguiente, no la ruta completa.
+Para su diseño se suelen emplear algoritmos de mínimo coste sobre una topología teórica. Los resultados se consolidan en una \textbf{matriz de encaminamiento central}, que indica para cada par origen-destino el siguiente nodo en el camino. Cada nodo almacena únicamente su columna correspondiente en una tabla de encaminamiento local.
 
-A partir de esta matriz se pueden crear y almacenar en cada nodo las tablas de encaminamiento asociadas. Cada nodo sólo necesitará almacenar una columna de la tabla de encaminamiento, indicándose en ella el nodo siguiente para cada destino.
+\textbf{Ventajas:} Simplicidad técnica, nulo consumo de ancho de banda en mensajes de control y predictibilidad.
+\textbf{Desventajas:} Falta total de flexibilidad ante fallos o congestión. Si un enlace falla, el tráfico se pierde aunque existan rutas alternativas.
 
-No existe diferencia entre datagramas y circuitos virtuales, ya que todos los paquetes que llegan con un destino concreto siguen la misma ruta. La ventaja es su simplicidad, además de su buen funcionamiento en redes fiables con carga estacionaria. Su desventaja radica en la falta de flexibilidad, ya que no reacciona ante fallos ni ante congestión en la red.
- 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/matrizEncaminamiento.png}
-	\caption{Matriz de Encaminamiento central}
+	\caption{Representación de una matriz de encaminamiento central para configuración estática.}
 	\label{fig:grafico4}
 \end{figure}
 
-\subsubsection{Inundaciones}
+\subsubsection{Inundación (\textit{Flooding})}
 
-Otra técnica es la de inundaciones, la cual no precisa de ninguna información sobre la red. Un nodo origen envía un paquete a todos sus nodos vecinos, los cuales, a su vez, lo transmiten sobre todos los enlaces de salida excepto por el que llegó.
+Es una técnica reactiva que no requiere información previa de la red. Cuando un nodo recibe un paquete, lo retransmite por todos sus enlaces excepto por aquel por el que llegó.
 
-Una forma de prevenir estas retransmisiones consiste en incluir un campo de cuenta de saltos en cada paquete. Este contador puede ponerse inicialmente a un valor máximo, como es por ejemplo el diámetro de la red (TTL). Cada vez que un nodo transmite un paquete, decrementa la cuenta en uno, de modo que cuando el contador alcanza el valor cero se elimina el paquete de la red.
+Para evitar que los paquetes circulen indefinidamente (bucles), se utiliza un campo de \textbf{Tiempo de Vida (TTL)} o cuenta de saltos. Este contador se decrementa en cada nodo; al llegar a cero, el paquete es descartado.
+
+\textbf{Propiedades clave:}
+\begin{itemize}
+	\item Se exploran simultáneamente todos los caminos posibles.
+	\item Se garantiza la entrega si existe al menos una ruta física.
+	\item Al menos una copia del paquete llegará por el camino más corto (en número de saltos).
+\end{itemize}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/inundacion.png}
-	\caption{Matriz de Encaminamiento central}
+	\caption{Proceso de inundación de paquetes en una red mallada.}
 	\label{fig:grafico5}
 \end{figure}
 
-La técnica de inundaciones presenta tres propiedades importantes:
-
-\begin{itemize}
-	\item Se prueban todos los posibles caminos entre los nodos origen y destino. Se garantiza la recepción del paquete siempre que exista, al menos, una ruta entre el origen y el destino.
-	\item  Al menos una copia del paquete a recibir en el destino habrá usado una ruta de menor número de saltos.
-	\item Se visitan todos los nodos que están directa o indirectamente conectados al nodo origen.
-\end{itemize}
-
 \subsubsection{Encaminamiento Aleatorio}
 
-La técnica de encaminamiento aleatorio presenta, con menor tráfico, la sencillez y robustez de la técnica de inundaciones. En este esquema, un nodo selecciona un único camino de salida para retransmitir un paquete entrante; el enlace de salida se elige de forma aleatoria, excluyendo el enlace por el que llegó el paquete. Si todos los enlaces son igualmente probables de ser elegidos, una implementación sencilla consistiría en seleccionarlos de forma alternada.
+Combina la sencillez de la inundación con una menor carga de tráfico. El nodo selecciona al azar un único enlace de salida para cada paquete entrante (excluyendo el de llegada). Es extremadamente robusto pero poco eficiente, ya que el paquete puede deambular por la red antes de alcanzar su destino.
 
-Una mejora a esta técnica consiste en asignar una probabilidad a cada uno de los enlaces de salida y llevar a cabo la selección de acuerdo con estas probabilidades.
+\subsubsection{Encaminamiento Adaptable (Dinámico)}
 
-\subsubsection{Encaminamiento Adaptable}
-
-En todas las redes de conmutación de paquetes se utiliza algún tipo de técnica de encaminamiento adaptable; las decisiones de encaminamiento cambian en la medida que lo hacen las condiciones de la red. Las principales condiciones que influyen en las decisiones de encaminamiento son:
-
+Es el estándar en las redes modernas. Las decisiones de encaminamiento evolucionan en tiempo real según el estado de la red:
 \begin{itemize}
-	\item Fallos: Un nodo o una línea troncal fallan.
-	\item Congestión: Si una parte de la red sufre una congestión importante, es deseable encaminar los paquetes de forma que se rodee la zona congestionada.
+	\item \textbf{Detección de fallos}: Reencaminamiento automático ante la caída de un enlace o nodo.
+	\item \textbf{Gestión de congestión}: Desvío de tráfico hacia zonas con menor carga.
 \end{itemize}
 
-Es necesario que los nodos intercambien información acerca del estado de la red. El uso de la técnica presenta varias desventajas en comparación con el encaminamiento estático:
-
-\begin{itemize}
-	\item La decisión de encaminamiento es más compleja, aumenta el coste de procesamiento en los nodos de la red.
-	\item Dependen de la información de estado obtenida en una parte de la red pero que es utilizada en otra. Cuanta más información se intercambia y más frecuentemente se hace, mejores serán las decisiones de encaminamiento. Esta información constituye en sí misma tráfico adicional sobre la red.
-	\item Una estrategia adaptable puede reaccionar rápidamente, provocando oscilaciones y causando congestión, en cuyo caso no es válida.
-\end{itemize}
-
-Las estrategias de encaminamiento adaptable son, las más utilizadas por dos razones:
-
-\begin{itemize}
-	\item El usuario de la red percibe que las prestaciones mejoran
-	\item Una estrategia de encaminamiento adaptable puede resultar de ayuda en el control de la congestión: dado que este tipo de técnica tiende a compensar la carga, puede retrasar la aparición de situaciones graves de congestión.
-\end{itemize}
+Aunque mejora drásticamente la calidad de servicio percibida, introduce complejidad: los nodos deben intercambiar mensajes de estado (tráfico de control), lo que consume recursos, y algoritmos mal configurados pueden provocar inestabilidad u oscilaciones en la red.
