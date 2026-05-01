@@ -1,0 +1,33 @@
+El \textbf{Routing Information Protocol (RIP)} es uno de los protocolos de pasarela interior más antiguos y sencillos de Internet. Su popularidad se debió en gran medida a su inclusión en la distribución UNIX 4BSD de Berkeley. RIP es una implementación clásica del algoritmo de \textbf{vector-distancia}, diseñado para redes de tamaño moderado.
+
+\subsection{Fundamentos y Operación}
+
+RIP utiliza una lógica basada en el intercambio periódico de tablas de rutas. Sus características principales son:
+
+\begin{itemize}
+	\item \textbf{Métrica de Saltos:} La distancia se mide exclusivamente en número de saltos. Una red conectada directamente está a 1 salto.
+	\item \textbf{Ciclo de Actualización:} Los enrutadores activos transmiten su tabla de rutas completa cada \textbf{30 segundos} mediante mensajes de difusión (\textit{broadcast} o \textit{multicast}).
+	\item \textbf{Limitación de Escala:} Para evitar bucles infinitos, RIP define el valor \textbf{16 como infinito} (red inalcanzable). Esto limita el diámetro máximo de la red a 15 saltos.
+	\item \textbf{Transporte:} Los mensajes RIP viajan encapsulados en datagramas \textbf{UDP} (puerto 520 para IPv4).
+\end{itemize}
+
+\subsection{El Problema de la Convergencia Lenta (Cuenta al Infinito)}
+
+La principal debilidad de RIP es su lentitud para propagar "malas noticias". Si un enlace falla, los enrutadores vecinos pueden seguir creyendo que el destino es alcanzable a través de rutas obsoletas, generando \textbf{bucles de enrutamiento}. En este escenario, los enrutadores incrementarán el contador de saltos de uno en uno hasta alcanzar el valor 16, proceso que puede tardar varios minutos.
+
+\subsection{Mecanismos de Mitigación}
+
+Para acelerar la convergencia y prevenir bucles, RIP implementa varias heurísticas:
+
+\begin{itemize}
+	\item \textbf{Horizonte Dividido (\textit{Split Horizon}):} Un enrutador no anuncia una ruta de vuelta por la misma interfaz por la que la aprendió.
+	\item \textbf{Envenenamiento de Ruta (\textit{Poison Reverse}):} Cuando una red falla, se anuncia inmediatamente con una métrica de 16.
+	\item \textbf{Actualizaciones Activadas (\textit{Triggered Updates}):} Los cambios negativos se anuncian instantáneamente sin esperar al ciclo de 30 segundos.
+\end{itemize}
+
+\subsection{Evolución: RIPv2 y RIPng}
+
+\begin{itemize}
+    \item \textbf{RIPv2 (IPv4):} Introdujo mejoras críticas como el soporte para \textbf{CIDR} (enviando la máscara de subred), autenticación de mensajes y el uso de \textit{multicast} en lugar de \textit{broadcast} para reducir la carga en los hosts.
+    \item \textbf{RIPng (IPv6):} Rediseñado para el nuevo estándar de Internet. Utiliza el puerto UDP 521 y soporta prefijos IPv6 de 128 bits. Mantiene la lógica de vector-distancia pero optimiza el formato del mensaje para manejar direcciones más largas.
+\end{itemize}

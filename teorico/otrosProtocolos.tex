@@ -1,0 +1,28 @@
+Más allá de los protocolos predominantes como RIP y OSPF, existen otras herramientas y consideraciones arquitectónicas que son fundamentales para la operación y seguridad de las redes modernas.
+
+\subsection{El Protocolo IS-IS}
+
+\textbf{IS-IS (\textit{Intermediate System to Intermediate System})} es un protocolo de estado de enlace muy similar a OSPF. Fue diseñado originalmente para el modelo OSI pero se adaptó (\textbf{IS-IS Dual}) para soportar el protocolo IP. 
+
+Una diferencia técnica clave es su encapsulamiento: IS-IS se envía directamente sobre la capa de enlace de datos (capa 2), lo que lo hace independiente de la capa de red y, en teoría, más resistente a ataques dirigidos al protocolo IP. Su jerarquía es más flexible que la de OSPF, permitiendo áreas de Nivel 1 y Nivel 2 que no requieren una estructura estrictamente en estrella.
+
+\subsection{Gestión Unificada: Gated}
+
+Históricamente, la gestión de múltiples protocolos de enrutamiento simultáneos era un desafío. El demonio de software \textbf{Gated} resolvió este problema al permitir que un solo programa gestionara protocolos como RIP, OSPF y BGP de forma integrada. Su importancia radica en la capacidad de definir políticas administrativas que controlen qué información se redistribuye entre protocolos (por ejemplo, pasar rutas de OSPF a BGP), garantizando la seguridad y la consistencia en el límite del Sistema Autónomo.
+
+\subsection{Seguridad y Secuestro de Rutas (\textit{Route Hijacking})}
+
+La confianza es un pilar crítico y vulnerable en el enrutamiento. Los protocolos internos (IGP) operan bajo la premisa de que todos los enrutadores del AS son legítimos. Si un enrutador comprometido o mal configurado anuncia una ruta falsa de bajo costo hacia un destino externo, el tráfico del AS será redirigido incorrectamente.
+
+A escala global, este problema se conoce como \textbf{Secuestro de Ruta (\textit{Route Hijacking})}. Un AS puede anunciar incorrectamente que posee la mejor ruta hacia un bloque de direcciones IP de otra organización. Si otros AS aceptan este anuncio vía BGP, el tráfico hacia ese destino será "secuestrado", provocando denegación de servicio o interceptación de datos.
+
+\subsection{Enrutamiento con Información Parcial}
+
+No todos los enrutadores necesitan conocer todas las rutas de Internet. La escalabilidad de la red global depende de la \textbf{información parcial}:
+
+\begin{itemize}
+    \item \textbf{Rutas por Defecto:} La mayoría de los enrutadores internos conocen sus redes locales y utilizan una \textbf{ruta predeterminada} (\textit{default route}) para enviar todo el tráfico externo hacia su proveedor.
+    \item \textbf{Zona Libre de Rutas por Defecto (\textit{Default-Free Zone}):} Solo los enrutadores en el núcleo de Internet (Tier-1) mantienen la tabla completa de rutas globales sin depender de rutas por defecto.
+\end{itemize}
+
+El uso eficiente de información parcial permite reducir el tamaño de las tablas de enrutamiento y el tráfico de control, aunque requiere una configuración cuidadosa para evitar bucles o ineficiencias de tránsito costosas.

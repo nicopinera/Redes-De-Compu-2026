@@ -1,0 +1,47 @@
+La arquitectura de Internet se fundamenta en un modelo jerárquico y distribuido, diseñado para superar las limitaciones de escalabilidad de los protocolos de encaminamiento dinámico. Un \textbf{protocolo de actualización de enrutamiento} es un mecanismo que permite a los encaminadores (\textit{routers}) intercambiar información sobre la topología y el estado de los enlaces. Su propósito es doble: facilitar el cálculo de rutas óptimas hacia cada destino y garantizar una respuesta rápida ante fallos o cambios topológicos mediante la convergencia de las tablas de enrutamiento.
+
+\subsection{Principios de la Arquitectura de Enrutamiento}
+
+A medida que una red crece, se vuelve técnicamente inviable que todos los enrutadores participen en un único protocolo de intercambio de información. Un principio rector de la Internet global es que ningún protocolo puede escalar lo suficiente para gestionar todos los dispositivos simultáneamente. Por ello, la red se divide en grupos administrativos y técnicos denominados \textbf{Sistemas Autónomos (AS)}. Existen tres razones fundamentales para esta división:
+
+\begin{itemize}
+	\item \textbf{Carga de Tráfico:} El volumen de mensajes de actualización aumenta exponencialmente con el número de nodos, lo que podría saturar los enlaces de comunicación.
+	\item \textbf{Comunicación Indirecta:} En la escala global, muchos enrutadores están físicamente lejos y no comparten redes comunes, imposibilitando una comunicación directa constante.
+	\item \textbf{Límites Administrativos:} Internet no es una entidad única, sino una amalgama de empresas y proveedores (ISPs). Cada organización requiere autonomía para gestionar sus políticas de acceso y enrutamiento basándose en factores técnicos, económicos y de seguridad.
+\end{itemize}
+
+\subsection{Escalabilidad y Límites de Grupo}
+
+La determinación de cuántos enrutadores pueden participar en un mismo grupo de enrutamiento depende de dos factores críticos:
+
+\begin{itemize}
+	\item \textbf{Tiempo de Convergencia:} Es el retraso máximo hasta que todos los enrutadores han procesado un cambio topológico. En grupos excesivamente grandes, la convergencia lenta puede generar bucles de enrutamiento o pérdida de datos.
+	\item \textbf{Sobrecarga (\textit{Overhead}):} Cada enrutador consume CPU y ancho de banda para procesar y reenviar anuncios de ruta. Un grupo mayor incrementa la carga residual sobre los recursos de datos.
+\end{itemize}
+
+Históricamente, se han seguido pautas heurísticas para mantener la eficiencia: en redes de área amplia (WAN), el límite suele situarse en torno a los 12 enrutadores por grupo, mientras que en redes de área local (LAN), gracias a su mayor ancho de banda y menor latencia, este número puede ascender a 60.
+
+\subsection{El Problema del Enrutamiento Subóptimo}
+
+La fragmentación de la red en grupos de enrutamiento genera un desafío arquitectónico. Si un enrutador ajeno utiliza a un miembro del grupo como puerta de enlace predeterminada (\textit{default gateway}), puede producirse una ineficiencia conocida como \textbf{salto doble}. Consideremos tres enrutadores (R1, R2 y R3) en un mismo \textit{backbone}. R1 y R2 intercambian rutas, pero R3 es un nodo externo que solo apunta a R1. Si R3 envía un paquete a R1 cuyo destino final es más accesible vía R2, R1 recibirá el paquete y lo reenviará de vuelta por el mismo medio físico hacia R2. Este viaje redundante duplica el consumo de ancho de banda y recursos.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img/backbone.png}
+	\caption{Escenario de ineficiencia por salto redundante en una red troncal.}
+	\label{fig:grafico7}
+\end{figure}
+
+Este fenómeno es particularmente problemático porque el sistema sigue funcionando correctamente (los datos llegan), ocultando la degradación del rendimiento. Además, los mensajes de redirección ICMP a menudo son ignorados por los enrutadores intermedios, lo que impide una corrección dinámica automática.
+
+\subsection{Protocolos de Pasarela Exterior (EGP y BGP)}
+
+Para interconectar estos grupos independientes, la arquitectura de Internet define el concepto de \textbf{Protocolo de Pasarela Exterior (EGP)}. A diferencia de los protocolos internos, un EGP se encarga de transmitir información de \textbf{accesibilidad} entre Sistemas Autónomos distintos.
+
+Técnicamente, un EGP no propaga métricas de coste detalladas ni topologías internas; su función es anunciar qué redes son alcanzables a través de un determinado AS. En la actualidad, el estándar de facto es el \textbf{Border Gateway Protocol versión 4 (BGP-4)}.
+
+Cuando dos AS deciden intercambiar rutas, establecen una sesión entre sus \textbf{enrutadores de borde} (\textit{BGP peers}). Estos dispositivos actúan como embajadores, filtrando la información interna y exponiendo solo las rutas autorizadas hacia el exterior.
+
+\subsection{Evolución de la Coherencia Global}
+
+La arquitectura de Internet ha pasado de un modelo de Núcleo Central (\textit{Core System}), donde una autoridad central garantizaba la coherencia de todas las rutas, a un modelo de \textbf{interconexión entre pares} (\textit{peering}). En este entorno descentralizado, la validación de rutas depende de los \textbf{Registros de Enrutamiento} (\textit{Routing Registries}). Estos mantienen bases de datos que vinculan bloques de direcciones IP con sus propietarios legítimos. Sin embargo, la falta de una autoridad única global genera vulnerabilidades como los agujeros negros (\textit{black holes}), donde errores de configuración o anuncios malintencionados provocan que el tráfico hacia ciertas redes se pierda completamente.
