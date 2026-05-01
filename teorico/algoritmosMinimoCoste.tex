@@ -1,71 +1,55 @@
-Prácticamente todas las redes basan sus decisiones de encaminamiento en algún criterio de mínimo coste. El coste de las líneas se emplea como entrada a un algoritmo de encaminamiento de mínimo coste, que establece lo siguiente:
+Prácticamente todas las redes basan sus decisiones de encaminamiento en algún criterio de mínimo coste. El coste de las líneas se emplea como entrada principal para establecer las rutas óptimas.
 
-Dada una red de nodos conectados entre sí por enlaces bidireccionales, donde cada enlace tiene un coste asociado en cada sentido, se define el coste de una ruta entre dos nodos como la suma de los costes de los enlaces atravesados. Así, para cada par de nodos se obtiene el camino de mínimo coste.
+Dada una red de nodos conectados por enlaces bidireccionales, donde cada enlace tiene un coste asociado (que puede variar según el sentido), se define el coste de una ruta como la suma de los costes de los enlaces atravesados. La mayoría de los algoritmos modernos son variantes de dos fundamentales: Dijkstra y Bellman-Ford.
 
-El coste de un enlace puede ser diferente para cada uno de los dos sentidos. La mayor parte de los algoritmos de encaminamiento de mínimo coste utilizados en las redes son variantes de uno de los dos algoritmos más comunes: \textbf{el de Dijkstra y el de Bellman-Ford}
+\subsection{Algoritmo de Dijkstra}
 
-\subsection{ALGORITMO DE DIJKSTRA}
+El algoritmo de Dijkstra, también conocido como SPF (Shortest Path First), busca encontrar las rutas de mínimo coste desde un nodo origen específico hacia todos los demás nodos de la red. Este procedimiento esta dividido en etapas, construyendo los caminos en orden creciente de longitud.
 
-El algoritmo de Dijkstra, también conocido como el algoritmo del primer camino más corto (SPF - Shortest Path First), tiene como objetivo encontrar las rutas de mínimo coste desde un nodo origen específico hacia todos los demás nodos de la red. Este procedimiento se desarrolla por etapas, construyendo los caminos en orden creciente de longitud. Tenemos:
-
+Conceptos clave:
 \begin{itemize}
-	\item $N$ = Conjunto de nodos de la red
-	\item $s$ =  El nodo origen desde el cual se calculan las rutas
-	\item $T$ = El conjunto de nodos que ya han sido incorporados por el algoritmo y cuyos caminos mínimos ya se conocen (etiquetados permanentemente)
-	\item $w(i,j)$ = Coste del enlace desde el nodo i hasta el nodo j. Si los nodos no están conectados, el coste se considera infinito
-	\item $L(n)$ = El coste actual del camino de mínimo coste desde el origen s hasta el nodo n
+	\item $N$: Conjunto de nodos de la red.
+	\item $s$: Nodo origen único.
+	\item $T$: Conjunto de nodos cuya ruta mínima ya es conocida (etiquetados permanentemente).
+	\item $w(i,j)$: Coste directo del enlace de $i$ a $j$ ($ \infty $ si no están conectados).
+	\item $L(n)$: Coste actual del camino más corto conocido desde $s$ hasta $n$.
 \end{itemize}
 
-El algoritmo consta de tres pasos, repitiéndose los pasos 2 y 3 hasta que $T=N$; hasta que las rutas finales han sido asignadas a todos los nodos en la red:
+El algoritmo itera siguiendo tres pasos principales hasta que todos los nodos se incorporan a $T$:
 
-\subsubsection{Inicializacion}
-
-Se comienza con el conjunto $T$ conteniendo únicamente al nodo origen $s$. Para todos los demás nodos $(n)$, se establece el coste inicial $L(n)$ igual al peso del enlace directo desde el origen $(w(s,n))$
-
-\begin{itemize}
-	\item $T={s}$: El conjunto de nodos incorporados sólo consta del nodo origen $s$
-	\item $L(n)=w(s,n)$ para $n \neq s$. El coste inicial de las rutas a los nodos vecinos es el 	asociado a los enlaces.
-\end{itemize}
+\subsubsection{Inicialización}
+Se comienza con $T = \{s\}$. Para cada nodo $n \neq s$, el coste inicial $L(n)$ se establece como el peso del enlace directo desde el origen: $L(n) = w(s,n)$.
 
 \subsubsection{Obtención del siguiente nodo}
+Se selecciona un nodo $x$ que no pertenezca a $T$ y que posea el valor de $L(x)$ más pequeño. Este nodo $x$ se añade permanentemente al conjunto $T$.
 
-Se busca un nodo $x$ que no esté todavía en $T$ y que tenga el valor de $L(x)$ más pequeño (el camino más corto desde el origen conocido hasta el momento). Una vez encontrado, este nodo $x$ se añade de forma permanente al conjunto $T$.
+\subsubsection{Actualización de los caminos}
+Para todos los nodos $n \notin T$, se actualiza su coste comparando el valor actual $L(n)$ con la nueva ruta potencial a través de $x$:
+$$ L(n) = \min[L(n), L(x) + w(x,n)] $$
 
+\subsection{Algoritmo de Bellman-Ford}
 
-\subsubsection{Actualización de los caminos de mínimo coste}
+El algoritmo de Bellman-Ford, base de los protocolos de vector-distancia, es un procedimiento descentralizado. A diferencia de Dijkstra, cada nodo solo requiere información de sus vecinos directos para converger a la solución óptima.
 
-Para todos los nodos que aún no están en $T$, se actualiza su coste actual $L(n)$. El nuevo coste será el valor mínimo entre el coste que ya tenía $(L(n))$ y el coste de ir desde el origen hasta el nuevo nodo incorporado $x$ más el enlace directo de $x$ a $n$ $(L(x)+w(x,n))$
-
-El algoritmo concluye cuando todos los nodos han sido añadidos a $T$. Al final, el valor $L(x)$ asociado a cada nodo $x$ es el coste (longitud) de la ruta de mínimo coste de $s$ a $x$. Además, $T$ define la ruta de mínimo coste desde $s$ hasta cualquier otro nodo.
-
-\subsection{ALGORITMO DE BELLMAN-FORD}
-
-El algoritmo de Bellman-Ford, también conocido como algoritmo de vector-distancia, es un procedimiento utilizado para encontrar los caminos de mínimo coste en una red. A diferencia del algoritmo de Dijkstra, que requiere conocer toda la topología de la red, Bellman-Ford es un algoritmo descentralizado donde cada nodo solo necesita información de sus vecinos directos.
-
+**Conceptos clave:**
 \begin{itemize}
-	\item $s$ = El nodo origen desde el cual se calculan las rutas
-	\item $h$ = El número máximo de enlaces (saltos) permitidos en un camino en la iteración actual
-	\item $w(i,j)$ = Coste del enlace desde el nodo i hasta el nodo j. Si los nodos no están conectados, el coste se considera infinito
-	\item $L_h(n)$ = El coste del camino de mínimo coste desde el origen $s$ hasta el nodo $n$ utilizando como máximo $h$ enlaces.
+	\item $s$: Nodo origen.
+	\item $h$: Número máximo de enlaces (saltos) permitidos en la iteración actual.
+	\item $L_h(n)$: Coste del camino mínimo desde $s$ hasta $n$ utilizando como máximo $h$ enlaces.
 \end{itemize}
 
-\subsubsection{Inicializacion}
-
-$h=0$, Se establece que el coste para llegar desde el origen a sí mismo es siempre 0 $(L_h(s)=0)$. Para todos los demás nodos ($n \neq s$), el coste inicial se considera infinito ($L_0(n)=\infty$)
+\subsubsection{Inicialización}
+Para $h=0$, el coste al origen es 0 ($L_0(s)=0$) y para cualquier otro nodo $n$, el coste es infinito ($L_0(n)=\infty$).
 
 \subsubsection{Actualización Iterativa}
+En cada etapa $h+1$, el algoritmo calcula un nuevo coste comparando todas las rutas posibles a través de los vecinos $j$:
+$$ L_{h+1}(n) = \min_j [L_h(j) + w(j,n)] $$
 
-En cada nueva etapa $h+1$, para cada nodo de destino $n$, el algoritmo calcula un nuevo coste potencial comparando todas las rutas posibles a través de sus vecinos $j$. La fórmula utilizada es:
-
-$$
-L_{(h+1)}(n) = min_j[L_h(j)+w(j,n)]
-$$
-
-Esto significa que el coste para llegar a $n$ en $h+1$ pasos es el mínimo entre el coste que ya se conocía y la suma del coste para llegar a un vecino $j$ (en h pasos) más el enlace directo de ese vecino al destino $n$
+Este proceso se repite hasta que no se encuentran mejoras en los costes, garantizando que se ha hallado el camino óptimo (siempre que no existan ciclos de coste negativo).
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\textwidth]{img/algoritmos.png}
-	\caption{Ejemplos de algoritmos de mínimo coste}
+	\caption{Ejemplos comparativos de algoritmos de mínimo coste}
 	\label{fig:grafico6}
 \end{figure}

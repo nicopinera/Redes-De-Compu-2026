@@ -1,14 +1,12 @@
-El \textbf{encaminamiento en redes de conmutación de paquetes} es la función encargada de encontrar una ruta a través de la red entre pares de nodos finales para que la comunicación sea eficiente. A diferencia de la conmutación de circuitos, los datos se dividen en pequeñas unidades llamadas \textbf{paquetes}
+El encaminamiento en redes de conmutación de paquetes es la función encargada de encontrar una ruta a través de la red entre pares de nodos finales para que la comunicación sea eficiente. A diferencia de la conmutación de circuitos, los datos se dividen en pequeñas unidades llamadas paquetes.
 
-Se denominan \textbf{paquetes} porque la información no fluye como un torrente continuo, sino que \textbf{se segmenta en bloques de longitud limitada} que contienen tanto datos de usuario como información de control (cabecera). El hecho de que sean paquetes implica una \textbf{arquitectura de almacenamiento y retransmisión (store-and-forward)}: cada paquete se recibe completamente en un nodo, se almacena brevemente y luego se transmite al siguiente.
+Se denominan paquetes porque la información se segmenta en bloques de longitud limitada que contienen tanto datos de usuario como información de control (cabecera). El hecho de que sean paquetes implica una arquitectura de almacenamiento y retransmisión (\textit{store-and-forward}): cada paquete se recibe íntegramente en un nodo, se almacena brevemente y luego se transmite al siguiente.
 
-\subsection{Requisitos de función de encaminamiento}
+\subsection{Requisitos de la función de encaminamiento}
 
-La función principal de una red de conmutación de paquetes es \textbf{aceptar paquetes procedentes de una estación emisora y enviarlos hacia una estación destino}. Para ello se debe determinar una ruta a través de la red, siendo posible la existencia de más de una. Se debe realizar una \textbf{función de encaminamiento}. Para ser efectivo, debe cumplir con varios criterios: \textbf{exactitud, simplicidad, robustez, estabilidad, imparcialidad, optimización y eficiencia}.
+Para ser efectivo, el encaminamiento debe cumplir con varios criterios fundamentales: exactitud, simplicidad, robustez, estabilidad, imparcialidad, optimización y eficiencia.
 
-La \textbf{robustez} está relacionada con la habilidad de la red para enviar paquetes de alguna forma ante la aparición de sobre cargas y fallos localizados. La red puede reaccionar sin sufrir pérdidas de paquetes o caída de circuitos virtuales. La robustez puede implicar cierta inestabilidad. Las técnicas que reaccionan ante condiciones cambiantes presentan una tendencia no deseable a reaccionar lentamente ante determinados eventos o experimentar oscilaciones inestables de una situación extrema a otra. Es vital que el sistema reaccione ante fallos o congestión (robustez), pero sin generar oscilaciones inestables donde el tráfico rebote entre nodos (estabilidad).
-
-Una técnica de encaminamiento implica cierto coste de procesamiento en cada nodo y, en ocasiones, también un coste en la transmisión, impidiéndose en ambos casos el funcionamiento eficiente de la red. 
+La \textbf{robustez} es la habilidad de la red para entregar paquetes incluso ante sobrecargas o fallos localizados, reaccionando sin pérdida de datos. No obstante, la robustez no debe comprometer la \textbf{estabilidad}: el sistema debe reaccionar ante cambios sin generar oscilaciones inestables donde el tráfico rebote indefinidamente entre nodos. Finalmente, un esquema eficiente debe minimizar el coste de procesamiento en los nodos y el ancho de banda consumido por los mensajes de control.
 
 \subsection{Elementos de diseño}
 
@@ -16,7 +14,12 @@ Con estos requisitos en mente vamos a evaluar los distintos elementos de diseño
 
 \subsubsection{Criterios de rendimiento}
 
-La elección de una ruta se fundamenta generalmente en algún criterio de rendimiento. El más simple consiste en elegir el camino con menor número de saltos (aquel que atraviesa el menor número de nodos) a través de la red. Una generalización del criterio de menor número de saltos lo constituye el encaminamiento de mínimo coste. En este caso se asocia un coste a cada enlace y, para cualesquiera dos estaciones conectadas, se elige aquella ruta a través de la red que implique el coste total mínimo. La asignación de los costes a los enlaces se hace en función de los objetivos de diseño; por ejemplo, el coste podría estar inversamente relacionado con la velocidad (es decir, a mayor velocidad menor coste) o con el retardo actual de la cola asociada al enlace.
+La elección de una ruta se basa en un criterio de rendimiento. El más simple es el número de saltos (menor cantidad de nodos atravesados). Una versión más sofisticada es el encaminamiento de mínimo coste, donde se asigna un peso a cada enlace basado en:
+\begin{itemize}
+    \item Velocidad de transmisión (a mayor velocidad, menor coste).
+    \item Retardo acumulado en las colas.
+    \item Costos administrativos o económicos.
+\end{itemize}
 
 \begin{figure}[H]
 	\centering
@@ -25,27 +28,28 @@ La elección de una ruta se fundamenta generalmente en algún criterio de rendim
 	\label{fig:grafico3}
 \end{figure}
 
+
 \subsubsection{Instante y lugar de decisión}
 
-Las decisiones de encaminamiento se realizan de acuerdo a criterio de rendimiento. Dos cuestiones importantes son el \textbf{instante temporal y el lugar en que se toma la decisión}.
+Dos cuestiones clave son el momento y el responsable de la decisión:
 
-El \textbf{instante de decisión} esta determinado por el hecho de que la decisión de encaminamiento se hace en base a un \textbf{paquete o a un circuito virtual}. Cuando la operación interna de la red se basa en datagramas, \textbf{la decisión de encaminamiento se toma de forma individual para cada paquete}. En el caso de circuitos virtuales internos, \textbf{la decisión sólo se realiza en el momento en que se establece un circuito virtual} ya que los demás paquetes siguen la misma ruta.
+\begin{itemize}
+    \item \textbf{Instante de decisión}: En redes de datagramas, la decisión se toma de forma individual para cada paquete. En redes de circuitos virtuales, se decide una única vez al establecer la sesión y todos los paquetes siguen esa ruta.
+    \item \textbf{Lugar de decisión}:
+    \begin{itemize}
+        \item \textbf{Distribuido}: Cada nodo selecciona el enlace de salida (más común y resiliente).
+        \item \textbf{Centralizado}: Un nodo central toma las decisiones.
+        \item \textbf{Desde el origen}: La estación emisora define la ruta completa.
+    \end{itemize}
+\end{itemize}
 
-El \textbf{lugar de decisión} hace referencia al nodo/s en la red responsables de la decisión de encaminamiento. El más común es el \textbf{encaminamiento distribuido}, cada nodo de la red tiene la responsabilidad de seleccionar un enlace de salida sobre el que llevar a cabo el envío de los paquetes a medida que éstos se reciben. En \textbf{encaminamiento centralizado}, la decisión se toma por parte de algún nodo designado al respecto. Una tercera opción es \textbf{encaminamiento desde el origen}, es la estación origen quien toma la decisión de encaminamiento, comunicándosela a la red.
+\subsubsection{Información de la red y tiempo de actualización}
 
-El instante y el lugar de decisión son variables de diseño independientes. En una red de datagramas, el paquete siguiente puede seguir una ruta diferente, determinada por cada nodo a lo largo del camino. En una red de circuitos virtuales, cada nodo recuerda la decisión de encaminamiento tomada cuando se estableció el circuito virtual, se limita a transmitir los paquetes sin tomar decisiones nuevas.
-
-\subsubsection{Fuente de información de la red y tiempo de actualización}
-
-La mayoría de los esquemas de encaminamiento requieren que las decisiones se tomen en base al conocimiento de la tipología de la red, carga y coste de los enlaces. Algunas estrategias, no hacen uso de ninguna información para la transmisión de los paquetes.
-
-En el encaminamiento distribuido, cada uno de los nodos hacen uso de información local, como el coste asociado a los distintos enlaces de salida; e información de los nodos directamente conectados, como la congestión que experimentan ellos.
-
-Finalmente, existen algoritmos de uso común que permiten al nodo obtener información de todos los nodos de una potencial ruta de interés. En encaminamiento centralizado, el nodo central hace uso generalmente de información procedente de todos los nodos.
-
-El \textbf{tiempo de actualización de la información}, es función de la fuente de información y de la estrategia de encaminamiento. Si no se usa información no existe actualización. Si sólo se utiliza información local, la actualización es continua, porque un nodo individual conoce siempre sus condiciones locales actuales. Para el resto de categorías de fuentes de información el tiempo de actualización depende de la estrategia de encaminamiento. Para  encaminamiento estático, la información no se actualiza nunca, para una técnica adaptable la actualización se lleva a cabo periódicamente a fin de posibilitar la adaptación de la decisión de encaminamiento.
-
-Cuanto mayor sea la información disponible y más frecuentemente se actualice ésta, más probable será que las decisiones de encaminamiento tomadas por la red sean buenas. Teniendo presente que la transmisión de esta información consume recursos de la red.
+La mayoría de los esquemas dependen del conocimiento de la topología y carga:
+\begin{itemize}
+    \item \textbf{Fuente de información}: Puede ser local (solo vecinos), de nodos en la ruta o global (toda la red).
+    \item \textbf{Tiempo de actualización}: En el encaminamiento estático, la información es fija. En técnicas adaptables, la actualización es periódica para responder a cambios en el tráfico, aunque esto consume recursos de red.
+\end{itemize}
 
 \subsection{Estrategias de encaminamiento}
 

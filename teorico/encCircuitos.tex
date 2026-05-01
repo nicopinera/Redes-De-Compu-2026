@@ -1,24 +1,29 @@
 \subsection{Conmutación de Circuitos}
 
-La conmutación de circuitos es una tecnología de red, tradicionalmente utilizada en la telefonía pública, donde se establece un camino de comunicación dedicado entre dos estaciones a través de los nodos de la red. Se utiliza el término "circuito" porque la comunicación implica la creación de una ruta física conectada (una secuencia de enlaces entre nodos) en la que, para cada enlace, se dedica un canal lógico de forma exclusiva a esa conexión específica. Esto conlleva varias características clave:
+La conmutación de circuitos es la tecnología tradicional de la red telefónica pública. En este esquema, se establece un camino de comunicación dedicado entre dos estaciones a través de los nodos de la red. Este vínculo físico o canal lógico se mantiene de forma exclusiva para esa conexión específica, lo que garantiza:
 
 \begin{itemize}
-	\item \textbf{Reserva de recursos}: Los recursos de transmisión y conmutación de la red se reservan únicamente para ese par de usuarios durante toda la conexión.
-	\item \textbf{Transparencia}: Una vez establecido el circuito, la red es "invisible" para los usuarios; parece como si estuvieran conectados de forma directa.
-	\item \textbf{Capacidad fija}: Los datos se transmiten a una velocidad constante y sin retardos adicionales, más allá del tiempo que tarda la señal en propagarse por los cables.
+	\item \textbf{Reserva de recursos}: El ancho de banda y la capacidad de conmutación se reservan íntegramente para el par de usuarios.
+	\item \textbf{Transparencia}: Una vez establecido el circuito, la red opera de forma invisible, permitiendo una transmisión continua sin retardos de procesamiento adicionales.
+	\item \textbf{Capacidad fija}: Los datos fluyen a una velocidad constante, limitada únicamente por el tiempo de propagación de la señal.
 \end{itemize}
 
-El encaminamiento en estas redes no ocurre paquete a paquete, sino que se divide en \textbf{tres} fases críticas:
+El encaminamiento en estas redes se gestiona en tres fases críticas:
 
 \begin{enumerate}
-	\item \textbf{Establecimiento del circuito}: Antes de enviar datos, se debe determinar y activar el camino extremo a extremo. Los nodos deben tener la "inteligencia" para realizar reservas de canales libres y establecer las rutas internas
-	\item \textbf{Transferencia de datos}: Una vez confirmada la conexión, la información fluye por el camino dedicado.
-	\item \textbf{Desconexión}: Al finalizar, se propagan señales a los nodos para liberar los recursos reservados y que estos puedan ser usados por otros usuarios
+	\item \textbf{Establecimiento del circuito}: Se determina y activa el camino de extremo a extremo, realizando reservas de canales en cada nodo intermedio.
+	\item \textbf{Transferencia de datos}: La información fluye libremente por el camino dedicado.
+	\item \textbf{Desconexión}: Se liberan los recursos reservados para que puedan ser utilizados por otros usuarios.
 \end{enumerate}
 
 \subsection{Encaminamiento Jerárquico (Estático)}
 
-Antes de enviar datos, se debe determinar y activar el camino extremo a extremo. Los nodos deben tener la "inteligencia" para realizar reservas de canales libres y establecer las rutas internas. En una red grande de conmutación de circuitos, muchas de las conexiones de circuitos necesitan una ruta que atraviese mas de un conmutador.
+En una red de conmutación de circuitos de gran escala, las conexiones suelen requerir una ruta que atraviese múltiples conmutadores. Para gestionar esto, la arquitectura de red debe equilibrar dos requisitos fundamentales:
+
+\begin{itemize}
+	\item \textbf{Eficiencia}: Consiste en minimizar la cantidad de equipos (conmutadores y enlaces) necesarios para gestionar la carga esperada. Esta carga, denominada \textbf{tráfico}, se define como el promedio de uso durante los periodos de mayor actividad.
+	\item \textbf{Flexibilidad}: Es la capacidad de la red para proporcionar un servicio aceptable incluso ante condiciones adversas, como fallos en nodos o picos inesperados de demanda.
+\end{itemize}
 
 \begin{figure}[H]
 	\centering
@@ -27,21 +32,24 @@ Antes de enviar datos, se debe determinar y activar el camino extremo a extremo.
 	\label{fig:grafico1}
 \end{figure}
 
-Existen \textbf{dos} requisitos fundamentales para la arquitectura de red que tienen efecto sobre la estrategia de encaminamiento. En primer lugar, esta la \textbf{eficiencia}, es deseable \textbf{minimizar la cantidad de equipos} (conmutadores y enlaces) en la red, teniendo en cuenta que debemos ser capaces de gestionar toda la carga esperada. Las necesidades de carga se expresan usualmente en términos de \textbf{trafico} lo cual se refiere a la carga promedio esperada durante los periodos de más actividad a lo largo del día. Es necesario ser capaz de gestionar esta cantidad de tráfico, gestionar esta carga con el menor equipamiento posible. Otro requisito es la \textbf{flexibilidad}, es deseable que la red proporcione un nivel razonable de servicio incluso bajo diversas circunstancias adversas.
+Tradicionalmente, la función de encaminamiento se ha basado en una estructura de \textbf{árbol o jerarquía}. Las rutas se establecen desde el emisor hacia un nodo común superior y luego descendiendo hacia el receptor. Aunque este esquema es simple de implementar, presenta limitaciones críticas: la eficiencia se ve comprometida al tener que dimensionar la red para picos de carga fijos, y la flexibilidad es escasa, ya que una estructura jerárquica rígida responde pobremente ante fallos en los niveles superiores del árbol.
 
-El aspecto clave de diseño que determina la naturaleza del compromiso entre eficiencia y flexibilidad es la \textbf{estrategia de encaminamiento}. La función de encaminamiento en redes de telecomunicaciones ha sido simple. Los conmutadores de una red se organizaban en una estructura en árbol o jerarquía, estableciéndose una ruta, comenzando en el emisor, hasta el primer nodo común, y después hasta el receptor. Para proporcionar cierta flexibilidad se incluían en el árbol enlaces de alta capacidad adicionales para conectar entre sí. La incorporación de enlaces de alta capacidad proporciona redundancia y capacidad extra, pero persisten las limitaciones de eficiencia y flexibilidad. Dado que este esquema no es capaz de adaptarse a condiciones cambiantes, la red debe diseñarse para dar servicio en condiciones de alta carga. En términos de flexibilidad, la estructura jerárquica fija con enlaces adicionales puede responder pobremente ante fallos.
+Para mitigar estas carencias, a menudo se añaden enlaces de alta capacidad fuera de la jerarquía estricta para aportar redundancia, aunque sin alcanzar la adaptabilidad de los esquemas dinámicos.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{img/arbol.jpg}
-	\caption{Topologia de árbol o jerárquica}
+	\caption{Topología de árbol o jerárquica}
 	\label{fig:grafico2}
 \end{figure}
 
-En un \textbf{esquema de encaminamiento dinámico} las decisiones de encaminamiento están influenciadas por las condiciones de tráfico actuales. Los nodos de conmutación de circuitos mantienen una relación de igual a igual entre sí, en lugar de una jerárquica como la presente en el esquema estático. \textbf{Todos los nodos están capacitados para realizar las mismas funciones}. Esta arquitectura de encaminamiento es más compleja y a la vez más flexible. Porque la arquitectura no proporciona una ruta o conjunto de rutas «natural» basándose en la estructura jerárquica, pero al mismo tiempo es más flexible debido a que hay más rutas alternativas.
+\subsection{Encaminamiento Alternativo y Dinámico}
 
-\subsection{Encaminamiento Alternativo (Dinamico)}
+A diferencia del modelo jerárquico, en un \textbf{esquema de encaminamiento dinámico} las decisiones se ven influenciadas por las condiciones de tráfico en tiempo real. En esta arquitectura, los nodos mantienen una relación de \textbf{igual a igual} (peer-to-peer), donde todos están capacitados para realizar las mismas funciones. Aunque esto aumenta la complejidad, proporciona una flexibilidad significativamente mayor al habilitar múltiples rutas alternativas.
 
-La base de los esquemas de \textbf{encaminamiento alternativo} reside en que las posibles rutas entre dos centrales finales se encuentran predefinidas, siendo responsabilidad del conmutador origen seleccionar el camino adecuado para cada llamada. \textbf{Cada conmutador dispone de un conjunto de rutas prefijadas}, en orden de preferencia, para cada destino; si existe una conexión directa entre dos conmutadores, ésta suele ser la elección preferida; si no está disponible se prueba con la siguiente en orden de preferencia. Las secuencias de encaminamiento (conjunto de rutas intentadas) reflejan un análisis basado en patrones de tráfico conocidos y se diseñan para optimizar la utilización de los recursos de la red.
+La base de estos esquemas reside en el \textbf{encaminamiento alternativo}, donde el conmutador de origen selecciona la mejor ruta de un conjunto predefinido para cada llamada. Habitualmente, cada nodo dispone de una lista de rutas prefijadas en orden de preferencia: si la ruta directa está congestionada o no disponible, se intenta con la siguiente opción. Dependiendo de la variabilidad de estas listas, distinguimos dos tipos:
 
-Si sólo se define una secuencia de encaminamiento, el esquema se conoce como \textbf{esquema de encaminamiento alternativo fijo}. Es más frecuente el uso de un esquema de encaminamiento alternativo dinámico, en el cual se utiliza un conjunto diferente de rutas preplanificadas en instantes distintos de tiempo, con objeto de aprovechar las distintas condiciones de tráfico en las diferentes franjas horarias y periodos de un día. La decisión de encaminamiento se basa tanto en el estado del tráfico actual como en patrones de tráfico conocidos.
+\begin{itemize}
+	\item \textbf{Encaminamiento alternativo fijo}: Se utiliza una única secuencia de rutas predefinida, sin cambios a lo largo del día.
+	\item \textbf{Encaminamiento alternativo dinámico}: Se emplean diferentes conjuntos de rutas según la franja horaria o el estado de la red. Esto permite aprovechar tanto los patrones de tráfico conocidos como las variaciones en el estado actual para optimizar el uso de los recursos globales.
+\end{itemize}
