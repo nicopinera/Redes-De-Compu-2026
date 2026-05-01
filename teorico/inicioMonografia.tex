@@ -1,27 +1,33 @@
-\documentclass[12pts, a4paper]{article}
+\documentclass[12pts, a4paper]{book}
 
 \input{librerias.tex}
 
 \begin{document}
 	
 	\input{portada.tex}
-	
-	\newpage
 	\tableofcontents
-	\newpage
 	
-	\section{Introducción}
-	\input{introduccion}
-	\newpage
-	
-	\section{Encaminamiento en redes de conmutación de circuitos}
-	\input{encCircuitos}
-	\newpage
-	
-	\section{Encaminamiento en redes de conmutación de paquetes}
-	\input{encPaquetes}
-	\newpage
-	
-	\section{Algoritmos de mínimo coste}
-	\input{algoritmosMinimoCoste}
+	\chapter{Fundamentos del Encaminamiento}	
+		\section{Introducción}
+		\input{introduccion}
+		
+		\section{Encaminamiento en redes de conmutación de circuitos}
+		\input{encCircuitos}
+		
+		\section{Encaminamiento en redes de conmutación de paquetes}
+		\input{encPaquetes}
+		
+		\section{Algoritmos de mínimo coste}
+		\input{algoritmosMinimoCoste}
+		
+	\chapter{Enrutamiento entre Sistemas Autónomos - BGP}
+		\section{Arquitectura de Enrutamiento en Internet}
+		\section{El Concepto de Sistema Autónomo (AS)}
+		\section{Protocolo de Pasarela Fronteriza (BGP)}
+		\section{Extensiones y Aspectos Económicos}
+	\chapter{Enrutamiento dentro de un Sistema Autónomo - IGPs}
+		\section{Rutas Interiores}
+		\section{Protocolo de Información de Enrutamiento (RIP)}
+		\section{Protocolo del Primer Camino más Corto (OSPF)}
+		\section{Otros Protocolos y Consideraciones}
 \end{document}

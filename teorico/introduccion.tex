@@ -1,5 +1,9 @@
 Un aspecto clave de diseño de las redes conmutadas es el relativo al encaminamiento. Esta función trata de encontrar rutas a través de la red entre pares de nodos finales comunicantes, de modo que la red se use de forma eficiente. Antes de comenzar con la monografia, revisemos los siguientes conceptos: Conmutación, Redes conmutadas y Encaminamiento.
 
+\subsection{Datagrama}
+
+Un datagrama es un tipo específico de paquete de datos que se trata de forma independiente dentro de una red de conmutación de paquetes, sin que exista una conexión previa establecida entre emisor y receptor. Cada datagrama lleva información de control suficiente en su cabecera para que la red pueda encaminarlo desde el origen hasta el destino por sí solo. Este término se asocia generalmente con servicios no orientados a conexión y de "mejor esfuerzo" (best-effort), como es el caso del protocolo IP o UDP
+
 \subsection{Conmutación}
 
 Es el proceso de establecer una conexión física o lógica entre dos puntos de una red para que puedan intercambiar datos. Es como el trabajo que hace un operador de trenes al mover las vías para que el vagón tome el camino correcto hacia su destino. Sin la conmutación, necesitaríamos un cable directo entre cada dispositivo del mundo, lo cual sería imposible.
@@ -16,3 +20,14 @@ Son redes en las que los datos, al viajar del emisor al receptor, pasan por una 
 \subsection{Encaminamiento}
 
 Es la inteligencia de la red. Mientras que la conmutación hace el trabajo de mover los datos, el encaminamiento es el proceso de seleccionar la mejor ruta a través de la red para que los datos lleguen a su destino final. Los dispositivos encargados de esto son los routers, que consultan tablas de rutas para decidir qué camino es el más rápido o el que está menos saturado en ese momento.
+
+La función del encaminamiento es encortar rutas a través de la red entre pares de nodos que desean comunicarse. Esta implementado en la capa de red o capa 3 del modelo OSI. Muchas conexiones necesitaran una ruta a traves de mas de un conmutador, la cual debe tener las siguientes características:
+
+\begin{itemize}
+	\item \textbf{Eficiencia}: usar el mínimo de equipamiento posible
+	\item \textbf{Flexibilidad}: debe proporcionar trafico razonable aun en condiciones adversas.
+\end{itemize}
+
+\subsection{Circuito Virtual}
+
+Un circuito virtual es una técnica de conmutación de paquetes en la que se establece una conexión lógica y una ruta predefinida a través de la red antes de que comience la transferencia real de datos. Aunque los datos siguen dividiéndose en paquetes, esta técnica emula el comportamiento de un circuito físico dedicado.

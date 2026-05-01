@@ -1,1 +1,47 @@
-Encaminamiento en redes de conmutacion de circuitos
+\subsection{Conmutación de Circuitos}
+
+La conmutación de circuitos es una tecnología de red, tradicionalmente utilizada en la telefonía pública, donde se establece un camino de comunicación dedicado entre dos estaciones a través de los nodos de la red. Se utiliza el término "circuito" porque la comunicación implica la creación de una ruta física conectada (una secuencia de enlaces entre nodos) en la que, para cada enlace, se dedica un canal lógico de forma exclusiva a esa conexión específica. Esto conlleva varias características clave:
+
+\begin{itemize}
+	\item \textbf{Reserva de recursos}: Los recursos de transmisión y conmutación de la red se reservan únicamente para ese par de usuarios durante toda la conexión.
+	\item \textbf{Transparencia}: Una vez establecido el circuito, la red es "invisible" para los usuarios; parece como si estuvieran conectados de forma directa.
+	\item \textbf{Capacidad fija}: Los datos se transmiten a una velocidad constante y sin retardos adicionales, más allá del tiempo que tarda la señal en propagarse por los cables.
+\end{itemize}
+
+El encaminamiento en estas redes no ocurre paquete a paquete, sino que se divide en \textbf{tres} fases críticas:
+
+\begin{enumerate}
+	\item \textbf{Establecimiento del circuito}: Antes de enviar datos, se debe determinar y activar el camino extremo a extremo. Los nodos deben tener la "inteligencia" para realizar reservas de canales libres y establecer las rutas internas
+	\item \textbf{Transferencia de datos}: Una vez confirmada la conexión, la información fluye por el camino dedicado.
+	\item \textbf{Desconexión}: Al finalizar, se propagan señales a los nodos para liberar los recursos reservados y que estos puedan ser usados por otros usuarios
+\end{enumerate}
+
+\subsection{Encaminamiento Jerárquico (Estático)}
+
+Antes de enviar datos, se debe determinar y activar el camino extremo a extremo. Los nodos deben tener la "inteligencia" para realizar reservas de canales libres y establecer las rutas internas. En una red grande de conmutación de circuitos, muchas de las conexiones de circuitos necesitan una ruta que atraviese mas de un conmutador.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img/Circuitos.png}
+	\caption{Red de conmutación de circuito}
+	\label{fig:grafico1}
+\end{figure}
+
+Existen \textbf{dos} requisitos fundamentales para la arquitectura de red que tienen efecto sobre la estrategia de encaminamiento. En primer lugar, esta la \textbf{eficiencia}, es deseable \textbf{minimizar la cantidad de equipos} (conmutadores y enlaces) en la red, teniendo en cuenta que debemos ser capaces de gestionar toda la carga esperada. Las necesidades de carga se expresan usualmente en términos de \textbf{trafico} lo cual se refiere a la carga promedio esperada durante los periodos de más actividad a lo largo del día. Es necesario ser capaz de gestionar esta cantidad de tráfico, gestionar esta carga con el menor equipamiento posible. Otro requisito es la \textbf{flexibilidad}, es deseable que la red proporcione un nivel razonable de servicio incluso bajo diversas circunstancias adversas.
+
+El aspecto clave de diseño que determina la naturaleza del compromiso entre eficiencia y flexibilidad es la \textbf{estrategia de encaminamiento}. La función de encaminamiento en redes de telecomunicaciones ha sido simple. Los conmutadores de una red se organizaban en una estructura en árbol o jerarquía, estableciéndose una ruta, comenzando en el emisor, hasta el primer nodo común, y después hasta el receptor. Para proporcionar cierta flexibilidad se incluían en el árbol enlaces de alta capacidad adicionales para conectar entre sí. La incorporación de enlaces de alta capacidad proporciona redundancia y capacidad extra, pero persisten las limitaciones de eficiencia y flexibilidad. Dado que este esquema no es capaz de adaptarse a condiciones cambiantes, la red debe diseñarse para dar servicio en condiciones de alta carga. En términos de flexibilidad, la estructura jerárquica fija con enlaces adicionales puede responder pobremente ante fallos.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/arbol.jpg}
+	\caption{Topologia de árbol o jerárquica}
+	\label{fig:grafico2}
+\end{figure}
+
+En un \textbf{esquema de encaminamiento dinámico} las decisiones de encaminamiento están influenciadas por las condiciones de tráfico actuales. Los nodos de conmutación de circuitos mantienen una relación de igual a igual entre sí, en lugar de una jerárquica como la presente en el esquema estático. \textbf{Todos los nodos están capacitados para realizar las mismas funciones}. Esta arquitectura de encaminamiento es más compleja y a la vez más flexible. Porque la arquitectura no proporciona una ruta o conjunto de rutas «natural» basándose en la estructura jerárquica, pero al mismo tiempo es más flexible debido a que hay más rutas alternativas.
+
+\subsection{Encaminamiento Alternativo (Dinamico)}
+
+La base de los esquemas de \textbf{encaminamiento alternativo} reside en que las posibles rutas entre dos centrales finales se encuentran predefinidas, siendo responsabilidad del conmutador origen seleccionar el camino adecuado para cada llamada. \textbf{Cada conmutador dispone de un conjunto de rutas prefijadas}, en orden de preferencia, para cada destino; si existe una conexión directa entre dos conmutadores, ésta suele ser la elección preferida; si no está disponible se prueba con la siguiente en orden de preferencia. Las secuencias de encaminamiento (conjunto de rutas intentadas) reflejan un análisis basado en patrones de tráfico conocidos y se diseñan para optimizar la utilización de los recursos de la red.
+
+Si sólo se define una secuencia de encaminamiento, el esquema se conoce como \textbf{esquema de encaminamiento alternativo fijo}. Es más frecuente el uso de un esquema de encaminamiento alternativo dinámico, en el cual se utiliza un conjunto diferente de rutas preplanificadas en instantes distintos de tiempo, con objeto de aprovechar las distintas condiciones de tráfico en las diferentes franjas horarias y periodos de un día. La decisión de encaminamiento se basa tanto en el estado del tráfico actual como en patrones de tráfico conocidos.
