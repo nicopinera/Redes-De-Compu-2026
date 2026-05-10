@@ -1,0 +1,116 @@
+El encaminamiento en redes de conmutación de paquetes es la función crítica encargada de determinar la ruta óptima a través de la red entre nodos de origen y destino. A diferencia de la conmutación de circuitos, donde se establece un camino físico o lógico dedicado, en la conmutación de paquetes la información se segmenta en unidades independientes denominadas paquetes.
+
+Cada paquete incluye una cabecera con información de control (como direcciones de origen y destino) y una carga útil con los datos del usuario. Esta arquitectura se basa en el principio de almacenamiento y retransmisión (\textit{store-and-forward}): cada nodo intermedio recibe el paquete íntegramente, lo almacena temporalmente para verificar su integridad y determinar el siguiente salto, y finalmente lo transmite hacia el siguiente nodo en la ruta.
+
+\subsection{Requisitos de la función de encaminamiento}
+
+Para que un protocolo de encaminamiento sea efectivo en un entorno de producción, debe satisfacer varios criterios fundamentales:
+
+\begin{itemize}
+    \item \textbf{Exactitud:} Los paquetes deben ser entregados a su destino correcto.
+    \item \textbf{Simplicidad:} El algoritmo debe ser lo suficientemente sencillo para ser implementado eficientemente sin consumir recursos excesivos de CPU o memoria en los nodos.
+    \item \textbf{Robustez:} Capacidad de la red para mantener la conectividad y entregar paquetes ante fallos de enlaces, nodos o condiciones de sobrecarga.
+    \item \textbf{Estabilidad:} El sistema debe converger rápidamente a rutas estables sin generar oscilaciones, donde el tráfico rebote indefinidamente entre nodos (bucles de encaminamiento).
+    \item \textbf{Imparcialidad y Optimización:} Debe equilibrar la carga de la red de manera equitativa, evitando que ciertos flujos monopolicen los recursos, mientras busca minimizar el coste global o maximizar el rendimiento.
+\end{itemize}
+
+\subsection{Elementos de diseño}
+
+El diseño de un esquema de encaminamiento implica tomar decisiones sobre diversos parámetros técnicos que determinan el comportamiento de la red.
+
+\subsubsection{Criterios de rendimiento}
+
+La selección de la mejor ruta depende de la métrica o criterio de rendimiento utilizado. Los más comunes incluyen:
+
+\begin{itemize}
+    \item \textbf{Número de saltos (\textit{hop count}):} El camino con menor cantidad de nodos intermedios. Es el más simple pero ignora la capacidad de los enlaces.
+    \item \textbf{Mínimo coste:} Se asigna un peso o coste a cada enlace. Este coste puede ser estático o basarse en variables como:
+    \begin{itemize}
+        \item Ancho de banda disponible (menor coste para mayor velocidad).
+        \item Retardo de propagación y encolamiento.
+        \item Costes administrativos, de seguridad o económicos.
+    \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/conPaqueteEj1.png}
+	\caption{Esquema de una red de conmutación de paquetes con múltiples rutas posibles.}
+	\label{fig:grafico3}
+\end{figure}
+
+\subsubsection{Instante y lugar de decisión}
+
+\begin{itemize}
+    \item \textbf{Instante de decisión}: 
+    \begin{itemize}
+        \item \textbf{Datagramas}: La decisión se toma de forma independiente para cada paquete, lo que permite reaccionar dinámicamente a cambios, aunque los paquetes de un mismo flujo pueden llegar desordenados.
+        \item \textbf{Circuitos virtuales}: Se establece una ruta fija durante la fase de configuración de la sesión; todos los paquetes siguen el mismo camino, garantizando el orden.
+    \end{itemize}
+    \item \textbf{Lugar de decisión}:
+    \begin{itemize}
+        \item \textbf{Distribuido}: Cada nodo de la red participa en la decisión de encaminamiento. Es el enfoque más robusto y utilizado en Internet.
+        \item \textbf{Centralizado}: Un nodo central con visión global dicta las rutas. Simplifica los nodos, pero crea un punto único de fallo.
+        \item \textbf{Desde el origen}: El nodo emisor especifica la ruta completa en la cabecera del paquete.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Información de la red y tiempo de actualización}
+
+La eficacia del encaminamiento depende de la frescura y el alcance de la información disponible:
+\begin{itemize}
+    \item \textbf{Fuente de información}: Puede ser local (conocimiento de vecinos inmediatos), de nodos adyacentes o global (conocimiento de la topología completa).
+    \item \textbf{Tiempo de actualización}: El encaminamiento \textbf{estático} utiliza tablas preconfiguradas manualmente. El encaminamiento \textbf{adaptable} (dinámico) actualiza la información periódicamente o ante cambios topológicos, permitiendo una mayor resiliencia.
+\end{itemize}
+
+\subsection{Estrategias de encaminamiento}
+
+\subsubsection{Encaminamiento Estático}
+
+En esta estrategia, las rutas son predefinidas y configuradas manualmente por un administrador. Una vez establecidas, no cambian a menos que se modifique la configuración.
+
+Para su diseño se suelen emplear algoritmos de mínimo coste sobre una topología teórica. Los resultados se consolidan en una \textbf{matriz de encaminamiento central}, que indica para cada par origen-destino el siguiente nodo en el camino. Cada nodo almacena únicamente su columna correspondiente en una tabla de encaminamiento local.
+
+\textbf{Ventajas:} Simplicidad técnica, nulo consumo de ancho de banda en mensajes de control y predictibilidad.
+\textbf{Desventajas:} Falta total de flexibilidad ante fallos o congestión. Si un enlace falla, el tráfico se pierde aunque existan rutas alternativas.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/matrizEncaminamiento.png}
+	\caption{Representación de una matriz de encaminamiento central para configuración estática.}
+	\label{fig:grafico4}
+\end{figure}
+
+\subsubsection{Inundación (\textit{Flooding})}
+
+Es una técnica reactiva que no requiere información previa de la red. Cuando un nodo recibe un paquete, lo retransmite por todos sus enlaces excepto por aquel por el que llegó.
+
+Para evitar que los paquetes circulen indefinidamente (bucles), se utiliza un campo de \textbf{Tiempo de Vida (TTL)} o cuenta de saltos. Este contador se decrementa en cada nodo; al llegar a cero, el paquete es descartado.
+
+\textbf{Propiedades clave:}
+\begin{itemize}
+	\item Se exploran simultáneamente todos los caminos posibles.
+	\item Se garantiza la entrega si existe al menos una ruta física.
+	\item Al menos una copia del paquete llegará por el camino más corto (en número de saltos).
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/inundacion.png}
+	\caption{Proceso de inundación de paquetes en una red mallada.}
+	\label{fig:grafico5}
+\end{figure}
+
+\subsubsection{Encaminamiento Aleatorio}
+
+Combina la sencillez de la inundación con una menor carga de tráfico. El nodo selecciona al azar un único enlace de salida para cada paquete entrante (excluyendo el de llegada). Es extremadamente robusto pero poco eficiente, ya que el paquete puede deambular por la red antes de alcanzar su destino.
+
+\subsubsection{Encaminamiento Adaptable (Dinámico)}
+
+Es el estándar en las redes modernas. Las decisiones de encaminamiento evolucionan en tiempo real según el estado de la red:
+\begin{itemize}
+	\item \textbf{Detección de fallos}: Reencaminamiento automático ante la caída de un enlace o nodo.
+	\item \textbf{Gestión de congestión}: Desvío de tráfico hacia zonas con menor carga.
+\end{itemize}
+
+Aunque mejora drásticamente la calidad de servicio percibida, introduce complejidad: los nodos deben intercambiar mensajes de estado (tráfico de control), lo que consume recursos, y algoritmos mal configurados pueden provocar inestabilidad u oscilaciones en la red.

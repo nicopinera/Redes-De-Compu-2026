@@ -1,0 +1,34 @@
+Un aspecto clave de diseño de las redes conmutadas es el relativo al encaminamiento. Esta función trata de encontrar rutas a través de la red entre pares de nodos finales comunicantes, de modo que la red se use de forma eficiente. Antes de comenzar con la monografia, revisemos los siguientes conceptos: Conmutación, Redes conmutadas y Encaminamiento.
+
+\subsection{Conmutación}
+
+La \textbf{conmutación} es el proceso de establecer una conexión, ya sea física o lógica, entre dos puntos de una red para permitir el intercambio de datos. Se puede analogar al trabajo de un operador ferroviario que mueve las vías para que un vagón tome el camino correcto. Sin este proceso, sería necesaria una conexión directa punto a punto entre cada dispositivo del mundo, lo cual resulta físicamente imposible a gran escala.
+
+\subsection{Redes conmutadas}
+
+Son redes en las que los datos, al viajar del emisor al receptor, atraviesan una serie de nodos intermedios conocidos como \textbf{conmutadores} (switches). En estas redes, el camino no es necesariamente fijo ni permanente; los recursos se comparten y se asignan dinámicamente según la necesidad de transmisión. Existen dos tipos principales:
+
+\begin{itemize}
+	\item \textbf{Conmutación de circuitos}: Se reserva un camino físico exclusivo para la duración de la sesión (ej. telefonía tradicional).
+	\item \textbf{Conmutación de paquetes}: La información se segmenta en trozos pequeños que pueden viajar por rutas distintas y compartir enlaces con otros flujos (ej. Internet).
+\end{itemize}
+
+\subsection{Encaminamiento}
+
+El \textbf{encaminamiento} (o enrutamiento) constituye la inteligencia de la red. Mientras que la conmutación se encarga del movimiento físico/lógico de los datos, el encaminamiento es el proceso de \textbf{selección de la mejor ruta} basándose en el estado actual de la red. Los dispositivos responsables de esta tarea son los \textbf{routers}, que consultan tablas de rutas para decidir el camino más rápido o menos saturado.
+
+Esta función se implementa en la capa de red (Capa 3) del modelo OSI. Dado que la mayoría de las conexiones requieren atravesar múltiples nodos, el diseño de estas rutas debe cumplir con dos requisitos críticos:
+
+\begin{itemize}
+	\item \textbf{Eficiencia}: Minimizar el uso de equipamiento y recursos de transmisión.
+	\item \textbf{Flexibilidad}: Capacidad de mantener un nivel de servicio aceptable incluso ante fallos o congestión.
+\end{itemize}
+
+\subsection{Unidades de datos: Datagramas y Circuitos Virtuales}
+
+En el contexto de la conmutación de paquetes, existen dos filosofías de transporte de datos:
+
+\begin{itemize}
+    \item \textbf{Datagrama}: Es un paquete manejado de forma independiente. Cada unidad lleva información de control suficiente en su cabecera para ser encaminada por sí sola, sin necesidad de una conexión previa. Se asocia a servicios de "mejor esfuerzo" (\textit{best-effort}), como IP o UDP.
+    \item \textbf{Circuito Virtual}: Es una técnica donde se establece una conexión lógica y una ruta predefinida antes de la transferencia de datos. Aunque la red sigue siendo de conmutación de paquetes, se emula el comportamiento de un circuito dedicado, asegurando que todos los paquetes de una sesión sigan el mismo camino.
+\end{itemize}

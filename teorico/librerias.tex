@@ -1,0 +1,30 @@
+% Librerias
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{amsmath, amssymb}
+\usepackage{siunitx}
+\sisetup{
+	output-decimal-marker = {,},  % Coma decimal
+	inter-unit-product = \cdot,   % Usa \cdot entre unidades
+	exponent-product = \cdot,	  % Usa \cdot entre mantisa y exponente
+	per-mode = symbol             % Formato de unidades (/)
+}
+
+\usepackage{tabularx}
+\usepackage{float}
+
+\usepackage{graphicx}
+
+\usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+\fancyhead{}
+\fancyhead[L]{UNC - FCEFyN} % Alineado a la izquierda
+\fancyhead[R]{Redes de Computadoras} % Alineado a la derecha
+\fancyfoot{}
+\fancyfoot[C]{\thepage}
