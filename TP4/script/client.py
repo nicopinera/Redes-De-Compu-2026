@@ -1,28 +1,39 @@
-import socket, json, time
+import socket, json
 from datetime import datetime
+from cryptography.fernet import Fernet
 
-# Definicion de IP y Puerto del servidor donde nos queremos conectar
-HOST = "127.0.0.1"
-PORT = 5000
+def cargar_clave():
+    with open("secret.key",'rb') as key:
+        return key.read()
 
-# Fecha y hora actual
-ahora = datetime.now()
+def main():
+    KEY = cargar_clave()
+    cifrado = Fernet(KEY)
+    print("Inicializando Cliente")
+    ip = input("Ingrese una IP:")
+    puerto = int(input("Ingrese un puerto:"))
+    # Se crea el socket de la familia internet, con protocolo TCP
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Mensaje a enviar
-message = {
-    "nombre_grupo": "Puerto 1337",
-    "payload": "Hola servidor",
-    "timestamp": ahora.isoformat()
-}
+    # Conexion de cliente con servidor
+    client.connect((ip, puerto))
 
-# Se crea el socket de la familia internet, con protocolo TCP
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    while True:
+        try:
+            msj=input("CLIENTE>")
+            msj_bytes = msj.encode("utf-8")
+            msj_cifrado = cifrado.encrypt(msj_bytes).decode("utf-8")
+            ahora = datetime.now()
+            message = {
+                "nombre_grupo": "Puerto 1337",
+                "payload": msj_cifrado,
+                "timestamp": ahora.isoformat()
+            }
+            client.sendall(json.dumps(message).encode("utf-8"))
+        except KeyboardInterrupt as e:
+            print("Saliendo del cliente")
+            client.close() # Cierre de conexion
+            break
 
-# Conexion de cliente con servidor
-client.connect((HOST, PORT))
-
-# Se convierte el diccionario a json
-client.sendall(json.dumps(message).encode("utf-8"))
-
-# Cierre de conexion
-client.close()
+if __name__=="__main__":
+    main()
