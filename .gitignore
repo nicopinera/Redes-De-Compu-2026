@@ -18,3 +18,4 @@ pc4_key
 *.bbl 
 *.fls 
 *.fdb_latexmk 
+*.key
