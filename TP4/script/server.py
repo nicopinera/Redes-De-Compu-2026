@@ -1,18 +1,22 @@
 import socket
 import threading
 import json
-from datetime import datetime
+from cryptography.fernet import Fernet
 
 HOST = "0.0.0.0"
 PORT = 5000
 BUFFER_SIZE = 1024
 
+def cargar_clave():
+    with open("secret.key",'rb') as key:
+        return key.read()
 
 def handle_client(client_socket, client_address):
     ip_address = client_address[0]
 
     print(f"Hola {ip_address},bienvenido al servidor!")
-
+    KEY = cargar_clave()
+    cifrado = Fernet(KEY)
     try:
         while True:
             data = client_socket.recv(BUFFER_SIZE)
@@ -33,7 +37,12 @@ def handle_client(client_socket, client_address):
                     and isinstance(message["payload"], str)
                 ):
                     print("---"*10)
-                    print(f"Grupo: {message['nombre_grupo']}\nMensaje: {message['payload']}\nInstante {datetime.now()}")
+                    payload_cifrado = message['payload'].encode("utf-8")
+                    try:
+                        payload_decifrada = cifrado.decrypt(payload_cifrado).decode("utf-8")
+                        print(f"Grupo: {message['nombre_grupo']}\nMensaje Cifrado: {message['payload']}\nMensaje Descifrado: {payload_decifrada}\nInstante {message['timestamp']}")
+                    except Exception:
+                        print("Error: Clave incorrecta")
                     print("---"*10)
                 else:
                     print(f"{ip_address}: Esperando mensaje en formato correcto")
