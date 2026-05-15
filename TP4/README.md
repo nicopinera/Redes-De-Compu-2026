@@ -95,6 +95,48 @@ La **serialización binaria** es el proceso de convertir objetos complejos de pr
 - Ilegibilidad: Si abres un archivo binario, verás símbolos extraños. Necesitas herramientas especiales para leerlo.
 - Acoplamiento: A veces, tanto el emisor como el receptor necesitan conocer el esquema exacto de antemano para poder interpretar los bytes.
 
+## Servidor TCP
+
+Para levantar el servidor TCP, creamos una imagen docker que contiene nuestro script de servidor y esta escuchando en el puerto 5000. La misma se encuentra en [Imagen Docker](/TP4/script/Dockerfile). Se puede ejecutar realizando los siguientes comandos:
+
+```bash
+# Entramos a la carpeta que contiene el Makefile
+cd TP4/script
+
+# Consutrimos la imagen a partir de nuestro Dockerfile
+make build
+
+# Ejecutamos el contenedor
+make run
+
+# Revisamos los logs para ver la interaccion con el mismo
+make logs
+
+# Limpieza final
+make clean
+```
+
+Se genero el siguiente json con la informacion a enviar via packet sender:
+
+```json
+{
+    "nombre_grupo": "Puerto 1337",
+    "payload": "Hola servidor"
+}
+```
+
+Se realizo la prueba primero enviando a un servidor local:
+
+![Packet Sender Local](https://github.com/user-attachments/assets/b47defea-f064-4638-bf83-77e45aea3174)
+
+![Packet Sender Local 2](https://github.com/user-attachments/assets/546f92f4-6af0-4578-a4b3-06894ff9312c)
+
+![Recepcion Local](https://github.com/user-attachments/assets/80f8d20f-810a-46bd-91a4-f404526cbcb7)
+
+Y en segunda instancia se envio por packet sender el mismo mensaje pero a nuestro contenedor docker:
+
+![Recepcion Docker](https://github.com/user-attachments/assets/f99055e0-dfba-41f4-9f3e-6067189222d0)
+
 ---
 
 ## Conclusiones
