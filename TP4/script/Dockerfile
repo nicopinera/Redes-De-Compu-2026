@@ -4,7 +4,9 @@ FROM python:alpine
 # Se crea la carpeta de trabajo a partir de ahora
 WORKDIR /app
 
-COPY server.py .
+RUN pip install cryptography
+
+COPY server.py secret.key /app/
 
 # Puerto Expuesto
 EXPOSE 5000
