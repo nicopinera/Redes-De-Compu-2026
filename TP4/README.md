@@ -77,6 +77,27 @@ La **serialización basada en texto** es el proceso de convertir estructuras de 
 
 ![YAML](https://github.com/user-attachments/assets/9394989a-f6b5-4e7d-898c-8966035cbeef)
 
+#### Ejemplo:
+
+Por ejemplo si quisiéramos transmitir el siguiente código en python:
+
+```python
+sesion_usuario = {
+    "id_usuario": 4589,
+    "nombre": "Elena",
+    "roles": ["admin", "developer"],
+    "activo": True
+}
+```
+
+Primero debemos serializarlo por ejemplo en formato JSON, y nos quedaria algo como esto:
+
+```JSON
+{"id_usuario": 4589, "nombre": "Elena", "roles": ["admin", "developer"], "activo": true}
+```
+
+Ahora tenemos un secuencia de caracteres (serialización en texto plano) que puede ser transmitida y posteriormente en el destino ser reconstruida.
+
 ### Serialización Binaria
 
 La **serialización binaria** convierte objetos en una secuencia lineal de bytes optimizada para el almacenamiento o la transmisión. Aunque no es legible para humanos, es significativamente más eficiente en términos de tamaño y velocidad de procesamiento.
@@ -96,6 +117,13 @@ La **serialización binaria** convierte objetos en una secuencia lineal de bytes
 
 - **Ilegibilidad**: La inspección directa de los datos requiere herramientas especializadas.
 - **Acoplamiento**: El emisor y el receptor deben compartir el esquema exacto de antemano.
+
+#### Ejemplo
+
+Por ejemplo supongamos que queremos enviar el siguiente numero: 4294967295.
+
+- Si lo enviamos como texto, estamos enviando 10 caracteres (**10 bytes**).
+- Si utilizamos **serialization binaria**, el numero se representa en binario como: 11111111 11111111 11111111 11111111. En este caso estariamos enviando **4 bytes**, optimizando el tamaño del dato a enviar y pudiendo ser reconstruido en el destino.
 
 ## Servidor TCP
 
