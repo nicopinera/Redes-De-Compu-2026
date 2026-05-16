@@ -217,3 +217,6 @@ A través del desarrollo de este trabajo práctico, se ha evidenciado que la ele
 ---
 
 ## Referencias
+
+- [Documentación de FERNET en python](https://cryptography.io/en/latest/fernet/)
+- [Wikipedia: AES](https://es.wikipedia.org/wiki/Advanced_Encryption_Standard)
