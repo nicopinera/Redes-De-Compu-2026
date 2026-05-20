@@ -6,7 +6,7 @@ pc4_key
 *.aux
 
 # Archivos de salida y binarios de latex
-*.pdf
+inicioMonografia.pdf
 *.aux 
 *.log 
 *.synctex.gz 
@@ -18,3 +18,4 @@ pc4_key
 *.bbl 
 *.fls 
 *.fdb_latexmk 
+*.key
