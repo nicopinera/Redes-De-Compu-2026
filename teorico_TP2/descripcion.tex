@@ -1,0 +1,26 @@
+\documentclass[12pts, a4paper]{book}
+
+\input{librerias.tex}
+
+\begin{document}
+	
+	\section{Descripción de trabajo}
+	
+	\subsection{Marco teórico}
+	
+	Los centros de datos constituyen hoy el núcleo operativo de la infraestructura digital moderna. Desde el almacenamiento masivo de información hasta la provisión de servicios en la nube, su correcto funcionamiento depende en gran medida de las tecnologías de red que los sostienen. A diferencia de las redes de propósito general, las redes internas de un datacenter están diseñadas para satisfacer exigencias extremas de rendimiento, disponibilidad, escalabilidad y seguridad, lo que las convierte en un campo de estudio técnicamente rico y de relevancia práctica inmediata.
+	
+	\subsection{Propuesta}
+	
+	El presente trabajo propone un recorrido por cuatro tecnologías y protocolos fundamentales que estructuran la vida interna y la proyección externa de un centro de datos contemporáneo. 
+	
+	En primer lugar, se aborda la Red de Área de Almacenamiento (SAN) y, particularmente, el Canal de Fibra como tecnología de interconexión de alta velocidad entre servidores y sistemas de almacenamiento masivo. Su análisis permite comprender cómo los centros de datos resuelven el cuello de botella que representa el acceso al almacenamiento cuando se opera a gran escala, y en qué medida esta solución supera a las arquitecturas tradicionales basadas en servidores de archivos.
+	
+	En segundo lugar, se examina el protocolo SNMP (Simple Network Management Protocol) junto con las Bases de Datos de Información de Gestión (MIB), herramientas esenciales para la monitorización y gestión de la red. La recolección automatizada de estadísticas de carga en clusters de servidores no es un lujo sino una necesidad operativa: sin ella, la detección temprana de fallos, la planificación de capacidad y la garantía de niveles de servicio se vuelven tareas prácticamente imposibles.
+	
+	En tercer lugar, se estudia la implementación de Redes Superpuestas (Overlay Networks) y Redes Privadas Virtuales (VPN) como mecanismo para interconectar sedes geográficamente distribuidas de un mismo datacenter o de clientes distintos. Este tema introduce la problemática del multitenancy, es decir, la necesidad de garantizar aislamiento y confidencialidad del tráfico entre múltiples inquilinos que comparten una infraestructura física común, un desafío central en los modelos de nube pública e híbrida.
+	
+	Finalmente, se analiza el protocolo NFS (Network File System), cuya vigencia resulta sorprendente dado su origen en la década de 1980. Su capacidad para ofrecer acceso transparente a sistemas de archivos remotos lo mantiene como una solución relevante en entornos donde la simplicidad de implementación y la interoperabilidad entre sistemas heterogéneos son prioritarias.
+	
+	La elección de estos cuatro temas no es arbitraria. Juntos cubren las dimensiones más críticas de la infraestructura de red de un datacenter: el almacenamiento de alto rendimiento, la gestión y monitorización, la seguridad y el aislamiento del tráfico, y el acceso compartido a recursos. El hilo conductor que los une es la pregunta por cómo las redes hacen posible que un datacenter funcione como un sistema coherente, eficiente y confiable, y no como una mera colección de servidores físicamente próximos.
+\end{document}
