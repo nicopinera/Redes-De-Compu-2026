@@ -31,6 +31,13 @@ Una SAN, Storage Area Network (Red de Área de Almacenamiento), es una red de al
 
 La SAN se caracteriza por operar a nivel de bloques, lo que significa que divide los datos en volúmenes organizados arbitrariamente y los servidores perciben el espacio de disco de la SAN como si fuera su propio disco duro físico. Esta característica es fundamental, ya que permite que los sistemas operativos y las aplicaciones apliquen sus propios sistemas de archivos sobre los bloques de almacenamiento proporcionados por la SAN.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{img/san1.png}
+	\caption{SAN}
+	\label{fig:san1}
+\end{figure}
+
 \subsection{Características técnicas de una SAN}
 
 La infraestructura de una SAN utiliza protocolos exclusivos diseñados específicamente para almacenamiento, siendo los más comunes el \textbf{Fibre Channel} y el \textbf{iSCSI}. El \textbf{Fibre Channel} es un protocolo de alta velocidad que opera a través de fibra óptica, mientras que \textbf{iSCSI} permite transportar comandos SCSI a través de redes TCP/IP convencionales, ofreciendo una alternativa más económica.
@@ -42,6 +49,13 @@ La capacidad de escalabilidad es prácticamente ilimitada, permitiendo agregar d
 Desde el punto de vista del rendimiento, la SAN ofrece capacidades superiores con alta producción y baja latencia, lo que la convierte en la opción preferida para aplicaciones críticas que requieren acceso rápido y constante a los datos, como bases de datos, servidores de correo y sistemas de virtualización.
 
 \subsection{Diferencias fundamentales entre SAN, NAS y DAS}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{img/san2.png}
+	\caption{DAS - NAS - SAN}
+	\label{fig:san2}
+\end{figure}
 
 \subsubsection{Nivel de acceso a los datos}
 
@@ -80,6 +94,13 @@ El NAS ofrece rendimiento medio, con latencias mayores comparadas con la SAN deb
 \subsection{Arquitectura general de una SAN}
 
 La arquitectura de una SAN se compone de \text{tres capas} fundamentales que trabajan de manera integrada: la capa de host, la capa de fabric (estructura) y la capa de almacenamiento. Esta estructura en capas permite una separación clara de funciones, facilitando la gestión, la escalabilidad y la resolución de problemas en la red de almacenamiento. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{img/san3.png}
+	\caption{Arquitectura de una SAN}
+	\label{fig:san3}
+\end{figure}
 
 \subsubsection{Capa de Host}
 
