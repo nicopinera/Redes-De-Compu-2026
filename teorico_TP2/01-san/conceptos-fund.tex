@@ -18,7 +18,7 @@ A pesar de sus limitaciones, el DAS presenta ventajas significativas en término
 
 \subsubsection{Almacenamiento Conectado a la Red (NAS)}
 
-El\textbf{ NAS (Network Attached Storage o Almacenamiento Conectado a la Red)} es un dispositivo de almacenamiento especializado que se conecta a la red existente de una organización mediante el protocolo TCP/IP. A diferencia de la SAN, el NAS \textbf{opera a nivel de archivos}, lo que significa que cuenta con su propio sistema operativo y sistema de archivos, y proporciona acceso a los datos a través de protocolos de comparte de archivos como \textbf{CIFS/SMB para sistemas Windows o NFS para sistemas UNIX/Linux}.
+El \textbf{NAS (Network Attached Storage o Almacenamiento Conectado a la Red)} es un dispositivo de almacenamiento especializado que se conecta a la red existente de una organización mediante el protocolo TCP/IP. A diferencia de la SAN, el NAS \textbf{opera a nivel de archivos}, lo que significa que cuenta con su propio sistema operativo y sistema de archivos, y proporciona acceso a los datos a través de protocolos de compartición de archivos como \textbf{CIFS/SMB para sistemas Windows o NFS para sistemas UNIX/Linux}.
 
 El NAS funciona esencialmente como un servidor de archivos dedicado. El dispositivo NAS contiene su propio sistema operativo optimizado para la gestión de archivos y proporciona servicios de almacenamiento a múltiples clientes simultáneamente a través de la red corporativa existente. Esto significa que no requiere una infraestructura de red separada, ya que comparte la misma red utilizada por los usuarios para otras tareas.
 
@@ -44,9 +44,9 @@ La infraestructura de una SAN utiliza protocolos exclusivos diseñados específi
 
 Una característica distintiva de la SAN es que cuenta con una infraestructura de red completamente independiente y separada de la red de datos convencional. Esto incluye switches, cableado y tarjetas de interfaz de red dedicados exclusivamente al tráfico de almacenamiento. La separación del tráfico de almacenamiento del tráfico de usuarios resulta en mayor rendimiento y menor latencia, ya que el tráfico intensivo de E/S de almacenamiento no compite con el tráfico regular de la red.
 
-La capacidad de escalabilidad es prácticamente ilimitada, permitiendo agregar discos y arreglos de almacenamiento según sea necesario, llegando a manejar miles de terabytes de información. Esta característica la hace ideal para organizaciones en crecimiento que requieren flexibilidad para expandir su capacidad de almacenamiento sin interrumper operaciones.
+La capacidad de escalabilidad es prácticamente ilimitada, permitiendo agregar discos y arreglos de almacenamiento según sea necesario, llegando a manejar miles de terabytes de información. Esta característica la hace ideal para organizaciones en crecimiento que requieren flexibilidad para expandir su capacidad de almacenamiento sin interrumpir operaciones.
 
-Desde el punto de vista del rendimiento, la SAN ofrece capacidades superiores con alta producción y baja latencia, lo que la convierte en la opción preferida para aplicaciones críticas que requieren acceso rápido y constante a los datos, como bases de datos, servidores de correo y sistemas de virtualización.
+Desde el punto de vista del rendimiento, la SAN ofrece capacidades superiores con alto rendimiento y baja latencia, lo que la convierte en la opción preferida para aplicaciones críticas que requieren acceso rápido y constante a los datos, como bases de datos, servidores de correo y sistemas de virtualización.
 
 \subsection{Diferencias fundamentales entre SAN, NAS y DAS}
 
@@ -177,7 +177,3 @@ El objetivo principal de FCoE es consolidar las redes de almacenamiento y redes 
 En términos de rendimiento, FCoE puede ofrecer rendimiento similar a Fibre Channel nativo, ya que utiliza el mismo protocolo de capas superiores. Sin embargo, requiere una infraestructura Ethernet que soporte Data Center Bridging (DCB), un conjunto de extensiones a Ethernet que proporciona entrega sin pérdida de paquetes y priorización de tráfico. Sin DCB, FCoE no puede funcionar correctamente porque la pérdida de paquetes Ethernet no es aceptable para el tráfico de Fibre Channel.
 
 FCoE presenta ventajas interesantes pero también desafíos significativos. La consolidación de redes reduce el costo y la complejidad física del centro de datos. Sin embargo, la tecnología es más compleja de implementar y gestionar, requiriendo conocimientos tanto de Fibre Channel como de Ethernet avanzado. Además, FCoE ha encontrado adopción limitada en el mercado, ya que muchas organizaciones han optado directamente por iSCSI para redes basadas en Ethernet o han permanecido con FC tradicional para máximo rendimiento.
-
-El ecosistema de FCoE es menos maduro que los de FC e iSCSI. Hay menos proveedores que ofrecen productos FCoE, menos opciones de hardware y menos personal con experiencia en la tecnología. Esto puede resultar en desafíos de compatibilidad y menor competitividad en precios.
-
-FCoE es más adecuado para centros de datos grandes que ya utilizan Fibre Channel pero quieren consolidar su infraestructura de red, o para nuevas implementaciones que quieren la fiabilidad de Fibre Channel con la flexibilidad de Ethernet. Es particularmente atractivo en entornos de virtualización densa donde la reducción de adaptadores y cables en cada servidor es valiosa.
