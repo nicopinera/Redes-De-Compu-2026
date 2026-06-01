@@ -1,0 +1,18 @@
+
+El ecosistema de redes overlay y virtualización de red continúa evolucionando, impulsado por la adopción masiva de contenedores, arquitecturas multi-nube y nuevas demandas de rendimiento y seguridad.
+
+\subsection{Consolidación de EVPN-VXLAN y fabric de datacenter}
+
+EVPN-VXLAN se ha establecido como el estándar de facto para la construcción de fabrics de datacenter modernos. Su adopción continúa creciendo a medida que los fabricantes de hardware y plataformas de virtualización consolidan el soporte nativo, desplazando progresivamente arquitecturas anteriores basadas en Spanning Tree Protocol (STP) o extensiones propietarias de capa 2. La tendencia apunta hacia fabrics de datacenter completamente automatizados, donde la incorporación de nuevos nodos, la migración de cargas de trabajo y la modificación de políticas de segmentación se gestionan de forma programática sin intervención manual.
+
+\subsection{Redes basadas en eBPF}
+
+Una de las tendencias más significativas en redes de contenedores es el uso de eBPF (\textit{Extended Berkeley Packet Filter}) como base para la implementación de funciones de red. eBPF permite ejecutar programas en el kernel del sistema operativo de forma segura y eficiente, posibilitando el procesamiento de tráfico de red a alta velocidad sin necesidad de pasar por el espacio de usuario. Herramientas como Cilium aprovechan eBPF para implementar políticas de red, balanceo de carga y observabilidad con menor overhead que los enfoques tradicionales basados en iptables o túneles overlay convencionales, lo que la convierte en una opción creciente para entornos Kubernetes de alto rendimiento.
+
+\subsection{Networking multi-nube}
+
+La adopción de infraestructuras que combinan nubes públicas de múltiples proveedores con datacenters privados introduce nuevos desafíos de conectividad. Las redes overlay se extienden ahora más allá del datacenter para proporcionar conectividad consistente entre entornos on-premise y proveedores cloud como AWS, Azure o GCP. Soluciones como SD-WAN de nueva generación, brokers de conectividad multi-nube y extensiones de EVPN hacia entornos cloud buscan unificar la gestión y el direccionamiento en entornos distribuidos heterogéneos.
+
+\subsection{Zero Trust y microsegmentación a gran escala}
+
+La adopción del modelo \textit{Zero Trust} continúa ganando tracción en infraestructuras de datacenter. La combinación de microsegmentación basada en identidad de carga de trabajo —en lugar de segmentación por IP o VLAN— con verificación continua de autenticación y cifrado end-to-end representa la dirección hacia la que evoluciona la seguridad en redes overlay modernas. Plataformas como VMware NSX-T y Cilium implementan este modelo aplicando políticas de seguridad directamente en el hipervisor o en el kernel, eliminando la dependencia de dispositivos de seguridad perimetrales y permitiendo que las políticas sigan a las cargas de trabajo independientemente de su ubicación física o virtual.

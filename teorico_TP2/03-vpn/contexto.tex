@@ -1,0 +1,32 @@
+
+Los protocolos y mecanismos de overlay descritos requieren, para operar a escala de datacenter, una capa de gestión capaz de configurarlos, orquestarlos y adaptarlos dinámicamente. Esta capa es la que proveen SDN y NFV, dos paradigmas que transformaron la forma en que se diseña y opera la red en infraestructuras modernas.
+
+\subsection{SDN: gestión programática del plano de control}
+
+SDN (\textit{Software-Defined Networking}) separa explícitamente el plano de control del plano de datos, concentrando la lógica de decisión en un \textit{controlador SDN} centralizado. El controlador se comunica con switches, routers y firewalls virtuales mediante protocolos como OpenFlow, NETCONF o BGP, instalando reglas de forwarding y políticas de seguridad de forma programática. Desde la perspectiva de las redes overlay, el controlador SDN es la implementación del plano de control global: orquesta VTEPs, distribuye información de reachability entre segmentos virtuales, automatiza microsegmentación y gestiona redes virtuales sobre la infraestructura física.
+
+La Tabla~\ref{tab:controladores} resume los principales controladores SDN utilizados en datacenters.
+
+\begin{table}[H]
+\centering
+\caption{Principales controladores SDN}
+\label{tab:controladores}
+\begin{tabular}{llll}
+\toprule
+\textbf{Controlador} & \textbf{Tipo} & \textbf{Orientación} & \textbf{Ecosistema típico} \\
+\midrule
+OpenDaylight & Open source & Uso general / NFV      & OpenStack, sin vendor lock-in \\
+ONOS         & Open source & Carrier-grade / WAN    & Operadores, SD-WAN            \\
+VMware NSX-T & Propietario & DC virtualizado        & vSphere, multi-nube           \\
+Cisco ACI    & Propietario & App-centric / L4--L7   & DC empresarial, hardware Cisco \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{NFV: virtualización de funciones de red}
+
+NFV (\textit{Network Functions Virtualization}) virtualiza los propios componentes de red: en lugar de implementar routers, firewalls o balanceadores de carga en hardware propietario dedicado, NFV los despliega como software —VNF, \textit{Virtualized Network Functions}— sobre servidores estándar. La arquitectura NFV consta de tres capas: las VNF (funciones de red como software), la NFVi (\textit{NFV Infrastructure}: cómputo, almacenamiento y red sobre hipervisor) y MANO (\textit{Management, Automation and Network Orchestration}), que gestiona el ciclo de vida de las VNF. SDN y NFV son complementarios: NFV proporciona la infraestructura virtualizada sobre la que se ejecutan las funciones de red, mientras que SDN aporta el plano de control programable que las orquesta.
+
+\subsection{Integración con plataformas de orquestación}
+
+La utilidad práctica de SDN y NFV se realiza completamente al integrarse con plataformas de orquestación. \textbf{OpenStack Neutron} es el componente de networking de OpenStack que gestiona la creación de redes virtuales, túneles VXLAN, routers, firewalls y VPNs, comunicándose con controladores SDN mediante plugins ML2 (\textit{Modular Layer 2}). Para entornos de contenedores, \textbf{Kubernetes} delega la implementación de red en plugins CNI (\textit{Container Network Interface}) —como Calico, Flannel o Cilium— que implementan distintas estrategias de conectividad entre pods (overlay, enrutamiento directo o híbrido) de forma independiente del entorno subyacente. Esta integración permite que las redes virtuales se aprovisionen automáticamente, las políticas de seguridad se apliquen de forma centralizada y la conectividad entre VMs, contenedores y servicios se mantenga consistente en entornos multi-tenant y multi-nube.

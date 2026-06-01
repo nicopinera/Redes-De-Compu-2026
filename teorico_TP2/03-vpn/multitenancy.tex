@@ -1,0 +1,20 @@
+
+\subsection{El desafío del multitenancy}
+
+El \textit{multitenancy} es el modelo arquitectónico mediante el cual múltiples clientes, organizaciones o aplicaciones —denominados \textit{tenants}— comparten una misma infraestructura física manteniendo entornos lógicamente aislados entre sí, incluso cuando utilizan espacios de direccionamiento IP superpuestos. Este modelo es fundamental para la viabilidad económica de los servicios cloud, ya que la compartición de infraestructura reduce costos y mejora la utilización de recursos. Sin embargo, exige garantizar aislamiento, segmentación y confidencialidad del tráfico dentro de una infraestructura físicamente compartida.
+
+\subsection{De las VLANs a VXLAN: evolución del aislamiento de red}
+
+El mecanismo tradicional de aislamiento son las VLANs, que segmentan una infraestructura física en dominios de broadcast independientes mediante identificadores de 12 bits (IEEE 802.1Q, máximo $\approx$4.096 VLANs). Esta capacidad resulta insuficiente en entornos cloud donde miles de clientes deben coexistir simultáneamente, y su dependencia de la topología física de capa 2 dificulta la movilidad de cargas de trabajo. VXLAN resuelve ambas limitaciones: su VNI de 24 bits permite más de 16 millones de segmentos virtuales y desacopla la red lógica de la infraestructura subyacente.
+
+\subsection{VRF: aislamiento en la capa de enrutamiento}
+
+El aislamiento completo entre tenants requiere también separación en la capa de enrutamiento. VRF (\textit{Virtual Routing and Forwarding}) permite mantener múltiples tablas de ruteo independientes dentro de un mismo dispositivo, cada una con sus propias rutas, interfaces y políticas de forwarding. Así, dos tenants pueden emplear simultáneamente la red 10.0.0.0/24 sin conflicto, ya que cada uno es encaminado dentro de su propia instancia de routing aislada. VXLAN y VRF se complementan de forma natural: el primero proporciona segmentación de capa 2 con identificadores de red virtual, el segundo garantiza aislamiento de capa 3.
+
+\subsection{Microsegmentación}
+
+Más allá del aislamiento entre tenants, la microsegmentación permite aplicar políticas de seguridad a nivel de cargas de trabajo individuales, incluso dentro de un mismo segmento lógico. En lugar de asumir confianza implícita dentro de una misma red virtual, se establecen reglas que permiten únicamente las comunicaciones explícitamente autorizadas entre máquinas virtuales, contenedores o servicios. Este enfoque reduce el riesgo de movimiento lateral ante comprometimiento de algún componente. Plataformas como VMware NSX y Cisco ACI implementan microsegmentación mediante políticas definidas por software, de forma dinámica y centralizada.
+
+\subsection{Aislamiento lógico y confidencialidad}
+
+Un aspecto frecuentemente subestimado es la distinción entre \textit{aislamiento lógico} y \textit{confidencialidad}. VXLAN, VRF y microsegmentación evitan que tenants accedan al tráfico ajeno en condiciones normales de operación, pero no cifran el contenido: los paquetes continúan compartiendo infraestructura física y circulan sin cifrado nativo. Cuando se requiere confidencialidad —especialmente en comunicaciones que atraviesan redes compartidas o no confiables— es necesario incorporar mecanismos adicionales, como VPNs site-to-site basadas en IPsec. En consecuencia, el aislamiento lógico y el cifrado son capas complementarias, no equivalentes.

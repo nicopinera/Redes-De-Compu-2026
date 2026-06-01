@@ -1,0 +1,32 @@
+
+\subsection{Redes overlay y underlay}
+
+Una red overlay es una red lógica construida ``encima'' de otra red existente, denominada \textit{underlay}. La overlay abstrae la infraestructura física y establece conectividad virtual entre nodos mediante encapsulación de tráfico; la underlay transporta esos paquetes encapsulados sin necesidad de comprender la lógica interna de la red virtual que lleva.
+
+La red Tor es un ejemplo cotidiano: opera como red de anonimato montada sobre Internet convencional, donde la underlay es la pila TCP/IP estándar y la overlay gestiona circuitos lógicos con encapsulación criptográfica en capas. Esta separación entre red ``real'' y red ``lógica'' es precisamente el principio que las redes overlay trasladan al ámbito de los datacenters.
+
+\subsection{El principio de encapsulación}
+
+El mecanismo que hace posible construir una overlay sin modificar la infraestructura subyacente es la encapsulación: el tráfico de la red virtual se ``envuelve'' dentro de paquetes válidos de la underlay, de modo que routers y switches físicos puedan transportarlos utilizando únicamente las direcciones externas, sin interpretar el contenido lógico encapsulado.
+
+Esta opacidad es deliberada: un dispositivo de la underlay no necesita conocer la topología virtual ni el esquema de direccionamiento de las redes overlay que transporta. Solo precisa saber cómo entregar el paquete encapsulado al endpoint físico correspondiente, garantizando que la red virtual pueda evolucionar, reconfigurar o escalar de forma independiente a la infraestructura física.
+
+\subsection{Plano de control y plano de datos}
+
+En toda red overlay conviene distinguir dos planos funcionales. El \textit{plano de control} mantiene y distribuye la información necesaria para la conectividad lógica: mapeos entre direcciones virtuales y físicas, pertenencia de endpoints a redes virtuales y políticas de segmentación. El \textit{plano de datos} ejecuta esas decisiones: encapsula el tráfico, lo reenvía a través de la underlay y lo desencapsula en el destino. La separación responde a una distinción fundamental: \textit{decidir} cómo debe circular el tráfico frente a \textit{ejecutar} ese transporte.
+
+Retomando el ejemplo de Tor: su plano de control descubre nodos disponibles, selecciona relays, construye circuitos lógicos y negocia parámetros criptográficos; su plano de datos encapsula los datos en capas sucesivas y los reenvía a través de los circuitos ya establecidos, sin recalcular la ruta en cada paquete.
+
+\subsection{Ventajas y casos de uso}
+
+Las redes overlay ofrecen tres ventajas estructurales que explican su predominancia en la infraestructura digital moderna:
+
+\begin{enumerate}
+    \item La \textbf{independencia del hardware} permite mantener y modificar la organización lógica de redes virtuales y esquemas de direccionamiento sin depender de cambios en la disposición física de switches, routers o enlaces. Migrar cargas de trabajo o reorganizar servicios no requiere intervención en la underlay.
+
+    \item La \textbf{flexibilidad} se manifiesta en entornos \textit{multi-tenant}, donde diferentes organizaciones o aplicaciones coexisten sobre la misma infraestructura física manteniendo aislamiento lógico completo, incluso reutilizando los mismos rangos de direcciones IP.
+
+    \item La \textbf{escalabilidad} resulta de superar las limitaciones de mecanismos tradicionales de segmentación: tecnologías como VXLAN amplían drásticamente el espacio disponible para redes virtuales independientes, posibilitando millones de segmentos lógicos sobre una misma infraestructura.
+\end{enumerate}
+
+Estas propiedades hacen que las redes overlay sean el componente central en tres grandes escenarios: la virtualización de redes en datacenters, la interconexión de sedes geográficamente distribuidas y la provisión de servicios cloud multi-tenant.

@@ -1,0 +1,28 @@
+
+La seguridad en redes overlay y VPNs abarca dos dimensiones complementarias: las amenazas específicas que emergen del uso compartido de infraestructura, y los mecanismos para mitigarlas garantizando aislamiento, integridad y confidencialidad.
+
+\subsection{Amenazas en entornos multi-tenant}
+
+Los entornos multi-tenant presentan vectores de ataque particulares derivados del uso compartido de infraestructura física entre múltiples clientes o aplicaciones.
+
+\begin{itemize}
+    \item \textbf{VLAN hopping}: técnica mediante la cual un atacante intenta evadir la segmentación basada en VLAN aprovechando configuraciones incorrectas en switches, como la negociación automática de puertos trunk o el uso de VLANs nativas sin etiquetar. Permite acceder a tráfico perteneciente a segmentos lógicos ajenos.
+
+    \item \textbf{Tráfico no autorizado entre tenants}: puede producirse por errores de configuración en políticas de forwarding, segmentación deficiente o asignación incorrecta de VNIs. En estos casos, el aislamiento lógico esperado entre redes virtuales se ve comprometido, exponiendo servicios entre entornos que deberían permanecer separados.
+
+    \item \textbf{Side-channel attacks}: amenaza más sofisticada derivada del uso compartido de recursos físicos. Un tenant puede intentar inferir información sensible de otro observando efectos indirectos sobre recursos compartidos —cachés de CPU, memoria, latencias de acceso— sin necesidad de acceder directamente al tráfico de red. Estos ataques evidencian que el multitenancy introduce desafíos de aislamiento que exceden la segmentación puramente lógica.
+\end{itemize}
+
+\subsection{Mitigación: cifrado, segmentación y principio de mínimo privilegio}
+
+La mitigación efectiva de estas amenazas combina múltiples capas de protección.
+
+En primer lugar, el cifrado en tránsito mediante IPsec garantiza confidencialidad e integridad del tráfico cuando atraviesa redes no confiables o compartidas. Aunque el aislamiento lógico de VXLAN y VRF evita interferencias entre tenants en condiciones normales, el cifrado protege el contenido del tráfico frente a interceptación incluso si el aislamiento lógico es comprometido.
+
+En segundo lugar, la configuración correcta de los mecanismos de segmentación es fundamental para prevenir VLAN hopping y tráfico no autorizado. Esto incluye desactivar la negociación automática de trunk en puertos de acceso, establecer VLANs nativas dedicadas sin tráfico de usuario y aplicar listas de control de acceso en los límites entre segmentos virtuales.
+
+Finalmente, el principio de mínimo privilegio aplicado a la microsegmentación —restringir las comunicaciones únicamente a los flujos explícitamente autorizados— reduce la superficie de ataque interna y limita el impacto del movimiento lateral en caso de comprometimiento de algún componente.
+
+\subsection{Modelos de confianza}
+
+Los modelos de seguridad perimetral tradicionales asumen que el tráfico dentro de la red es confiable y concentran los controles en el borde. Este supuesto es incompatible con los entornos multi-tenant modernos, donde la amenaza puede originarse en cualquier tenant que comparte la misma infraestructura. El enfoque \textit{Zero Trust} responde a esta realidad aplicando verificación continua de identidad y autorización para cada flujo de tráfico, independientemente de su origen. En el contexto de redes overlay, esto implica complementar la segmentación lógica con autenticación de endpoints, cifrado end-to-end en comunicaciones sensibles y auditoría continua de flujos de tráfico entre cargas de trabajo.
