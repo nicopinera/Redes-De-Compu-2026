@@ -1,6 +1,8 @@
 
 Los protocolos y mecanismos de overlay descritos requieren, para operar a escala de datacenter, una capa de gestión capaz de configurarlos, orquestarlos y adaptarlos dinámicamente. Esta capa es la que proveen SDN y NFV, dos paradigmas que transformaron la forma en que se diseña y opera la red en infraestructuras modernas.
 
+% Pendiente: Poner un diagrama simple de tres capas (aplicaciones - controlador SDN - dispositivos de red).
+
 \subsection{SDN: gestión programática del plano de control}
 
 SDN (\textit{Software-Defined Networking}) separa explícitamente el plano de control del plano de datos, concentrando la lógica de decisión en un \textit{controlador SDN} centralizado. El controlador se comunica con switches, routers y firewalls virtuales mediante protocolos como OpenFlow, NETCONF o BGP, instalando reglas de forwarding y políticas de seguridad de forma programática. Desde la perspectiva de las redes overlay, el controlador SDN es la implementación del plano de control global: orquesta VTEPs, distribuye información de reachability entre segmentos virtuales, automatiza microsegmentación y gestiona redes virtuales sobre la infraestructura física.

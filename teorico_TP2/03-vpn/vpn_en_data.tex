@@ -1,5 +1,5 @@
 
-En el contexto de datacenters, las VPNs (\textit{Virtual Private Networks}) se utilizan principalmente como mecanismo de interconexión segura entre sedes, no como solución de acceso remoto para usuarios individuales. Su rol es garantizar que el tráfico que atraviesa redes compartidas o no confiables —como Internet o redes de operador— llegue cifrado y autenticado al destino, complementando el aislamiento lógico que ofrecen los protocolos de overlay.
+En el contexto de datacenters, las VPNs (\textit{Virtual Private Networks}) se utilizan principalmente como mecanismo de interconexión segura entre sedes, no como solución de acceso remoto para usuarios individuales. Su rol es garantizar que el tráfico que atraviesa redes compartidas o no confiables como Internet o redes de operador, llegue cifrado y autenticado al destino, complementando el aislamiento lógico que ofrecen los protocolos de overlay.
 
 \subsection{IPsec como base de las VPNs site-to-site}
 
@@ -13,14 +13,7 @@ Una combinación frecuente en redes empresariales y de datacenter es GRE sobre I
 
 \subsection{MPLS VPN: solución a nivel de operador}
 
-En entornos donde la interconexión de datacenters se realiza a través de la red de un operador de telecomunicaciones, MPLS ofrece una alternativa a las VPNs basadas en IPsec. Las VPNs MPLS no cifran el tráfico, sino que lo aíslan lógicamente mediante el mecanismo de etiquetas y tablas de forwarding independientes por cliente, como se describió en la sección de protocolos. Existen dos variantes principales:
-
-\begin{itemize}
-    \item \textbf{L3VPN}: el operador participa en el enrutamiento IP del cliente, manteniendo instancias VRF independientes. Los sitios del cliente se interconectan como si pertenecieran a una misma red IP privada.
-    \item \textbf{L2VPN}: el operador extiende conectividad Ethernet entre sitios del cliente, haciendo que operen como si compartieran una misma red local, independientemente de su ubicación geográfica.
-\end{itemize}
-
-La principal ventaja de las VPNs MPLS es la calidad de servicio garantizada y la escalabilidad a nivel de operador. Su limitación es que el aislamiento es lógico pero no criptográfico: el tráfico no va cifrado dentro de la red del operador, por lo que en escenarios que exigen confidencialidad estricta puede combinarse con IPsec.
+En entornos donde la interconexión de datacenters se realiza a través de la red de un operador de telecomunicaciones, MPLS ofrece una alternativa a las VPNs basadas en IPsec. Dado que los paquetes van a viajar dentro de la red del operador, no es necesario cifrar el contenido, solo basta con aíslar lógicamente. Esto resulta una ventaja en lo que respecta a escalabilidad y calidad de servicio.
 
 \subsection{Rol de las VPNs en la arquitectura de overlay}
 
