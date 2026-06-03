@@ -1,0 +1,41 @@
+\subsection{Motivación del rediseño}
+
+NFSv4 representa un cambio importante respecto de NFSv3. La version anterior fue diseñada con una fuerte orientacion a simplicidad y operaciones mayormente sin estado, lo que facilitaba la recuperacion basica ante fallas, pero generaba limitaciones en seguridad, locking y administracion de puertos. NFSv4 incorpora un modelo mas integrado, con estado mantenido por el servidor, mejor soporte de seguridad y menor dependencia de protocolos auxiliares.
+
+Desde una perspectiva de diseño de red, la mejora mas visible es la consolidacion del trafico en un servicio bien definido. En lugar de depender de portmapper y varios daemons RPC con puertos potencialmente dinamicos, NFSv4 concentra la operacion principalmente sobre TCP 2049. Esto simplifica firewalls, ACLs, monitoreo y diagnostico de conectividad.
+
+\subsection{Principales diferencias respecto de NFSv3}
+
+NFSv4 introduce un comportamiento \textbf{stateful}. El servidor mantiene informacion sobre clientes, archivos abiertos, locks y leases. Esto permite una semantica mas rica para aplicaciones concurrentes, aunque exige mecanismos de recuperacion mas cuidados cuando ocurre un reinicio del servidor o una conmutacion por error.
+
+Otra mejora importante es la integracion del bloqueo de archivos dentro del protocolo principal. En NFSv3, los locks dependen del Network Lock Manager y de servicios externos. En NFSv4, los locks se asocian a leases que el cliente renueva periodicamente. Si el cliente desaparece durante demasiado tiempo, el servidor puede liberar esos recursos.
+
+NFSv4 tambien incorpora operaciones \textbf{COMPOUND}, que permiten agrupar varias operaciones logicas en una sola solicitud RPC. Esto reduce viajes de ida y vuelta, algo relevante cuando la latencia tiene peso. Ademas, presenta un \textbf{pseudo-filesystem}: una raiz logica comun desde la cual cuelgan los exports autorizados.
+
+\begin{table}[H]
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\textwidth}{L{3.0cm}YY}
+        \toprule
+        \textbf{Aspecto} & \textbf{NFSv3} & \textbf{NFSv4} \\
+        \midrule
+        Transporte & UDP o TCP, segun implementacion. & TCP como transporte principal. \\
+        Estado & Mayormente sin estado. & Con estado: opens, locks y leases. \\
+        Puertos & Puerto 2049 mas servicios RPC auxiliares. & Principalmente TCP 2049. \\
+        Locking & NLM externo. & Integrado en el protocolo. \\
+        Seguridad & Frecuentemente \texttt{AUTH\_SYS}. & Soporte para RPCSEC\_GSS y Kerberos. \\
+        Namespace & Exports mas independientes. & Pseudo-filesystem unificado. \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Características relevantes de NFSv3 y NFSv4}
+    \label{tab:nfsv3_nfsv4}
+\end{table}
+
+\subsection{Extensiones modernas de NFSv4}
+
+NFSv4.1 agrega sesiones y mejor control de secuenciacion. En datacenters, suele ser una version base razonable porque combina interoperabilidad, locking integrado y administracion de puertos mas simple.
+
+Una extension importante de NFSv4.1 es \textbf{pNFS (Parallel NFS)}. Su objetivo es separar la ruta de metadatos de la ruta de datos para que un cliente pueda acceder a varios servidores de datos en paralelo. Esta idea es relevante para sistemas scale-out, aunque no es necesaria para comprender un despliegue NFS comun y requiere soporte especifico de clientes, servidores y red.
+
+NFSv4.2 agrega funciones como copias del lado del servidor y mejor manejo de archivos dispersos. Son capacidades utiles en entornos modernos, pero dependen del soporte de la plataforma. Por eso, para un diseño general de datacenter conviene considerar NFSv4.1 como base minima moderna y evaluar NFSv4.2 solo cuando sus funciones aporten un beneficio concreto.
