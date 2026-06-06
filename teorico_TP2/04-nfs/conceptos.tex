@@ -1,0 +1,44 @@
+El \textbf{Network File System (NFS)} es un protocolo de sistema de archivos distribuido que permite a un cliente montar un directorio remoto y acceder a sus archivos a traves de una red IP. Para una aplicacion, el acceso se ve similar al de un disco local: se usan llamadas habituales como \texttt{open}, \texttt{read}, \texttt{write} y \texttt{close}. La diferencia es que esas operaciones son transformadas por el cliente NFS en solicitudes de red hacia un servidor que posee el sistema de archivos real.
+
+El problema central que resuelve NFS es compartir informacion entre multiples equipos sin duplicar los datos en cada servidor. En un datacenter, distintos nodos pueden ejecutar aplicaciones, maquinas virtuales, contenedores, procesos de respaldo o tareas de computo. En muchos de esos casos se necesita un espacio comun de archivos, administrado de manera centralizada, con permisos, cuotas, respaldos y politicas de seguridad consistentes.
+
+NFS fue desarrollado originalmente por Sun Microsystems durante la decada de 1980 y luego evoluciono mediante especificaciones de la IETF. Su antiguedad no implica obsolescencia: el problema que resuelve sigue siendo actual, especialmente en ambientes Linux y UNIX donde se necesita almacenamiento compartido a nivel de archivos sobre infraestructura Ethernet/IP.
+
+\subsection{Relación entre NFS y NAS}
+
+NFS se asocia directamente con el modelo \textbf{NAS (Network Attached Storage)}. NAS describe una arquitectura de almacenamiento conectada a la red que expone archivos y directorios. NFS es uno de los protocolos que permite acceder a esos archivos, principalmente en sistemas UNIX/Linux. En entornos Windows, el protocolo equivalente mas habitual es SMB/CIFS.
+
+La diferencia conceptual es importante: NAS es la arquitectura; NFS es el protocolo. Una cabina empresarial, un servidor Linux con discos locales o un servicio administrado de nube pueden ofrecer un servicio NAS mediante NFS. Lo relevante para redes es que el almacenamiento deja de ser un disco local conectado al host y pasa a ser un servicio de red que debe diseñarse, segmentarse, monitorearse y protegerse.
+
+\subsection{Acceso a archivos frente a acceso a bloques}
+
+La distincion mas importante para ubicar a NFS dentro de un datacenter es la diferencia entre almacenamiento a nivel de archivos y almacenamiento a nivel de bloques.
+
+En el acceso a bloques, usado por tecnologias como iSCSI o Fibre Channel, el sistema de almacenamiento entrega al servidor una unidad logica similar a un disco. El cliente crea sobre ella particiones y un sistema de archivos propio. Si varios hosts escriben simultaneamente sobre el mismo volumen sin coordinacion adicional, existe riesgo de corrupcion, porque cada sistema operativo puede asumir que controla el disco de manera exclusiva.
+
+Con NFS ocurre lo contrario: el sistema de archivos vive del lado del servidor. El servidor administra discos, inodos, directorios, permisos y consistencia estructural. Los clientes no ven bloques fisicos ni geometria de disco; envian operaciones de alto nivel sobre archivos y directorios. Por eso NFS resulta natural para compartir datos entre multiples clientes: la coordinacion del sistema de archivos se concentra en el servidor.
+
+\begin{table}[H]
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\textwidth}{L{3.1cm}YY}
+        \toprule
+        \textbf{Aspecto} & \textbf{NFS / NAS} & \textbf{SAN / iSCSI / Fibre Channel} \\
+        \midrule
+        Nivel de acceso & Archivos y directorios. & Bloques o LUNs. \\
+        Sistema de archivos & Reside en el servidor NAS/NFS. & Lo administra el host cliente. \\
+        Comparticion & Natural para multiples clientes. & Requiere coordinacion o filesystem de cluster. \\
+        Infraestructura & Ethernet/IP, idealmente en VLAN dedicada. & Red SAN dedicada o red IP para iSCSI. \\
+        Casos comunes & Directorios compartidos, repositorios, datastores NAS, Kubernetes RWX. & Bases de datos, discos de arranque, volumenes de maquinas virtuales. \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Almacenamiento a nivel de archivos y bloques}
+    \label{tab:nfs_archivos_bloques}
+\end{table}
+
+\subsection{Vigencia de NFS en datacenters}
+
+NFS se mantiene vigente por una combinacion de simplicidad, interoperabilidad y madurez. Al operar sobre TCP/IP, puede aprovechar infraestructura Ethernet estandar y evitar, en muchos escenarios, una red de almacenamiento especializada. Esto no significa que reemplace siempre a una SAN; cubre otro conjunto de necesidades: acceso compartido a archivos, administracion centralizada y compatibilidad amplia con sistemas Linux/UNIX.
+
+La decision de usar NFS debe partir de la carga de trabajo. Para archivos compartidos, repositorios, backups, home directories, volumenes RWX en Kubernetes o datastores NAS puede ser una alternativa adecuada. Para bases de datos transaccionales de baja latencia, almacenamiento a bloques o aplicaciones que requieren tiempos extremadamente deterministas, tecnologias como Fibre Channel, iSCSI o NVMe-oF pueden resultar mas apropiadas.

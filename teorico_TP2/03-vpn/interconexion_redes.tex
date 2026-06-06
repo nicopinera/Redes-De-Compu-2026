@@ -1,0 +1,22 @@
+
+Las infraestructuras modernas frecuentemente comprenden múltiples datacenters geográficamente distribuidos que deben operar como un entorno cohesivo. La interconexión entre ellos se implementa mediante arquitecturas DCI (\textit{Data Center Interconnect}), que habilitan escenarios como replicación de datos entre sedes, balanceo distribuido, recuperación ante desastres (\textit{disaster recovery}), migración de máquinas virtuales y continuidad operativa.
+
+\subsection{EVPN-VXLAN: el estándar de facto para DCI}
+
+EVPN (\textit{Ethernet VPN}) es un protocolo de plano de control que utiliza BGP para distribuir información de reachability entre VTEPs, reemplazando el aprendizaje reactivo por flooding por un mecanismo proactivo: cada VTEP anuncia vía BGP las direcciones MAC e IP que tiene detrás, de modo que los demás VTEPs conocen la ubicación de cada endpoint antes de que llegue el primer paquete. Para ello define distintos tipos de rutas BGP; los más relevantes son el Type 2, que anuncia una asociación MAC/IP concreta, y el Type 3, que gestiona el tráfico BUM (\textit{Broadcast, Unknown unicast, Multicast}) indicando qué VTEPs participan en cada VNI.
+
+La combinación \textbf{EVPN-VXLAN} se consolidó como el estándar de facto para fabrics de datacenter y arquitecturas DCI modernas. VXLAN proporciona el mecanismo de encapsulación y segmentación mediante VNIs, mientras que EVPN aporta el plano de control distribuido y escalable sobre BGP. A diferencia de tecnologías anteriores como OTV (\textit{Overlay Transport Virtualization}), que extendía dominios de capa 2 con menor flexibilidad arquitectónica, EVPN-VXLAN permite implementar entornos multi-tenant escalables, soportar movilidad de cargas de trabajo y extender conectividad entre múltiples centros de datos sin los problemas de flooding propios del aprendizaje local de direcciones.
+
+\subsection{Extensión de capa 2 entre datacenters}
+
+Uno de los casos de uso de DCI es la extensión de dominios Ethernet a través de múltiples centros de datos, permitiendo que dispositivos y máquinas virtuales operen como si pertenecieran a una misma red local aunque se encuentren en ubicaciones físicas distintas. Este enfoque resulta especialmente valioso para la migración de máquinas virtuales entre datacenters sin modificar direcciones IP, y para estrategias de alta disponibilidad que requieren replicación de servicios entre sedes.
+
+Sin embargo, la extensión de capa 2 extiende también el alcance de broadcasts y puede propagar fallos de switching entre múltiples centros de datos, aumentando la complejidad de convergencia. Por estos motivos, las arquitecturas modernas prefieren interconexiones basadas en capa 3 cuando es posible, reservando la extensión de capa 2 para los casos en que la continuidad de direccionamiento es un requisito ineludible.
+
+\subsection{SD-WAN}
+
+SD-WAN (\textit{Software-Defined Wide Area Network}) constituye una alternativa moderna para la interconexión de sedes. A diferencia de las VPNs tradicionales con enrutamiento estático, SD-WAN gestiona de forma centralizada el tráfico sobre distintos tipos de enlaces WAN —Internet, MPLS o conexiones privadas—, redirigiendo tráfico automáticamente ante fallos o degradación de rendimiento y priorizando aplicaciones según políticas definidas por software. Esto permite aprovechar conexiones a Internet de forma eficiente, reduciendo la dependencia de costosos enlaces MPLS dedicados y manteniendo segmentación y visibilidad centralizadas.
+
+\subsection{Redundancia y alta disponibilidad: ECMP y BFD}
+
+La continuidad operativa en arquitecturas DCI depende también de mecanismos que distribuyan el tráfico entre múltiples caminos y detecten interrupciones con la mayor rapidez posible. \textbf{ECMP} (\textit{Equal-Cost Multi-Path}) distribuye el tráfico entre múltiples rutas de igual costo simultáneamente, mejorando la utilización de ancho de banda y la resiliencia ante fallos de enlace. \textbf{BFD} (\textit{Bidirectional Forwarding Detection}) complementa a ECMP detectando fallos de conectividad con tiempos de convergencia significativamente menores a los mecanismos tradicionales de routing, acelerando la reconvergencia y reduciendo tiempos de indisponibilidad.

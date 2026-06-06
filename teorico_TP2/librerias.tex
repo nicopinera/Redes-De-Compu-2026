@@ -1,5 +1,6 @@
 % Librerias
-\usepackage[spanish]{babel}
+\usepackage{babel}
+\babelprovide[main,import]{spanish}
 \usepackage[utf8]{inputenc}
 
 
@@ -13,14 +14,23 @@
 }
 
 \usepackage{tabularx}
+\usepackage{booktabs}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \usepackage{float}
 
 \usepackage{graphicx}
+\usepackage{caption}
+\captionsetup[figure]{justification=centering, singlelinecheck=false}
+\captionsetup[table]{justification=centering, singlelinecheck=false}
 
 \usepackage[top=2.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm]{geometry}
+\raggedbottom
+\setlength{\emergencystretch}{2em}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
+\setlength{\headheight}{14.5pt}
 
 \usepackage[colorlinks=true, allcolors=black]{hyperref}
 \fancyhead{}
@@ -28,3 +38,25 @@
 \fancyhead[R]{Redes de Computadoras} % Alineado a la derecha
 \fancyfoot{}
 \fancyfoot[C]{\thepage}
+
+% Reduce el espacio vertical excesivo que la clase book agrega antes de cada capitulo.
+\makeatletter
+\def\@makechapterhead#1{%
+  \vspace*{-50\p@}%
+  {\parindent \z@ \raggedright \normalfont
+    \ifnum \c@secnumdepth >\m@ne
+      \Large\bfseries \@chapapp\space \thechapter
+      \par\nobreak
+      \vskip 6\p@
+    \fi
+    \huge \bfseries #1\par\nobreak
+    \vskip 10\p@
+  }}
+\def\@makeschapterhead#1{%
+  \vspace*{-50\p@}%
+  {\parindent \z@ \raggedright
+    \normalfont
+    \huge \bfseries #1\par\nobreak
+    \vskip 10\p@
+  }}
+\makeatother

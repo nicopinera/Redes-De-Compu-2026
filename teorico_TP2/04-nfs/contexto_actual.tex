@@ -1,0 +1,15 @@
+\subsection{Comparación con otras alternativas}
+
+NFS convive con otras tecnologias de almacenamiento en red. SMB/CIFS cumple un rol similar en el mundo Windows: compartir archivos y directorios sobre la red. En ambientes Linux y UNIX, NFS suele integrarse de forma mas natural con permisos POSIX, UID/GID y herramientas del sistema. En organizaciones mixtas, ambos protocolos pueden coexistir sobre la misma infraestructura NAS.
+
+iSCSI y Fibre Channel pertenecen al mundo del almacenamiento a bloques. Estas opciones son adecuadas cuando la aplicacion espera ver un disco remoto, cuando se requiere multipathing clasico o cuando se busca latencia mas deterministica. NFS, en cambio, entrega archivos ya administrados por el servidor. El almacenamiento de objetos, como S3, propone otro modelo: acceso mediante APIs, no mediante un sistema de archivos POSIX montado.
+
+\subsection{NFS en la nube}
+
+La computacion en la nube no elimino NFS; en muchos casos lo transformo en un servicio administrado. Amazon EFS, Google Filestore y Azure NetApp Files ofrecen almacenamiento de archivos accesible mediante NFS para instancias, contenedores o servicios gestionados. Aunque el proveedor abstrae parte de la alta disponibilidad y el mantenimiento, los conceptos de red siguen presentes: subredes, grupos de seguridad, latencia entre zonas, throughput provisionado y politicas de acceso.
+
+\subsection{Síntesis final}
+
+NFS mantiene vigencia porque resuelve de manera simple y efectiva un problema central de redes y sistemas distribuidos: compartir archivos entre multiples hosts sobre una red IP. Su fortaleza no esta en reemplazar todas las tecnologias de almacenamiento, sino en ofrecer una semantica de archivos compartidos, madura e interoperable.
+
+En un datacenter moderno, una implementacion razonable deberia usar NFSv4.1 o superior, aislar el trafico en una red o VLAN de almacenamiento, filtrar TCP 2049, aplicar \texttt{root\_squash}, restringir exports por subred o host, monitorear latencia y throughput, y definir una estrategia de alta disponibilidad antes de usarlo en produccion. Desde una perspectiva tecnica, NFS permite relacionar protocolo de aplicacion, transporte TCP, segmentacion, seguridad, rendimiento y continuidad operativa.

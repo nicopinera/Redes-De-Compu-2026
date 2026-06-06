@@ -1,0 +1,51 @@
+
+Para materializar las capacidades de las redes overlay existen diversos protocolos de encapsulación cuyo objetivo común es construir redes virtuales sobre una infraestructura física subyacente, manteniendo aislamiento y segmentación entre entornos.
+
+\subsection{GRE (Generic Routing Encapsulation)}
+
+GRE es uno de los protocolos de encapsulación más antiguos y ampliamente soportados, surgió en la década de 1990 desarrollado por Cisco Systems y formalmente publicado en 1994 (RFC 1701 y RFC 1702). Encapsula un paquete original dentro de un nuevo paquete IP agregando una cabecera GRE: el dispositivo de origen encapsula el tráfico, la infraestructura intermedia lo transporta utilizando las direcciones IP externas, y el endpoint remoto elimina la encapsulación. Sus ventajas son la simplicidad de implementación y la flexibilidad para transportar distintos protocolos de red. Sin embargo, es importante recalcar que no fue diseñado para multitenancy masivo, por lo que su uso actual se orienta a la interconexión puntual entre sedes o como base para VPNs.
+
+% Pendiente: poner imagen mostrando la composicion del header GRE
+
+\subsection{VXLAN (Virtual Extensible LAN)}
+
+VXLAN es el protocolo de overlay predominante en datacenters modernos, fue creado en 2011 y publicado en 2014 por la IETF (RFC 7348). Diseñado específicamente para virtualización y multitenancy a gran escala. Encapsula tramas de red dentro de paquetes IP y UDP, posibilitando el transporte de redes virtuales sobre cualquier infraestructura IP convencional.
+
+Su componente central es el \textbf{VNI} (\textit{VXLAN Network Identifier}), un identificador lógico de 24 bits que segmenta y aísla redes virtuales. Cada tenant se asocia a un VNI diferente, permitiendo la coexistencia de múltiples espacios de direccionamiento IP superpuestos sin interferencia. Frente a las VLANs tradicionales, limitadas a 4.096 identificadores por el estándar IEEE 802.1Q, VXLAN soporta más de 16 millones de segmentos virtuales independientes.
+
+El otro componente esencial es el \textbf{VTEP} (\textit{VXLAN Tunnel Endpoint}), responsable de encapsular y desencapsular el tráfico. Un VTEP puede implementarse en hypervisors, switches físicos o dispositivos virtuales, y actúa como punto de entrada y salida de los túneles VXLAN: el VTEP de origen encapsula la trama con el VNI correspondiente y la envía hacia el VTEP de destino, que la desencapsula y entrega al segmento lógico adecuado.
+
+% Pendiente: poner imagen mostrando la composicion del header VXLAN
+
+\subsection{Otros protocolos: GENEVE y NVGRE}
+
+\textbf{GENEVE} (\textit{Generic Network Virtualization Encapsulation}) surge en 2020 (RFC 8926) como evolución de VXLAN orientada a mayor extensibilidad. Opera sobre IP y UDP con el mismo principio de identificadores de red virtual, pero introduce un formato de cabecera flexible basado en metadatos opcionales mediante el esquema TLV (\textit{Type-Length-Value}). Esto permite transportar información contextual adicional relevante para telemetría, políticas de seguridad y automatización, sin modificar el protocolo base. Aun así, VXLAN continúa siendo ampliamente dominante en implementaciones comerciales debido a su madurez y soporte por parte de fabricantes.
+
+\textbf{NVGRE} (\textit{Network Virtualization using Generic Routing Encapsulation}), impulsado principalmente por Microsoft, combina GRE como mecanismo de transporte con un identificador denominado VSID (\textit{Virtual Subnet Identifier}), análogo al VNI de VXLAN. Aunque constituyó una alternativa técnicamente viable, no alcanzó el nivel de adopción e interoperabilidad industrial de VXLAN.
+
+\subsection{MPLS (Multiprotocol Label Switching)}
+
+MPLS es una tecnología de conmutación ampliamente utilizada en redes de operadores de telecomunicaciones para implementar VPNs de capa 2 y capa 3. Surgió en la década de 1990, cuando el routing IP (capa 3) era lento y el switching (capa 2) era rápido, y nació para trasladar la velocidad del switching al mundo IP.
+
+Su funcionamiento agrega etiquetas (\textit{labels}) a los paquetes entre el header de capa 2 y el header IP, razón por la cual suele describirse como una tecnología de ``capa 2.5''. Los \textit{Label Switch Routers} (LSR) procesan esas etiquetas para determinar el recorrido lógico del tráfico sin realizar búsquedas sobre direcciones IP en cada salto. Esto es posible porque MPLS no opera como una red overlay sobre infraestructura pública, sino que se despliega íntegramente dentro de la red del operador: todos los dispositivos del camino son LSRs administrados por el mismo carrier y hablan el mismo protocolo, por lo que ningún router del trayecto recibe ni espera paquetes IP convencionales. En contraste, tecnologías como VXLAN o GENEVE sí funcionan como overlays: encapsulan los frames originales dentro de paquetes UDP/IP estándar precisamente para poder atravesar infraestructura que no controlan.
+
+\subsection{Comparativa entre protocolos}
+
+La Tabla~\ref{tab:protocolos} resume las características más relevantes de los protocolos analizados. Cabe destacar que ninguno incorpora cifrado nativo: todos dependen de mecanismos externos como IPsec cuando se requiere confidencialidad. La segmentación avanzada diferencia a VXLAN y GENEVE de GRE para entornos multi-tenant, mientras que MPLS ocupa un nicho propio en redes de operador.
+
+\begin{table}[H]
+\centering
+\caption{Comparativa de protocolos de encapsulación y overlay}
+\label{tab:protocolos}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\textbf{Protocolo} & \textbf{Overhead} & \textbf{Segmentación}  & \textbf{Adopción} \\
+\midrule
+GRE    & Bajo      & No nativa            & Alta (genérica)      \\
+VXLAN  & Moderado  & 24 bits (16M VNIs)   & Muy alta (DC)        \\
+GENEVE & Moderado  & 24 bits + metadatos  & Creciente            \\
+NVGRE  & Moderado  & 24 bits (VSID)       & Limitada (Microsoft) \\
+MPLS   & Bajo      & Por etiqueta/VRF     & Muy alta (operador)  \\
+\bottomrule
+\end{tabular}
+\end{table}

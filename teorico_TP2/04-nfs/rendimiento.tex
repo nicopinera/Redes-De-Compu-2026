@@ -1,0 +1,29 @@
+\subsection{Métricas principales}
+
+El rendimiento de NFS debe analizarse separando tres metricas: latencia, throughput e IOPS. La latencia mide el tiempo que tarda una operacion individual en completarse. El throughput expresa la cantidad de datos transferidos por unidad de tiempo. Los IOPS indican cuantas operaciones de entrada/salida pueden completarse por segundo.
+
+Estas metricas no mejoran siempre al mismo tiempo. Una red de 25 GbE o 100 GbE puede aumentar el throughput de lecturas y escrituras grandes, pero no necesariamente resuelve una carga compuesta por miles de archivos pequeños, operaciones de metadatos o bloqueos frecuentes. En esas cargas, el tiempo de ida y vuelta entre cliente y servidor, la cantidad de operaciones RPC y la capacidad del servidor para procesarlas son tan importantes como el ancho de banda fisico.
+
+\subsection{Cuellos de botella típicos}
+
+En una arquitectura NFS, el rendimiento efectivo queda limitado por el componente mas lento de la cadena. Ese componente puede ser la red Ethernet, la CPU del cliente o del servidor, la cantidad de hilos \texttt{nfsd}, la pila TCP, la cache del sistema operativo, el backend de almacenamiento o el patron de acceso de la aplicacion.
+
+Para transferencias secuenciales grandes, la red y el backend suelen ser los factores dominantes. Para cargas aleatorias pequeñas, el costo de cada RPC, la latencia y el manejo de metadatos adquieren mayor peso. Por esta razon, no existe una configuracion unica que sea optima para todas las aplicaciones.
+
+\subsection{Red, caché y parámetros de montaje}
+
+Como NFS opera sobre IP, la calidad de la red Ethernet impacta directamente en el servicio. Enlaces rapidos, baja perdida de paquetes, buffers adecuados y una VLAN sin congestion son condiciones importantes para evitar latencias variables. Tecnicas como Jumbo Frames pueden mejorar transferencias grandes, pero solo convienen si todos los equipos del camino tienen una MTU compatible.
+
+Los parametros \texttt{rsize} y \texttt{wsize} definen el tamaño maximo de lectura y escritura por operacion NFS. En sistemas modernos suelen negociarse automaticamente, pero siguen siendo relevantes cuando se optimizan cargas especificas. La opcion \texttt{nconnect} permite usar multiples conexiones TCP para un mismo montaje y puede ayudar a aprovechar enlaces rapidos, siempre que cliente y servidor lo soporten.
+
+La cache del cliente reduce trafico y mejora la latencia percibida. Se cachean datos, atributos y entradas de directorio. Desactivarla no siempre es correcto: puede mejorar la visibilidad inmediata de ciertos cambios, pero aumenta las operaciones remotas y no elimina todos los problemas de concurrencia. La aplicacion debe estar preparada para trabajar sobre un sistema de archivos distribuido.
+
+\subsection{\texttt{sync}, \texttt{async} y durabilidad}
+
+La opcion \texttt{sync} hace que el servidor confirme escrituras solo cuando los datos alcanzaron almacenamiento estable. Es mas segura, pero puede aumentar la latencia. La opcion \texttt{async} permite responder antes de persistir completamente los datos, lo que mejora rendimiento a costa de un riesgo mayor ante fallas abruptas.
+
+En datacenters, la eleccion no debe hacerse solo por velocidad. Para datos criticos, configuraciones sincronicas o caches respaldadas por bateria son preferibles. Para datos temporales, artefactos reconstruibles o cargas donde se acepta perdida parcial, el modo asincronico puede ser razonable. Lo importante es documentar el riesgo y no presentar \texttt{async} como una optimizacion gratuita.
+
+\subsection{Comparación con almacenamiento de bloques}
+
+Comparado con iSCSI o Fibre Channel, NFS introduce mas semantica de sistema de archivos en el camino de datos. Esto aporta facilidad de comparticion y administracion, pero tambien agrega procesamiento de metadatos y RPC. En cargas transaccionales de muy baja latencia, una SAN puede ofrecer comportamiento mas predecible. En cargas de archivos compartidos, NFS suele ser mas simple y adecuado.
