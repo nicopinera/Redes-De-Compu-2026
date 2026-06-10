@@ -17,12 +17,6 @@ El otro componente esencial es el \textbf{VTEP} (\textit{VXLAN Tunnel Endpoint})
 
 % Pendiente: poner imagen mostrando la composicion del header VXLAN
 
-\subsection{Otros protocolos: GENEVE y NVGRE}
-
-\textbf{GENEVE} (\textit{Generic Network Virtualization Encapsulation}) surge en 2020 (RFC 8926) como evolución de VXLAN orientada a mayor extensibilidad. Opera sobre IP y UDP con el mismo principio de identificadores de red virtual, pero introduce un formato de cabecera flexible basado en metadatos opcionales mediante el esquema TLV (\textit{Type-Length-Value}). Esto permite transportar información contextual adicional relevante para telemetría, políticas de seguridad y automatización, sin modificar el protocolo base. Aun así, VXLAN continúa siendo ampliamente dominante en implementaciones comerciales debido a su madurez y soporte por parte de fabricantes.
-
-\textbf{NVGRE} (\textit{Network Virtualization using Generic Routing Encapsulation}), impulsado principalmente por Microsoft, combina GRE como mecanismo de transporte con un identificador denominado VSID (\textit{Virtual Subnet Identifier}), análogo al VNI de VXLAN. Aunque constituyó una alternativa técnicamente viable, no alcanzó el nivel de adopción e interoperabilidad industrial de VXLAN.
-
 \subsection{MPLS (Multiprotocol Label Switching)}
 
 MPLS es una tecnología de conmutación ampliamente utilizada en redes de operadores de telecomunicaciones para implementar VPNs de capa 2 y capa 3. Surgió en la década de 1990, cuando el routing IP (capa 3) era lento y el switching (capa 2) era rápido, y nació para trasladar la velocidad del switching al mundo IP.

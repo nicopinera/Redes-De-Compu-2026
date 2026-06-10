@@ -89,15 +89,13 @@ El DAS puede ofrecer rendimiento alto en escenarios de uso único, ya que no int
 
 El NAS ofrece rendimiento medio, con latencias mayores comparadas con la SAN debido al uso de la red convencional y a los protocolos de nivel de archivo. El rendimiento puede degradarse significativamente cuando múltiples clientes acceden intensivamente a los datos simultáneamente, especialmente si la red está congestionada.
 
-%%
-
 \subsection{Arquitectura general de una SAN}
 
 La arquitectura de una SAN se compone de \text{tres capas} fundamentales que trabajan de manera integrada: la capa de host, la capa de fabric (estructura) y la capa de almacenamiento. Esta estructura en capas permite una separación clara de funciones, facilitando la gestión, la escalabilidad y la resolución de problemas en la red de almacenamiento. 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{img/san3.png}
+	\includegraphics[width=0.5\textwidth]{img/san3.png}
 	\caption{Arquitectura de una SAN}
 	\label{fig:san3}
 \end{figure}
@@ -106,7 +104,7 @@ La arquitectura de una SAN se compone de \text{tres capas} fundamentales que tra
 
 La capa de host constituye el primer nivel de la arquitectura SAN y está formada por los servidores que necesitan acceder al almacenamiento remoto. Estos servidores son las máquinas que ejecutan aplicaciones críticas como bases de datos, sistemas de correo electrónico, plataformas de virtualización y otros servicios empresariales que requieren acceso rápido y confiable a grandes volúmenes de datos.
 
-El componente más importante de la capa de host es el \text{HBA (Host Bus Adapter o Adaptador de Bus de Host)}, que es una tarjeta de interfaz especializada de alta velocidad. Se trata de un hardware específicamente diseñado para conectarse a redes de almacenamiento, con características y capacidades optimizadas para el tráfico de E/S (entrada/salida) de almacenamiento.
+El componente más importante de la capa de host es el HBA (Host Bus Adapter o Adaptador de Bus de Host), que es una tarjeta de interfaz especializada de alta velocidad. Se trata de un hardware específicamente diseñado para conectarse a redes de almacenamiento, con características y capacidades optimizadas para el tráfico de E/S (entrada/salida) de almacenamiento.
 
 El HBA actúa como un puente fundamental entre el servidor y la red de almacenamiento. Su función principal es traducir las solicitudes de lectura y escritura del sistema operativo del servidor al protocolo de la SAN, ya sea Fibre Channel, iSCSI u otro protocolo utilizado. Esta traducción es transparente para el sistema operativo, lo que permite que este vea el almacenamiento remoto de la SAN exactamente como si fuera un disco duro local conectado físicamente al servidor.
 

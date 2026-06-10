@@ -1,24 +1,6 @@
-El \textbf{Simple Network Management Protocol (SNMP)} es el estándar de facto para la gestión y supervisión de dispositivos dentro de redes basadas en TCP/IP. Se trata de un protocolo de la capa de aplicación diseñado para facilitar la monitorización, configuración y control remoto de equipos tales como routers, switches, servidores, impresoras y otros dispositivos conectados a la red.
+El \textbf{Simple Network Management Protocol (SNMP)} es un protocolo de la capa de aplicación de la suite TCP/IP diseñado para la gestión y supervisión remota de dispositivos de red, tales como routers, switches, servidores, impresoras y otros equipos conectados. Su funcionamiento se basa en la interacción entre una estación de gestión (\textit{Manager}) y los dispositivos administrados (\textit{Agents}), permitiendo obtener información sobre el estado de la infraestructura, recopilar estadísticas, detectar fallos y modificar determinados parámetros de configuración.
 
-Su funcionamiento se basa en un modelo de interacción entre una estación de gestión y los dispositivos administrados. A través de este mecanismo, los administradores pueden obtener información sobre el estado de la infraestructura, detectar fallos, recopilar estadísticas de rendimiento y realizar modificaciones de configuración sin necesidad de acceder físicamente a cada equipo.
-
-La simplicidad de SNMP fue uno de los factores clave para su adopción masiva. Aunque inicialmente fue desarrollado para entornos TCP/IP, su utilización se extendió rápidamente debido a su bajo consumo de recursos y a la capacidad de interoperar entre dispositivos de diferentes fabricantes.
-
-\subsection{El Rol de SNMP en la Gestión de Redes}
-
-El objetivo principal de SNMP es proporcionar un mecanismo estandarizado para la administración remota de dispositivos de red. A través de este protocolo, un administrador puede supervisar el estado operativo de los equipos, recopilar métricas de rendimiento, detectar fallos y modificar determinados parámetros de configuración.
-
-Entre las funciones más importantes que ofrece SNMP se destacan:
-
-\begin{itemize}
-\item Monitorización continua del estado de dispositivos y servicios.
-\item Recolección centralizada de estadísticas operativas.
-\item Configuración remota de parámetros específicos.
-\item Detección temprana de fallos mediante mecanismos de notificación.
-\item Interoperabilidad entre dispositivos de distintos fabricantes.
-\end{itemize}
-
-La utilización de un protocolo común permite que una única plataforma de gestión pueda supervisar infraestructuras heterogéneas compuestas por equipos de múltiples proveedores, simplificando significativamente las tareas de administración.
+Gracias a su simplicidad, bajo consumo de recursos e interoperabilidad entre dispositivos de distintos fabricantes, SNMP se consolidó como el estándar de facto para la administración de redes. Su utilización permite centralizar las tareas de monitorización y control, facilitando la supervisión de infraestructuras heterogéneas desde una única plataforma de gestión mediante consultas periódicas y notificaciones ante eventos relevantes.
 
 \subsection{Historia y Evolución de SNMP}
 
@@ -84,7 +66,7 @@ Esta separación entre gestión, procesamiento y representación de la informaci
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.75\textwidth]{img/snmp1.png}
+\includegraphics[width=0.5\textwidth]{img/snmp1.png}
 \caption{Arquitectura básica de SNMP basada en la interacción entre Manager, Agent y MIB.}
 \label{fig:snmp_arquitectura}
 \end{figure}

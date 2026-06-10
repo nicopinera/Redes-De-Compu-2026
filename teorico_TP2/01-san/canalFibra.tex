@@ -142,26 +142,6 @@ El Soft Zoning se implementa a nivel de software en los switches FC. El zoning s
 
 Las ventajas del Soft Zoning incluyen flexibilidad significativa: los dispositivos pueden ser reorganizados en zonas simplemente cambiando la configuración del switch, sin necesidad de mover cables físicamente. Esto facilita la gestión de zonas en instalaciones grandes y dinámicas. Los WWNs son únicos globalmente, lo que previene conflictos de direccionamiento. Sin embargo, el Soft Zoning es teóricamente menos seguro que Hard Zoning, ya que un dispositivo con conocimiento técnico podría intentar falsificar un WWN.
 
-\subsubsection{Comparación y mejores prácticas}
-
-En la práctica, muchas implementaciones utilizan una combinación de ambos enfoques o prefieren Soft Zoning por su flexibilidad. El Soft Zoning es más común en instalaciones modernas debido a la facilidad de gestión y movilidad de servidores. Independientemente del tipo de zoning elegido, es recomendable implementar zoning como parte de una estrategia de seguridad en capas que incluya también LUN masking (que controla qué LUNs específicas son visibles para cada servidor), autenticación de dispositivos, y monitoreo de acceso. El zoning es fundamental para prevenir que servidores no autorizados accedan a almacenamiento sensible y para aislar cargas de trabajo diferentes en la misma fabric física.
-
-\subsection{Casos de uso donde FC supera a las alternativas}
-
-Fibre Channel supera a las alternativas como iSCSI y NFS en varios escenarios específicos donde sus características únicas proporcionan ventajas significativas que justifican el costo adicional.
-
-\subsubsection{Bases de datos transaccionales de alto rendimiento}
-
-Las bases de datos empresariales se benefician enormemente de Fibre Channel. Estas bases de datos realizan muchas operaciones de E/S pequeñas y frecuentes con requisitos estrictos de latencia. FC proporciona latencias consistentemente bajas y rendimiento predecible que es crítico para el rendimiento de bases de datos. La capacidad de múltiples servidores en un clúster de base de datos para acceder simultáneamente a almacenamiento compartido con control de concurrencia preciso es esencial para tecnologías que requieren acceso simultáneo a los mismos archivos de base de datos.
-
-\subsubsection{Virtualización consolidada}
-
-Entornos de virtualización densos con muchas máquinas virtuales en un solo hipervisor generan cargas de trabajo de E/S complejas y aleatorias. Plataformas como VMware vSphere, Microsoft Hyper-V y KVM funcionan óptimamente con FC. La capacidad de consolidar muchas VMs en menos servidores físicos incrementa la densidad de E/S, y FC puede manejar esta densidad mejor que alternativas basadas en IP.
-
-\subsubsection{Entornos con requisitos de alta disponibilidad críticos}
-
-Centros de datos financieros, sistemas de telecomunicaciones, sistemas de control industrial y otras aplicaciones donde la disponibilidad es crítica se benefician de la madurez y fiabilidad de FC. La tecnología ha sido probada durante décadas en entornos de misión crítica, operatividad de 99.999 o mayor. Las características de redundancia de FC incluyendo múltiples caminos, switches redundantes y HBAs duales están bien entendidas y probadas. Para organizaciones donde el tiempo de inactividad cuesta miles o millones de dólares por hora, la fiabilidad probada de FC justifica su costo adicional. 
-
 \subsection{FCoE (Fibre Channel over Ethernet) como solución de convergencia y su relevancia actual}
 
 Fibre Channel over Ethernet (FCoE) representa un enfoque híbrido que intenta combinar las ventajas de Fibre Channel con las ventajas de Ethernet. FCoE encapsula tramas de Fibre Channel dentro de paquetes Ethernet, permitiendo que el tráfico de Fibre Channel viaje a través de infraestructura de red Ethernet.

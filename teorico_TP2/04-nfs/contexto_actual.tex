@@ -7,9 +7,3 @@ iSCSI y Fibre Channel pertenecen al mundo del almacenamiento a bloques. Estas op
 \subsection{NFS en la nube}
 
 La computacion en la nube no elimino NFS; en muchos casos lo transformo en un servicio administrado. Amazon EFS, Google Filestore y Azure NetApp Files ofrecen almacenamiento de archivos accesible mediante NFS para instancias, contenedores o servicios gestionados. Aunque el proveedor abstrae parte de la alta disponibilidad y el mantenimiento, los conceptos de red siguen presentes: subredes, grupos de seguridad, latencia entre zonas, throughput provisionado y politicas de acceso.
-
-\subsection{Síntesis final}
-
-NFS mantiene vigencia porque resuelve de manera simple y efectiva un problema central de redes y sistemas distribuidos: compartir archivos entre multiples hosts sobre una red IP. Su fortaleza no esta en reemplazar todas las tecnologias de almacenamiento, sino en ofrecer una semantica de archivos compartidos, madura e interoperable.
-
-En un datacenter moderno, una implementacion razonable deberia usar NFSv4.1 o superior, aislar el trafico en una red o VLAN de almacenamiento, filtrar TCP 2049, aplicar \texttt{root\_squash}, restringir exports por subred o host, monitorear latencia y throughput, y definir una estrategia de alta disponibilidad antes de usarlo en produccion. Desde una perspectiva tecnica, NFS permite relacionar protocolo de aplicacion, transporte TCP, segmentacion, seguridad, rendimiento y continuidad operativa.
