@@ -1,0 +1,20 @@
+
+En el contexto de datacenters, las VPNs (\textit{Virtual Private Networks}) se utilizan principalmente como mecanismo de interconexión segura entre sedes, no como solución de acceso remoto para usuarios individuales. Su rol es garantizar que el tráfico que atraviesa redes compartidas o no confiables como Internet o redes de operador, llegue cifrado y autenticado al destino, complementando el aislamiento lógico que ofrecen los protocolos de overlay.
+
+\subsection{IPsec como base de las VPNs site-to-site}
+
+IPsec (\textit{Internet Protocol Security}) es el conjunto de protocolos más ampliamente utilizado para implementar VPNs site-to-site en entornos de datacenter. Opera en capa de red y proporciona tres servicios fundamentales: autenticación de origen, integridad de los datos y cifrado del contenido. Su modo de operación más utilizado para interconexión de sedes es el \textit{modo túnel}, en el que el paquete IP original se encapsula completamente dentro de un nuevo paquete IPsec, ocultando las direcciones IP internas durante el tránsito por la red pública.
+
+IPsec se apoya en dos protocolos complementarios: AH (\textit{Authentication Header}), que provee autenticación e integridad sin cifrado, y ESP (\textit{Encapsulating Security Payload}), que añade cifrado al tráfico encapsulado y es el componente utilizado en la mayoría de las implementaciones de VPN. La negociación de parámetros de seguridad —algoritmos, claves y políticas— se gestiona mediante IKE (\textit{Internet Key Exchange}), que establece las asociaciones de seguridad (SA) entre los extremos del túnel.
+
+\subsection{GRE sobre IPsec}
+
+Una combinación frecuente en redes empresariales y de datacenter es GRE sobre IPsec: GRE proporciona el mecanismo de tunelización y soporte para múltiples protocolos, mientras que IPsec agrega la capa de cifrado y autenticación que GRE no ofrece por sí solo. En esta arquitectura, el paquete original se encapsula primero con GRE y luego el resultado se cifra con IPsec en modo túnel, permitiendo transportar tráfico de forma segura entre sedes a través de redes no confiables.
+
+\subsection{MPLS VPN: solución a nivel de operador}
+
+En entornos donde la interconexión de datacenters se realiza a través de la red de un operador de telecomunicaciones, MPLS ofrece una alternativa a las VPNs basadas en IPsec. Dado que los paquetes van a viajar dentro de la red del operador, no es necesario cifrar el contenido, solo basta con aíslar lógicamente. Esto resulta una ventaja en lo que respecta a escalabilidad y calidad de servicio.
+
+\subsection{Rol de las VPNs en la arquitectura de overlay}
+
+Las VPNs no reemplazan a los protocolos de overlay sino que los complementan: mientras VXLAN, GRE o EVPN-VXLAN proveen el plano de datos y el aislamiento lógico entre redes virtuales, las VPNs site-to-site basadas en IPsec o MPLS garantizan que ese tráfico viaje de forma segura cuando debe atravesar infraestructura compartida o no controlada. Esta distinción es fundamental: el aislamiento lógico evita interferencias entre tenants, pero solo el cifrado garantiza confidencialidad frente a observación o interceptación del tráfico en tránsito.

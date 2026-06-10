@@ -1,0 +1,68 @@
+\documentclass[11pt, a4paper]{book}
+
+\input{librerias.tex}
+
+\begin{document}
+	
+	\input{introduccion/portada.tex}
+	\tableofcontents
+	\newpage
+	
+	%
+	\chapter{SAN y Canal de Fibra}
+	\section{Conceptos Fundacionales}
+	\input{01-san/conceptos-fund.tex}
+	\section{Canal de Fibra (Fibre Channel)}
+	\input{01-san/canalFibra.tex}
+	\section{Rendimiento y eficiencia}
+	\input{01-san/rend_y_efi.tex}
+	
+	%
+	\chapter{SNMP y MIB para monitorización de clusters}
+	\section{Conceptos fundacionales de SNMP}
+	\input{02-snmp/conFund.tex}
+	\section{Seguridad en SNMP}
+	\input{02-snmp/seguridad.tex}
+	\section{MIB - Base de Información de Gestión}
+	\input{02-snmp/mib.tex}
+	\section{Recolección de estadísticas en clusters de servidores}
+	\input{02-snmp/recoleccionEstadistica.tex}
+	
+	%
+	\chapter{Overlay Networks y VPNs para multitenancy en datacenters}
+	\section{Conceptos fundacionales de Redes Superpuestas}
+	\input{03-vpn/conceptoFundacional.tex}
+	\section{Protocolos de tunelización y encapsulación}
+	\input{03-vpn/protocolos_tunel.tex}
+	\section{VPNs para interconexión de datacenters}
+	\input{03-vpn/vpn_en_data.tex}
+	\section{Multitenancy: aislamiento y confidencialidad del tráfico}
+	\input{03-vpn/multitenancy.tex}
+	\section{Interconexión de múltiples sedes de datacenters}
+	\input{03-vpn/interconexion_redes.tex}
+	\section{Seguridad en redes overlay y VPNs}
+	\input{03-vpn/seguridad.tex}
+	\section{Contexto de virtualización y SDN}
+	\input{03-vpn/contexto.tex}
+	\section{Tendencias actuales}
+	\input{03-vpn/tendencias.tex}
+	
+	%
+	\chapter{Protocolo NFS en entornos de datacenter}
+	\section{Conceptos fundacionales}
+	\input{04-nfs/conceptos.tex}
+	\section{Arquitectura y funcionamiento técnico}
+	\input{04-nfs/arquitectura.tex}
+	\section{NFSv4 y versiones modernas}
+	\input{04-nfs/nfsv4.tex}
+	\section{Aplicación en un datacenter con VLAN NFS}
+	\input{04-nfs/aplicacion.tex}
+	\section{Rendimiento}
+	\input{04-nfs/rendimiento.tex}
+	\section{Seguridad}
+	\input{04-nfs/seguridad.tex}
+	\section{Alta disponibilidad y escalabilidad}
+	\input{04-nfs/alta_disponibilidad.tex}
+
+
+\end{document}

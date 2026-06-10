@@ -1,0 +1,62 @@
+\subsection{Latencia y throughput de Fibre Channel frente a otras tecnologías}
+
+La latencia y el throughput son las dos métricas de rendimiento más importantes para evaluar tecnologías de almacenamiento en red. La latencia se refiere al tiempo que toma para que una operación de entrada/salida complete desde que se inicia hasta que se recibe la respuesta, mientras que el throughput se refiere a la cantidad de datos que pueden transferirse por unidad de tiempo, típicamente medido en Megabytes por segundo (MB/s) o Gigabits por segundo (Gbps).
+
+\subsubsection{Latencia de Fibre Channel}
+
+Fibre Channel ofrece la latencia más baja entre todas las tecnologías de almacenamiento en red disponibles actualmente. Las implementaciones modernas de FC operan con latencias típicamente inferiores a 1 milisegundo, y en muchos casos alcanzan latencias del orden de cientos de microsegundos. Esta ultra baja latencia es posible gracias a varias características inherentes de la arquitectura FC: hardware dedicado optimizado específicamente para almacenamiento, protocolos diseñados desde el principio para minimizar overhead, redes dedicadas que eliminan congestión y competencia con tráfico de red convencional, y mecanismos de control de flujo implementados en hardware que previenen colas y esperas.
+
+A diferencia de las redes basadas en IP que pueden experimentar variaciones de latencia (jitter) debido a congestión de red, FC proporciona latencia estable que no fluctúa significativamente bajo diferentes condiciones de carga.
+
+\subsubsection{Throughput de Fibre Channel}
+
+El throughput de Fibre Channel ha evolucionado consistentemente a través de generaciones, con velocidades actuales de 32GFC y 64GFC siendo comunes en implementaciones empresariales modernas. La capacidad de 64GFC para mantener throughput elevado bajo diversas condiciones de carga es particularmente notable. Mientras que otras tecnologías pueden experimentar degradación de rendimiento cuando múltiples dispositivos compiten por ancho de banda, FC mantiene su throughput gracias a la red dedicada y los mecanismos de control de flujo buffer-to-buffer que garantizan que los buffers no se saturen y el tráfico fluya sin interrupciones.
+
+\subsection{IOPS como métrica clave de evaluación}
+
+Los IOPS (Input/Output Operations Per Second, operaciones de entrada/salida por segundo) constituyen una métrica fundamental para evaluar el rendimiento de sistemas de almacenamiento, especialmente para cargas de trabajo con muchas operaciones pequeñas aleatorias.
+
+IOPS es una unidad de benchmark específica que define el número de operaciones por segundo que un sistema de almacenamiento puede ejecutar. A diferencia del throughput que mide la cantidad de datos transferidos por unidad de tiempo, IOPS mide la cantidad de operaciones individuales completadas por segundo. Esta distinción es crucial porque muchas aplicaciones, particularmente bases de datos, realizan muchas operaciones pequeñas en lugar de transferencias de datos grandes. Para estas aplicaciones, el IOPS es una métrica más representativa del rendimiento real que el throughput.
+
+El término IOPS se creó precisamente porque parámetros como el throughput del servidor no permiten un dimensionamiento real y correcto de soluciones de almacenamiento cuando se ejecutan transacciones de datos pequeños. Regularmente se tiende a escoger equipo de almacenamiento basándose en throughput, pero actualmente y de acuerdo con el nivel de transacciones que los sistemas requieren, esta medida sola es insuficiente debido a que las transacciones que ejecutan datos pequeños no son estimadas adecuadamente por el throughput sin considerar IOPS.
+
+Como regla general, a mayor número de IOPS, mejor es el rendimiento general de una unidad de almacenamiento, ya sea esta sólida o mecánica. Las unidades mecánicas (HDD) típicamente proporcionan alrededor de 100 a 200 IOPS, mientras que las unidades de estado sólido (SSD) pueden producir hasta 90,000 IOPS o más. Este salto dramático en IOPS explica por qué los SSD han revolucionado el rendimiento de almacenamiento en aplicaciones sensibles a IOPS.
+
+\subsubsection{IOPS en diferentes tecnologías de almacenamiento}
+
+Fibre Channel, cuando se combina con almacenamiento SSD moderno, puede soportar IOPS extremadamente altos. Las SAN FC con arrays All-Flash Array (AFA) pueden proporcionar cientos de miles o incluso millones de IOPS con latencias ultrabajas. 
+
+iSCSI también puede proporcionar IOPS altos cuando se utiliza con SSD y redes de alta velocidad (25 Gbps o mayores), aunque la sobrecarga de TCP/IP limita ligeramente los IOPS máximos alcanzables comparado con FC. Para la mayoría de las cargas de trabajo empresariales, iSCSI sobre redes de 10 Gbps o 25 Gbps proporciona IOPS suficientes, aunque no alcanza los máximos de FC.
+
+NFS y CIFS típicamente proporcionan IOPS menores que FC e iSCSI debido a la sobrecarga adicional de gestión de archivos. Sin embargo, para cargas de trabajo de archivos que realizan operaciones secuenciales grandes en lugar de muchas operaciones pequeñas aleatorias, los IOPS son menos relevantes y el throughput es la métrica más importante.
+
+\subsection{Overhead del protocolo y su impacto en el rendimiento de la CPU del servidor}
+
+El overhead de protocolo se refiere al espacio y procesamiento adicional necesario para gestionar y organizar los datos en un sistema, incluyendo headers de paquetes, metadatos, procesamiento de protocolos y tareas administrativas que no contribuyen directamente a la transferencia de datos útiles.
+
+Fibre Channel está diseñado para minimizar el overhead de protocolo. El protocolo FC es altamente eficiente con headers de frame relativamente pequeños y procesamiento minimalista. Los HBAs de Fibre Channel incluyen procesadores especializados que descargan del CPU principal del servidor todas las tareas relacionadas con el protocolo FC, incluyendo encapsulación/desencapsulación de frames, control de flujo, detección y corrección de errores, y gestión de secuencias. Esta descarga de procesamiento es fundamental para el rendimiento de FC, ya que libera al CPU principal para ejecutar aplicaciones en lugar de gastar ciclos en procesamiento de protocolos de almacenamiento.
+
+El overhead de FC es tan bajo que prácticamente todos los ciclos de CPU del HBA se dedican a procesamiento de storage, y el CPU del servidor casi ninguno. Esto permite que aplicaciones sensibles a latencia ejecuten operaciones de E/S con mínimo impacto en el rendimiento general del servidor. La eficiencia de FC es particularmente valiosa en servidores virtualizados densos donde múltiples máquinas virtuales compiten por recursos de CPU.
+
+
+
+\subsection{Alta disponibilidad y redundancia en una SAN FC: multipathing (MPIO)}
+
+La alta disponibilidad es crítica en entornos empresariales donde el tiempo de inactividad puede costar miles o millones de dólares por hora. Las SAN FC implementan múltiples mecanismos de redundancia y alta disponibilidad, siendo el multipathing una de las técnicas más importantes y fundamentales.
+
+\subsubsection{Concepto de Multipathing}
+
+Multipathing se refiere a la práctica de proporcionar múltiples caminos físicos de red entre un servidor y un dispositivo de almacenamiento. En lugar de tener un solo HBA conectado a un solo switch conectado a un solo controlador de almacenamiento, las implementaciones con multipathing incluyen múltiples HBAs en el servidor, múltiples switches en la fabric, y múltiples controladores en el array de almacenamiento. Esto crea múltiples caminos redundantes a través de los cuales el servidor puede acceder a cada LUN.
+
+La redundancia elimina los puntos únicos de falla en la infraestructura de almacenamiento. Si un HBA falla, el servidor puede continuar accediendo a almacenamiento a través del HBA restante. Si un switch falla, el tráfico se redirige a través del switch restante. Si un controlador de almacenamiento falla, el array redirige el acceso al otro controlador. Incluso si un cable o transceptor falla, el camino alternativo mantiene la conectividad.
+
+\subsubsection{MPIO (Multipath I/O)}
+
+MPIO (Multipath I/O) es el software y mecanismo que gestiona múltiples caminos de E/S en el sistema operativo. Cada sistema operativo principal incluye soporte MPIO nativo o proporciona controladores MPIO específicos para almacenamiento. Los mecanismos MPIO realizan varias funciones críticas:
+
+\begin{itemize}
+	\item Detección de caminos múltiples: El software MPIO descubre que múltiples caminos físicos conducen al mismo dispositivo de almacenamiento lógico y los agrupa como caminos alternativos hacia la misma LUN.
+	\item Balanceo de carga: MPIO puede distribuir el tráfico de E/S a través de múltiples caminos disponibles para mejorar el rendimiento.
+	\item Failover automático: Cuando MPIO detecta que un camino falló, redirige automáticamente todo el tráfico de E/S a caminos alternativos disponibles.
+	\item Failback automático: Cuando el camino fallido se recupera, MPIO puede restaurar automáticamente el tráfico al camino original o redistribuirlo según la política de balanceo configurada.
+\end{itemize}

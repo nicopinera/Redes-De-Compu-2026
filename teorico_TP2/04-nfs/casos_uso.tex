@@ -1,0 +1,13 @@
+\subsection{Casos adecuados}
+
+Uno de los usos historicos de NFS es centralizar directorios personales, como \texttt{/home}. En un laboratorio, cluster universitario o datacenter Linux, esto permite que un usuario inicie sesion en distintos servidores y encuentre el mismo conjunto de archivos. La administracion de cuotas, backups y permisos se concentra en el servidor de almacenamiento.
+
+Otro caso comun es publicar repositorios de software, instaladores, scripts, bibliotecas, datasets de referencia o artefactos de compilacion. En lugar de copiar los mismos binarios a cada servidor, se exporta un directorio comun que todos los nodos montan en modo lectura o lectura/escritura controlada. Para contenido que cambia poco, la cache del cliente reduce mucho el trafico repetitivo.
+
+NFS tambien aparece en virtualizacion y Kubernetes. Plataformas como VMware ESXi o KVM pueden usar NFS como datastore, lo que facilita compartir almacenamiento entre hipervisores. En Kubernetes, NFS es una alternativa simple para volumenes persistentes \textbf{ReadWriteMany (RWX)}, donde varios pods o nodos necesitan montar el mismo recurso simultaneamente.
+
+Como destino de backups, NFS resulta practico porque expone un modelo de archivos simple y facil de inspeccionar. Un servidor de respaldo puede montar un export y escribir copias periodicas de otros sistemas. Para este caso pesan mas la capacidad, el throughput secuencial y el aislamiento de red que la latencia por operacion.
+
+\subsection{Casos donde conviene evaluar alternativas}
+
+NFS no es la mejor respuesta para todos los problemas de almacenamiento. Bases de datos transaccionales, cargas con muchas escrituras pequeñas concurrentes o aplicaciones que esperan latencia muy baja pueden requerir almacenamiento de bloques o almacenamiento local. En HPC, NFS puede servir para home directories y repositorios, pero la E/S paralela intensiva suele requerir sistemas de archivos especializados.
